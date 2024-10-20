@@ -1,5 +1,6 @@
 package entities;
 
+import enums.Gender;
 import enums.UserType;
 import services.LoginService;
 import services.LogoutService;
@@ -9,13 +10,18 @@ public class User {
     private UserType userType;
     private String password; // will change upon first login
     private boolean firstLogin;
+    private String name;
+    private Gender gender;
+    private int age;
+
+    private static int count = 1; //to give the ids and make sure its distinct
 
     // initialise a random password on first entry
     // then let them change
     public User(int id, UserType userType) {
         this.id = id;
         this.userType = userType;
-        this.password = "password";
+        this.password = "password"; //first password is string "password"
         this.firstLogin = true;
     }
 
@@ -48,7 +54,7 @@ public class User {
     }
 
     public void logOut() {
-        //invokes the ui
+        // invokes the ui
     }
 
     public void login() {
