@@ -5,7 +5,7 @@ import enums.UserType;
 import services.LoginService;
 import services.LogoutService;
 
-public class User {
+public abstract class User {
     private final int id; // shouldnt be allowed to change
     private UserType userType;
     private String password; // will change upon first login
