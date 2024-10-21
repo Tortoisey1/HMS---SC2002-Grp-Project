@@ -6,7 +6,7 @@ public class Medication {
     private String name;
     private MedicationStatus status;
     private int stock;
-    private int alert;
+    private int stockAlertLvel;
 
     public int getStock() {
         return stock;

@@ -2,26 +2,23 @@ package entities;
 
 import enums.Gender;
 import enums.UserType;
+import information.LoginInformation;
+import information.UserInformation;
 import services.LoginService;
 import services.LogoutService;
 
 public abstract class User {
-    private final int id; // shouldnt be allowed to change
     private UserType userType;
-    private String password; // will change upon first login
+    private LoginInformation loginInformation;
     private boolean firstLogin;
-    private String name;
-    private Gender gender;
-    private int age;
-
-    private static int count = 1; //to give the ids and make sure its distinct
+    private UserInformation userInformation;
 
     // initialise a random password on first entry
     // then let them change
     public User(int id, UserType userType) {
         this.id = id;
         this.userType = userType;
-        this.password = "password"; //first password is string "password"
+        this.password = "password"; // first password is string "password"
         this.firstLogin = true;
     }
 
@@ -31,10 +28,6 @@ public abstract class User {
 
     public void removeFirstLogin() {
         this.firstLogin = false;
-    }
-
-    public int getId() {
-        return id;
     }
 
     public UserType getUserType() {

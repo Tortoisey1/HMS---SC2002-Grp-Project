@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MedicalInformation {
-    private final BloodType bloodType; // Blood Type
+    private BloodType bloodType; // Blood Type
     private List<Diagnosis> pastDiagnoses; // Past Diagnoses
     private List<Treatment> pastTreatments; // Past Treatments
 
@@ -38,5 +38,13 @@ public class MedicalInformation {
 
     public void addTreatment(Treatment treatment) {
         pastTreatments.add(treatment);
+    }
+
+    public void setPastDiagnoses(List<Diagnosis> pastDiagnoses) {
+        this.pastDiagnoses = pastDiagnoses;
+    }
+
+    public void setPastTreatments(List<Treatment> pastTreatments) {
+        this.pastTreatments = pastTreatments;
     }
 }

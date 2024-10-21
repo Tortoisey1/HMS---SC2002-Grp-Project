@@ -1,4 +1,4 @@
-package contacts;
+package information;
 
 import exceptions.InvalidEmailException;
 import exceptions.InvalidPhoneNumberException;

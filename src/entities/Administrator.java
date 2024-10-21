@@ -1,5 +1,5 @@
 package entities;
 
-public class Administrator {
+public class Administrator extends Staff {
 
 }
