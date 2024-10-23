@@ -4,15 +4,13 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import contacts.ContactInfo;
 import enums.Gender;
-import information.medical.Diagnosis;
-import information.medical.Treatment;
+import information.ContactInfo;
 import enums.BloodType;
 
 public class MedicalRecord {
     private final int patientId; // Patient ID
-    private String patientName; // Name
+    private String patientName; // Name 
     private LocalDate dateOfBirth; // Date of Birth
     private Gender gender; // Gender
     private ContactInfo contactInfo; // Contact Information
@@ -62,7 +60,7 @@ public class MedicalRecord {
 
     public ContactInfo getContactInfo() {
         return contactInfo;
-    }   
+    }
 
     public void setContactInfo(ContactInfo contactInfo) {
         this.contactInfo = contactInfo;

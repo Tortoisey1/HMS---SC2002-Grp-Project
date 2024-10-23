@@ -5,12 +5,13 @@ import java.util.Scanner;
 import entities.User;
 import exceptions.InvalidUserException;
 import exceptions.LoginAttemptsExceededException;
+import information.id.UserID;
 
-public class LoginService {
+public class LoginService implements LoginServiceInterface {
     private final int maxPasswordTries = 3;
 
     // users will change their password upon initial login
-    public void login(int id, String passwordAttempt) {
+    public boolean login(int id, String passwordAttempt) {
         // check if its user first attempt
 
         User user = authenticate(id, passwordAttempt);
@@ -21,6 +22,9 @@ public class LoginService {
             changePassword(user);
             // then do whatever tf u want do
         }
+
+
+        return true;
     }
 
     public static void changePassword(User user) {
@@ -55,5 +59,41 @@ public class LoginService {
 
 
         throw new InvalidUserException("Invalid User. Please try again.")
+    }
+
+    @Override
+    public boolean validateLogin(UserID userId, String inputPassword) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'validateLogin'");
+    }
+
+    @Override
+    public void changePassword(UserID userId, String newPassword) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'changePassword'");
+    }
+
+    @Override
+    public void recordLoginAttempt(UserID userId) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'recordLoginAttempt'");
+    }
+
+    @Override
+    public int getLoginAttempts(UserID userId) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getLoginAttempts'");
+    }
+
+    @Override
+    public void resetLoginAttempts(String userId) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'resetLoginAttempts'");
+    }
+
+    @Override
+    public void addUser(UserID userId) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'addUser'");
     }
 }
