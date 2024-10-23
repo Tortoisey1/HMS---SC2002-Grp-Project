@@ -1,6 +1,6 @@
 package entities;
 
-public class Pharmacist {
+public class Pharmacist extends Staff {
     // Pharmacists can view the Appointment Outcome Record to fulfill medication 
     // prescriptions orders from doctors. 
     // ○ Pharmacists can update the status of prescription in the Appointment Outcome 
