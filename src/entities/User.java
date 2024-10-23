@@ -10,7 +10,6 @@ import services.LogoutService;
 public abstract class User {
     private UserType userType;
     private LoginInformation loginInformation;
-    private boolean firstLogin;
     private UserInformation userInformation;
 
     // initialise a random password on first entry
@@ -22,13 +21,6 @@ public abstract class User {
         this.firstLogin = true;
     }
 
-    public boolean isFirstLogin() {
-        return firstLogin;
-    }
-
-    public void removeFirstLogin() {
-        this.firstLogin = false;
-    }
 
     public UserType getUserType() {
         return userType;
