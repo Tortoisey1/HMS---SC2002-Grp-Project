@@ -5,7 +5,6 @@ import java.util.List;
 
 import javax.naming.InsufficientResourcesException;
 
-import exceptions.InvalidAmountException;
 import exceptions.MedicineDoesNotExistException;
 import exceptions.MedicineExistException;
 import information.Medicine;
