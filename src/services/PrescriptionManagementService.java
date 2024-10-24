@@ -1,10 +1,12 @@
 package services;
 
-import java.util.Scanner;
-
 import enums.AppointmentStatus;
+import exceptions.MedicineDoesNotExistException;
+import information.ReplenishmentRequest;
 import information.medical.AppointmentOutcomeRecord;
 import menu.ReplenishStockMenu;
+import services.update.UpdateReplenishmentListService;
+import app.AppLogic;
 
 public class PrescriptionManagementService {
     // Pharmacists can view the Appointment Outcome Record to fulfill medication
@@ -14,17 +16,19 @@ public class PrescriptionManagementService {
     // Outcome
     // Record (e.g., pending to dispensed).
     public void updatePrescriptionStatus(AppointmentOutcomeRecord appointmentOutcomeRecord,AppointmentStatus appointmentStatus ){
-        appointmentOutcomeRecord.set
+// use the AppointmentOutcomeRecordPharmacistService
     }
 
     // ○ Pharmacists can monitor the inventory of medications, including tracking
     // stock
     // levels.
     public void monitorMedicineInventory() {
-        Scanner scanner = new Scanner(System.in);
         InventoryManagementService.display();// print out the inventory then choose the medicine to replenish
                                              // if
                                              // necessary
+
+
+        //have access to inventory management service
 
         while (true) {
             ReplenishStockMenu.printMenu();
@@ -47,7 +51,22 @@ public class PrescriptionManagementService {
     // ○ Pharmacists can submit replenishment requests to administrators when stock
     // levels are low.
     private void replenishmentRequest() {
-        // check if it exists first
+        System.out.println("Which medicine would you like to replenish");
+        String medicineName = AppLogic.getScanner().nextLine();
+        //check if medicine exist
+        if (InventoryManagementService.findMedicine(medicineName)==null) {
+            throw new MedicineDoesNotExistException(
+                    "Medicine does not exist, can't remove");
+        }
 
+
+        int amount = Integer.valueOf(AppLogic.getScanner().nextLine());
+
+        //check if<< amount is not infeasible
+        if (amount<=0) {
+            throw new ;
+        }
+
+        InventoryManagementService.getReplenishmentRequest().add(new ReplenishmentRequest(pharmacist, medicineName, amount));
     }
 }

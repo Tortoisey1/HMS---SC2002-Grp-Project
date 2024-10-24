@@ -3,13 +3,17 @@ package services;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.naming.InsufficientResourcesException;
+
 import exceptions.InvalidAmountException;
 import exceptions.MedicineDoesNotExistException;
 import exceptions.MedicineExistException;
 import information.Medicine;
+import information.ReplenishmentRequest;
 
 public class InventoryManagementService {
     private static List<Medicine> medicineList;
+    private static List<ReplenishmentRequest> replenishmentRequests;
 
     public InventoryManagementService() {
         InventoryManagementService.medicineList = new ArrayList<Medicine>();
@@ -40,15 +44,24 @@ public class InventoryManagementService {
     }
 
     // Approve replenishment request and update stock
-    // public static void approveReplenishmentRequest(String medicationName, int
-    // quantity) {
-    // if (stock.containsKey(medicationName)) {
-    // int currentStock = stock.get(medicationName);
-    // stock.put(medicationName, currentStock + quantity);
-    // } else {
-    // System.out.println("Medication not found in inventory");
-    // }
-    // }
+    public static void approveReplenishmentRequest()
+            throws InsufficientResourcesException, MedicineDoesNotExistException {
+        // approve the first one first
+        ReplenishmentRequest request = InventoryManagementService.replenishmentRequests.get(0);
+
+        Medicine medicine = InventoryManagementService.findMedicine(request.getMedicineName());
+
+        int newStockAmount = medicine.getCurrentStock() + request.getAmount();
+
+        if (newStockAmount <= 0) {
+            throw new InsufficientResourcesException("Not enough medicine");
+        } else {
+            medicine.setCurrentStock(newStockAmount);
+            InventoryManagementService.isBelowLowStock(medicine.getName());
+        }
+
+        InventoryManagementService.getReplenishmentRequests().remove(0);
+    }
 
     // Check if medication is below low stock level
     public static boolean isBelowLowStock(String medicineName) throws MedicineDoesNotExistException {
@@ -92,5 +105,9 @@ public class InventoryManagementService {
 
     public static List<Medicine> getMedicineList() {
         return medicineList;
+    }
+
+    public static List<ReplenishmentRequest> getReplenishmentRequests() {
+        return replenishmentRequests;
     }
 }
