@@ -16,7 +16,7 @@ public class InventoryManagementService {
     }
 
     // Add a new medication to the inventory
-    public void addMedication(Medicine medicine) throws MedicineExistException {
+    public static void addMedication(Medicine medicine) throws MedicineExistException {
         // check if medicine already exist in the list
         Medicine checkedMedicine = findMedicine(medicine.getName());
         if (checkedMedicine == null) {
@@ -28,7 +28,7 @@ public class InventoryManagementService {
     }
 
     // Remove medication from the inventory
-    public void removeMedication(String medicineName) throws MedicineDoesNotExistException {
+    public static void removeMedication(String medicineName) throws MedicineDoesNotExistException {
         // check if medicine already exist in the list
         Medicine checkedMedicine = findMedicine(medicineName);
         if (checkedMedicine != null) {
@@ -40,8 +40,8 @@ public class InventoryManagementService {
     }
 
     // Approve replenishment request and update stock
-    // public void approveReplenishmentRequest(String medicationName, int quantity)
-    // {
+    // public static void approveReplenishmentRequest(String medicationName, int
+    // quantity) {
     // if (stock.containsKey(medicationName)) {
     // int currentStock = stock.get(medicationName);
     // stock.put(medicationName, currentStock + quantity);
@@ -74,5 +74,23 @@ public class InventoryManagementService {
             }
         }
         return null;
+    }
+
+    public static void display() {
+        // no medicine in the hospital
+        if (InventoryManagementService.getMedicineList() == null) {
+            System.out.println("No medicine");
+            return;
+        }
+
+        StringBuilder str = new StringBuilder();
+        for (Medicine medicine : InventoryManagementService.medicineList) {
+            str.append(medicine + "\n");
+        }
+        System.out.println(str.toString());
+    }
+
+    public static List<Medicine> getMedicineList() {
+        return medicineList;
     }
 }
