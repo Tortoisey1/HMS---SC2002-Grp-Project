@@ -1,24 +1,17 @@
 package information;
 
 import entities.Pharmacist;
+import information.id.PharmacistID;
 
 public class ReplenishmentRequest {
-    private Pharmacist pharmacist;
+    private PharmacistID id;
     private String medicineName;
     private int amount;
 
-    public ReplenishmentRequest(Pharmacist pharmacist, String medicineName, int amount) {
-        this.pharmacist = pharmacist;
+    public ReplenishmentRequest(PharmacistID id, String medicineName, int amount) {
+        this.id = id;
         this.medicineName = medicineName;
         this.amount = amount;
-    }
-
-    public Pharmacist getPharmacist() {
-        return pharmacist;
-    }
-
-    public void setPharmacist(Pharmacist pharmacist) {
-        this.pharmacist = pharmacist;
     }
 
     public String getMedicineName() {
@@ -35,6 +28,14 @@ public class ReplenishmentRequest {
 
     public void setAmount(int amount) {
         this.amount = amount;
+    }
+
+    public PharmacistID getId() {
+        return id;
+    }
+
+    public void setId(PharmacistID id) {
+        this.id = id;
     }
 
 }

@@ -1,5 +1,3 @@
-package services;
-
 import java.util.List;
 
 import information.AppointmentInformation;
