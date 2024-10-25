@@ -1,5 +1,3 @@
-package services;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -7,7 +5,7 @@ import entities.User;
 import information.id.UserID;
 
 public abstract class UserService {
-   protected Map<String, User> usersDatabase; // Assume this holds user data
+    protected Map<String, User> usersDatabase; // Assume this holds user data
 
     public UserService() {
         this.usersDatabase = new HashMap<>();
@@ -31,4 +29,7 @@ public abstract class UserService {
             return true; // Password changed successfully
         }
         return false; // User not found
-    }}
+    }
+
+    public abstract boolean logout();
+}

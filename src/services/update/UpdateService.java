@@ -1,4 +1,4 @@
-package services.update;
+package update;
 
 public interface UpdateService {
     public void add();

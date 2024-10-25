@@ -13,6 +13,10 @@ public class PrescriptionManagementService {
     // Pharmacists can view the Appointment Outcome Record to fulfill medication
     // prescriptions orders from doctors.
 
+    public static void viewAppointmentOutcomeRecords(){
+        //call the display records 
+    }
+
     // ○ Pharmacists can update the status of prescription in the Appointment
     // Outcome
     // Record (e.g., pending to dispensed).

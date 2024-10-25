@@ -14,8 +14,36 @@ public class Patient extends User {
 
     private static int patientCount = 0; // Static variable for Patient IDs
 
-    public Patient(int id) {
-        super(id, UserType.PATIENT);
+    public LocalDate getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth(LocalDate dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
+
+    public ContactInfo getContactInfo() {
+        return contactInfo;
+    }
+
+    public void setContactInfo(ContactInfo contactInfo) {
+        this.contactInfo = contactInfo;
+    }
+
+    public List<MedicalRecord> getMedicalRecords() {
+        return medicalRecords;
+    }
+
+    public void setMedicalRecords(List<MedicalRecord> medicalRecords) {
+        this.medicalRecords = medicalRecords;
+    }
+
+    public static int getPatientCount() {
+        return patientCount;
+    }
+
+    public static void setPatientCount(int patientCount) {
+        Patient.patientCount = patientCount;
     }
 
 }

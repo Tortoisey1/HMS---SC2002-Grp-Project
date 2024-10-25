@@ -71,19 +71,19 @@ public class MedicalRecord {
     }
 
 
-    public List<String> getPastDiagnoses() {
+    public List<Diagnosis> getPastDiagnoses() {
         return pastDiagnoses;
     }
 
-    public void setPastDiagnoses(List<String> pastDiagnoses) {
+    public void setPastDiagnoses(List<Diagnosis> pastDiagnoses) {
         this.pastDiagnoses = pastDiagnoses;
     }
 
-    public List<String> getPastTreatments() {
+    public List<Treatment> getPastTreatments() {
         return pastTreatments;
     }
 
-    public void setPastTreatments(List<String> pastTreatments) {
+    public void setPastTreatments(List<Treatment> pastTreatments) {
         this.pastTreatments = pastTreatments;
     }
 }

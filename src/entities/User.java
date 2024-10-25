@@ -1,10 +1,6 @@
 package entities;
 
-import enums.Gender;
-import enums.UserType;
 import information.UserInformation;
-import services.LoginService;
-import services.LogoutService;
 
 public abstract class User {
     private UserInformation userInformation;

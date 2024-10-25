@@ -1,4 +1,4 @@
-package services.update;
+package update;
 
 import information.ReplenishmentRequest;
 

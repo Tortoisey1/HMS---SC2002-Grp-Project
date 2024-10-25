@@ -1,13 +1,8 @@
-package services;
-
 import java.util.List;
 
 import entities.Staff;
-import exceptions.MedicineDoesNotExistException;
-import exceptions.MedicineExistException;
 import exceptions.StaffDoesNotExistException;
 import exceptions.StaffExistException;
-import information.Medicine;
 import information.id.UserID;
 
 public abstract class StaffManagementService {
@@ -24,7 +19,7 @@ public abstract class StaffManagementService {
         }
     }
 
-    //transfered functionality to updateservice
+    // transfered functionality to updateservice
     public abstract void updateStaffList(Staff staff);
 
     public void removeStaff(Staff staff) throws StaffDoesNotExistException {
@@ -40,7 +35,7 @@ public abstract class StaffManagementService {
     }
 
     // ○ Display a list of staff filtered by role, gender, age, etc.
-    //transfered functionality to displaylistservice
+    // transfered functionality to displaylistservice
 
     public Staff findStaff(UserID id) {
         for (Staff staff : this.staffList) {
