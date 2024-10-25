@@ -1,17 +1,14 @@
 package information.medical;
 
 import java.util.List;
-import java.util.Map;
-
 import enums.MedicalService;
 import enums.MedicationStatus;
 import information.ConsultationNotes;
 
 public class AppointmentOutcomeRecord {
-    // Date of Appointment
     private MedicalService medicalService;
-    private List<Medication> medications;
     private ConsultationNotes consultationNotes;
+    private List<Medication> medications;
 
     public AppointmentOutcomeRecord(MedicalService medicalService, ConsultationNotes consultationNotes,
             List<Medication> medications) {

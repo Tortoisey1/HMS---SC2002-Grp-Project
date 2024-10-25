@@ -14,4 +14,44 @@ public class AppointmentInformation {
     private LocalDateTime appointmentDateTime;
     private AppointmentOutcomeRecord appointmentOutcomeRecord;
 
+    public PatientID getPatientId() {
+        return patientId;
+    }
+
+    public void setPatientId(PatientID patientId) {
+        this.patientId = patientId;
+    }
+
+    public DoctorID getDoctorId() {
+        return doctorId;
+    }
+
+    public void setDoctorId(DoctorID doctorId) {
+        this.doctorId = doctorId;
+    }
+
+    public AppointmentStatus getAppointmentStatus() {
+        return appointmentStatus;
+    }
+
+    public void setAppointmentStatus(AppointmentStatus appointmentStatus) {
+        this.appointmentStatus = appointmentStatus;
+    }
+
+    public LocalDateTime getAppointmentDateTime() {
+        return appointmentDateTime;
+    }
+
+    public void setAppointmentDateTime(LocalDateTime appointmentDateTime) {
+        this.appointmentDateTime = appointmentDateTime;
+    }
+
+    public AppointmentOutcomeRecord getAppointmentOutcomeRecord() {
+        return appointmentOutcomeRecord;
+    }
+
+    public void setAppointmentOutcomeRecord(AppointmentOutcomeRecord appointmentOutcomeRecord) {
+        this.appointmentOutcomeRecord = appointmentOutcomeRecord;
+    }
+
 }
