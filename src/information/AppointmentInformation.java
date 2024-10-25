@@ -14,6 +14,15 @@ public class AppointmentInformation {
     private LocalDateTime appointmentDateTime;
     private AppointmentOutcomeRecord appointmentOutcomeRecord;
 
+    public AppointmentInformation(PatientID patientId, DoctorID doctorId, AppointmentStatus appointmentStatus,
+            LocalDateTime appointmentDateTime, AppointmentOutcomeRecord appointmentOutcomeRecord) {
+        this.patientId = patientId;
+        this.doctorId = doctorId;
+        this.appointmentStatus = appointmentStatus;
+        this.appointmentDateTime = appointmentDateTime;
+        this.appointmentOutcomeRecord = appointmentOutcomeRecord;
+    }
+
     public PatientID getPatientId() {
         return patientId;
     }
