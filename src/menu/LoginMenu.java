@@ -1,6 +1,7 @@
 package menu;
 
 import app.AppLogic;
+import entities.User;
 import enums.UserType;
 import exceptions.InvalidAmountException;
 import exceptions.InvalidTypeException;
@@ -47,9 +48,26 @@ public class LoginMenu implements Menu {
         UserType selectedUserType = UserType.values()[userTypeChoice - 1];
 
         try {
-            if (LoginService.login(selectedUserType, id, passwordAttempt) != null) {
+            User currentUser = LoginService.login(selectedUserType, id, passwordAttempt);
+            if (currentUser != null) {
                 // based on the different user type will show different menu which comes with
                 // the different functions
+                String userType = currentUser.getUserInformation().getUserType().name();
+                String className = userType.substring(0, 1).toUpperCase() + userType.substring(1).toLowerCase()
+                        + "Menu";
+
+                try {
+                    // Use reflection to find the class and create an instance
+                    Class<?> menuClass = Class.forName("menu." + className); // Replace with your actual
+                                                                             // package
+                    Menu userMenu = (Menu) menuClass.getDeclaredConstructor().newInstance();
+                    userMenu.printMenu();
+                } catch (ClassNotFoundException e) {
+                    System.out.println("No menu found for user type: " + userType);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
             }
         } catch (Exception e) {
             // TODO: handle exception
