@@ -3,28 +3,59 @@ package services;
 import java.util.Scanner;
 
 import entities.User;
+import enums.UserType;
+import exceptions.InvalidAmountException;
+import exceptions.InvalidTypeException;
 import exceptions.InvalidUserException;
 import exceptions.LoginAttemptsExceededException;
+import exceptions.NotInSystem;
 import information.id.UserID;
+import management.UserManagement;
 
-public class LoginService implements LoginServiceInterface {
+public class LoginService {
     private final int maxPasswordTries = 3;
 
     // users will change their password upon initial login
-    public boolean login(int id, String passwordAttempt) {
+    public static User login(UserType selectedUserType, String id, String passwordAttempt) {
         // check if its user first attempt
+        String className = selectedUserType.name().substring(0, 1) + selectedUserType.name().substring(1).toLowerCase()
+                + "ID";
 
-        User user = authenticate(id, passwordAttempt);
-        if (user.isFirstLogin()) {
-            // set the user first login to false
-            user.removeFirstLogin();
+        try {
+            // Dynamically load the class using reflection
+            Class<?> clazz = Class.forName(className);
+            UserID userID = (UserID) clazz.getDeclaredConstructor().newInstance();
 
-            changePassword(user);
-            // then do whatever tf u want do
+            if (userID.isValidUserId(id)) {
+                System.out.println("Valid " + selectedUserType + " ID.");
+
+                // check whether the user is in the system
+                if (UserManagement.checkUserExist(id)) {
+                    // then check the password for that user
+                    User user = UserManagement.getUser(id);
+                    if (user.getUserInformation().getPassword().equals(passwordAttempt)) {
+                        return user;
+                    } else {
+                        throw new InvalidUserException("Wrong password");
+                    }
+
+                } else {
+                    throw new NotInSystem("User does not exist in the hospital dont play");
+                }
+            } else {
+                throw new InvalidTypeException("ID is not feasible for " + selectedUserType);
+
+            }
+        } catch (ClassNotFoundException e) {
+            System.out.println("User ID class not found for " + className);
+            System.exit(0);
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.exit(0);
         }
 
+        return null;
 
-        return true;
     }
 
     public static void changePassword(User user) {
@@ -32,68 +63,5 @@ public class LoginService implements LoginServiceInterface {
         Scanner scanner = new Scanner(System.in);
         String newPassword = scanner.nextLine();
         user.setPassword(null);
-    }
-
-    private User authenticate(int id, String passwordAttempt) throws LoginAttemptsExceededException {
-        int tries = 0;
-        while(tries<this.maxPasswordTries){
-            User user = checkCredentials(id,passwordAttempt);
-
-            if (success) {
-                //then handle some shit
-
-
-                return user;
-
-            }
-            else{
-                tries++;
-            }
-        }
-
-        throw new LoginAttemptsExceededException("Maximum login attempts exceeded. Please try again later.");
-        //should set a clock to time
-    }
-
-    public User checkCredentials(int id,String passwordAttempt){
-
-
-        throw new InvalidUserException("Invalid User. Please try again.")
-    }
-
-    @Override
-    public boolean validateLogin(UserID userId, String inputPassword) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'validateLogin'");
-    }
-
-    @Override
-    public void changePassword(UserID userId, String newPassword) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'changePassword'");
-    }
-
-    @Override
-    public void recordLoginAttempt(UserID userId) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'recordLoginAttempt'");
-    }
-
-    @Override
-    public int getLoginAttempts(UserID userId) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getLoginAttempts'");
-    }
-
-    @Override
-    public void resetLoginAttempts(String userId) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'resetLoginAttempts'");
-    }
-
-    @Override
-    public void addUser(UserID userId) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'addUser'");
     }
 }
