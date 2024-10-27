@@ -9,6 +9,7 @@ import exceptions.NotInSystem;
 import information.id.UserID;
 import management.UserManagement;
 import services.LoginService;
+import java.lang.reflect.*;
 
 public class LoginMenu implements Menu {
 
@@ -58,8 +59,7 @@ public class LoginMenu implements Menu {
 
                 try {
                     // Use reflection to find the class and create an instance
-                    Class<?> menuClass = Class.forName("menu." + className); // Replace with your actual
-                                                                             // package
+                    Class<?> menuClass = Class.forName(className);
                     Menu userMenu = (Menu) menuClass.getDeclaredConstructor().newInstance();
                     userMenu.printMenu();
                 } catch (ClassNotFoundException e) {
