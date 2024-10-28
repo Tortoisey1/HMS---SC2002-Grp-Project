@@ -11,6 +11,7 @@ public class InformationAccessServicePatient {
         // Blood Type
         // Past Diagnoses and Treatments
         
+        
     }
 
     public void updatePersonalInformation() {

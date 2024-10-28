@@ -4,6 +4,7 @@ public class HMSApp {
     public static void main(String[] args) {
         // load the data files first
 
+        // /first menu
         AppMenu menu = new AppMenu();
         menu.printMenu();
 

@@ -61,8 +61,8 @@ public class PatientMenu implements Menu {
 
                 break;
             case 9:
-
-                break;
+                System.out.println("Successful logout");
+                System.exit(0);
 
             default:
                 throw new InvalidChoiceException("No such choice please select another option");

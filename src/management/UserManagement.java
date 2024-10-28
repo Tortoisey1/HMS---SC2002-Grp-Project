@@ -32,4 +32,8 @@ public class UserManagement {
         return false;
     }
 
+    public static addUser(User user){
+        getUsers().add(new User);
+    }
+
 }
