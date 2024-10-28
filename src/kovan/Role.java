@@ -1,0 +1,3 @@
+public enum Role {
+    DOCTOR, PATIENT, PHARMACIST, ADMINISTRATOR
+}
