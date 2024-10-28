@@ -61,7 +61,7 @@ public class LoginMenu implements Menu {
                     // Use reflection to find the class and create an instance
                     Class<?> menuClass = Class.forName(className);
                     Menu userMenu = (Menu) menuClass.getDeclaredConstructor().newInstance();
-                    userMenu.printMenu();
+                    userMenu.printMenu(currentUser);
                 } catch (ClassNotFoundException e) {
                     System.out.println("No menu found for user type: " + userType);
                 } catch (Exception e) {

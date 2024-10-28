@@ -1,17 +1,23 @@
 package menu;
 
 import app.AppLogic;
+import entities.User;
+import exceptions.InvalidChoiceException;
 
 public class PatientMenu implements Menu {
 
     @Override
-    public void printMenu() {
+    public void printMenu(User user) {
         while (true) {
             print();
 
             int choice = AppLogic.getScanner().nextLine();
 
-            callService(choice);
+            try {
+                callService(choice, user);
+            } catch (Exception e) {
+                // TODO: handle exception
+            }
 
         }
     }
@@ -28,7 +34,38 @@ public class PatientMenu implements Menu {
                 "Choice 9: Logout\n");
     }
 
-    private void callService(int choice) {
+    private void callService(int choice, User user) throws InvalidChoiceException {
+        switch (choice) {
+            case 1:
 
+                break;
+            case 2:
+
+                break;
+            case 3:
+
+                break;
+            case 4:
+
+                break;
+            case 5:
+
+                break;
+            case 6:
+
+                break;
+            case 7:
+
+                break;
+            case 8:
+
+                break;
+            case 9:
+
+                break;
+
+            default:
+                throw new InvalidChoiceException("No such choice please select another option");
+        }
     }
 }

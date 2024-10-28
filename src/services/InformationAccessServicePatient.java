@@ -4,13 +4,13 @@ import entities.Patient;
 
 public class InformationAccessServicePatient {
 
-    public void viewMedicalRecord() {
+    public static void viewMedicalRecord(User user ) {
         // Patients can view their own medical record, which consists of: -
         // Patient ID, Name, Date of Birth, Gender
         // Contact Information (e.g., phone number, email address)
         // Blood Type
         // Past Diagnoses and Treatments
-
+        
     }
 
     public void updatePersonalInformation() {
