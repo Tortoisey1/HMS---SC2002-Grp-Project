@@ -1,5 +1,9 @@
+package management;
 import java.io.*;
 import java.util.ArrayList;
+
+import merged.Appointment;
+import merged.AppointmentStatus;
 
 public class AppointmentDataManager implements DataManager<Appointment,String>{
     private ArrayList<Appointment> appointmentList;

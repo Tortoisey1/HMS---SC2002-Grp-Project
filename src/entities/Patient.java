@@ -1,34 +1,25 @@
 package entities;
 
-import enums.Gender;
-import enums.UserType;
-import information.ContactInfo;
+import information.AppointmentInformation;
+import information.MedicalInformation;
+import information.UserInformation;
 
-import java.time.LocalDate;
 import java.util.List;
 
 public class Patient extends User {
-    private LocalDate dateOfBirth;
-    private ContactInfo contactInfo;
     private List<MedicalRecord> medicalRecords;
+    private List<AppointmentInformation> appointments;
+    private MedicalInformation medicalInformation;
+
+    public Patient(UserInformation userInformation, List<MedicalRecord> medicalRecords,
+            List<AppointmentInformation> appointments, MedicalInformation medicalInformation) {
+        super(userInformation);
+        this.medicalRecords = medicalRecords;
+        this.appointments = appointments;
+        this.medicalInformation = medicalInformation;
+    }
 
     private static int patientCount = 0; // Static variable for Patient IDs
-
-    public LocalDate getDateOfBirth() {
-        return dateOfBirth;
-    }
-
-    public void setDateOfBirth(LocalDate dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
-    }
-
-    public ContactInfo getContactInfo() {
-        return contactInfo;
-    }
-
-    public void setContactInfo(ContactInfo contactInfo) {
-        this.contactInfo = contactInfo;
-    }
 
     public List<MedicalRecord> getMedicalRecords() {
         return medicalRecords;
@@ -36,6 +27,22 @@ public class Patient extends User {
 
     public void setMedicalRecords(List<MedicalRecord> medicalRecords) {
         this.medicalRecords = medicalRecords;
+    }
+
+    public List<AppointmentInformation> getAppointments() {
+        return appointments;
+    }
+
+    public void setAppointments(List<AppointmentInformation> appointments) {
+        this.appointments = appointments;
+    }
+
+    public MedicalInformation getMedicalInformation() {
+        return medicalInformation;
+    }
+
+    public void setMedicalInformation(MedicalInformation medicalInformation) {
+        this.medicalInformation = medicalInformation;
     }
 
     public static int getPatientCount() {

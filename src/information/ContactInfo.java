@@ -8,6 +8,11 @@ public class ContactInfo {
     private String phoneNumber;
     private String emailAddress;
 
+    public ContactInfo(String phoneNumber, String emailAddress) {
+        this.phoneNumber = phoneNumber;
+        this.emailAddress = emailAddress;
+    }
+
     public String getPhoneNumber() {
         return phoneNumber;
     }

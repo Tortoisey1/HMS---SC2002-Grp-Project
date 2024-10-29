@@ -1,5 +1,8 @@
+package ui;
 import java.time.LocalDate;
 import java.util.ArrayList;
+
+import merged.Appointment;
 
 public interface AppointmentInterface {
     boolean bookAppointment(int dateOfTreament, int month, int option, String patientId, String treatment, String doctor);

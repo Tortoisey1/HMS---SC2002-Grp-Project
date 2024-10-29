@@ -1,6 +1,12 @@
+package management;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.*;
+
+import GenerateIdHelper;
+import merged.Appointment;
+import merged.AppointmentStatus;
+import ui.AppointmentInterface;
 
 public class AppointmentController implements AppointmentInterface {
 

@@ -1,3 +1,4 @@
+package merged;
 import java.util.Arrays;
 
 public class Patient extends Person {

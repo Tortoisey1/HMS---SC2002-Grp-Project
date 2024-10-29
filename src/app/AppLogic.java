@@ -1,5 +1,3 @@
-import java.util.Scanner;
-
 import exceptions.InvalidChoiceException;
 import menu.LoginMenu;
 
@@ -9,8 +7,6 @@ public class AppLogic {
             case 1:
                 LoginMenu loginMenu = new LoginMenu();
                 loginMenu.printMenu();
-
-                int loginChoice = Integer.valueOf(AppLogic.getScanner().nextLine());
 
                 break;
 

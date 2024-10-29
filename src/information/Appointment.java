@@ -4,17 +4,22 @@ import enums.AppointmentStatus;
 import information.id.DoctorID;
 import information.id.PatientID;
 import information.medical.AppointmentOutcomeRecord;
+import kovan.Appointment;
 
 import java.time.LocalDateTime;
 
-public class AppointmentInformation {
+public class Appointment implements Comparable<Appointment> {
     private PatientID patientId;
     private DoctorID doctorId;
     private AppointmentStatus appointmentStatus;
     private LocalDateTime appointmentDateTime;
     private AppointmentOutcomeRecord appointmentOutcomeRecord;
+    // from kovan
+    private String appointmentID;
+    private String timeOfTreatment;
+    private String dateOfTreatment;
 
-    public AppointmentInformation(PatientID patientId, DoctorID doctorId, AppointmentStatus appointmentStatus,
+    public Appointment(PatientID patientId, DoctorID doctorId, AppointmentStatus appointmentStatus,
             LocalDateTime appointmentDateTime, AppointmentOutcomeRecord appointmentOutcomeRecord) {
         this.patientId = patientId;
         this.doctorId = doctorId;
@@ -61,6 +66,14 @@ public class AppointmentInformation {
 
     public void setAppointmentOutcomeRecord(AppointmentOutcomeRecord appointmentOutcomeRecord) {
         this.appointmentOutcomeRecord = appointmentOutcomeRecord;
+    }
+
+    @Override
+    public int compareTo(Appointment other) {
+        if (this.getDateOfAppointment() > other.getDateOfAppointment()) {
+            return 1;
+        }
+        return -1;
     }
 
 }

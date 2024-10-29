@@ -1,5 +1,8 @@
 import java.util.Scanner;
 
+import entities.Account;
+import merged.Global;
+
 public class LoginUi {
     private final PasswordInterface passwordController;
 

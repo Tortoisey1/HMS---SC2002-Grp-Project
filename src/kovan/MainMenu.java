@@ -1,3 +1,7 @@
+import entities.Account;
+import management.AccountDataManager;
+import management.AppointmentController;
+
 public class MainMenu {
     public static boolean isAuthenticated = false;
     public static void main(String[] args) {

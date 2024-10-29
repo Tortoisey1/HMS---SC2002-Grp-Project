@@ -1,3 +1,9 @@
+import management.DataManager;
+import management.PatientDataManager;
+import merged.ContactInfo;
+import merged.Patient;
+import ui.PatientInterface;
+
 public class PatientController implements PatientInterface{
 
     private static PatientController patientController;

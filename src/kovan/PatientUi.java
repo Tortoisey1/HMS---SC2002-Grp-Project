@@ -2,6 +2,13 @@ import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.util.*;
 
+import information.CustomCalendar;
+import merged.Appointment;
+import merged.Global;
+import merged.Patient;
+import ui.AppointmentInterface;
+import ui.PatientInterface;
+
 public class PatientUi {
     private final PatientInterface patientController;
     private final AppointmentInterface appointmentController;

@@ -1,3 +1,6 @@
+import entities.Account;
+import management.DataManager;
+
 public class PasswordController implements PasswordInterface{
 
     private final DataManager<Account,String> accountDataManager;

@@ -1,8 +1,12 @@
+package entities;
+import merged.Role;
+
 public class Account {
     private String password = "password";
     private String accountId;
-    private Role role;
+    private Role role; //will change this move into the user
     private boolean firstLogin = true;
+    private User user;
 
     Account(){}
 

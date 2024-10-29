@@ -1,20 +1,24 @@
 package menu;
 
-import app.AppLogic;
+import entities.Patient;
 import entities.User;
 import exceptions.InvalidChoiceException;
+import services.InformationAccessServicePatient;
+import app.Global;
 
 public class PatientMenu implements Menu {
 
     @Override
     public void printMenu(User user) {
         while (true) {
-            print();
-
-            int choice = AppLogic.getScanner().nextLine();
+            printOptions();
 
             try {
-                callService(choice, user);
+                int choice = Integer.valueOf(Global.getScanner().nextLine());
+
+                // can cast since checked when logging in, this menu only called when type is
+                // matched
+                callService(choice, (Patient) user);
             } catch (Exception e) {
                 // TODO: handle exception
             }
@@ -22,7 +26,7 @@ public class PatientMenu implements Menu {
         }
     }
 
-    private void print() {
+    private void printOptions() {
         System.out.println("Choice 1: View Medical Record\n" +
                 "Choice 2: Update Personal Information\n" +
                 "Choice 3: View Available Appointment Slots\n" +
@@ -34,13 +38,13 @@ public class PatientMenu implements Menu {
                 "Choice 9: Logout\n");
     }
 
-    private void callService(int choice, User user) throws InvalidChoiceException {
+    private void callService(int choice, Patient patient) throws InvalidChoiceException {
         switch (choice) {
             case 1:
-
+                InformationAccessServicePatient.viewMedicalRecord(patient);
                 break;
             case 2:
-
+                InformationAccessServicePatient.updatePersonalInformation(patient);
                 break;
             case 3:
 

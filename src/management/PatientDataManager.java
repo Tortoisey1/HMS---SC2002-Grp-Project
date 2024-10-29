@@ -1,5 +1,11 @@
+package management;
 import java.io.*;
 import java.util.ArrayList;
+
+import merged.ContactInfo;
+import merged.Gender;
+import merged.Patient;
+import merged.Role;
 
 public class PatientDataManager implements DataManager<Patient,String> {
 

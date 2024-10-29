@@ -1,7 +1,11 @@
+package information;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.ArrayList;
+
+import merged.Appointment;
+import merged.AppointmentStatus;
 
 public class CustomCalendar {
 

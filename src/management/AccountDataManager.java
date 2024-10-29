@@ -1,6 +1,10 @@
+package management;
 import java.io.*;
 import java.sql.Date;
 import java.util.ArrayList;
+
+import entities.Account;
+import merged.Role;
 
 public class AccountDataManager implements DataManager<Account, String>{
 
