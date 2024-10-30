@@ -9,21 +9,17 @@ import exceptions.MedicineDoesNotExistException;
 import exceptions.MedicineExistException;
 import information.Medicine;
 import information.ReplenishmentRequest;
+import management.MedicineDataManager;
 
 public class InventoryManagementService {
     // whoever is touching this do realise that i shift the list into a medicinedata
     // management so help me change thx
-    private static List<Medicine> medicineList;
-    private static List<ReplenishmentRequest> replenishmentRequests;
-
-    public InventoryManagementService() {
-        InventoryManagementService.medicineList = new ArrayList<Medicine>();
-    }
+    private static List<ReplenishmentRequest> replenishmentRequests = new ArrayList<>();
 
     // Add a new medication to the inventory
     public static void addMedication(Medicine medicine) throws MedicineExistException {
         // check if medicine already exist in the list
-        Medicine checkedMedicine = findMedicine(medicine.getName());
+        Medicine checkedMedicine = MedicineDataManager.getInstance().findMedicine(medicine.getName());
         if (checkedMedicine == null) {
             InventoryManagementService.medicineList.add(medicine);
         } else {
