@@ -1,22 +1,24 @@
 package entities;
 
-import information.AppointmentInformation;
+import information.Appointment;
 import information.MedicalInformation;
 import information.UserInformation;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import enums.BloodType;
 
 public class Patient extends User {
     private List<MedicalRecord> medicalRecords;
-    private List<AppointmentInformation> appointments;
+    private List<Appointment> appointments;
     private MedicalInformation medicalInformation;
 
-    public Patient(UserInformation userInformation, List<MedicalRecord> medicalRecords,
-            List<AppointmentInformation> appointments, MedicalInformation medicalInformation) {
+    public Patient(UserInformation userInformation,BloodType bloodType) {
         super(userInformation);
-        this.medicalRecords = medicalRecords;
-        this.appointments = appointments;
-        this.medicalInformation = medicalInformation;
+        this.medicalRecords = new ArrayList<>();
+        this.appointments = new ArrayList<>();
+        this.medicalInformation = new MedicalInformation(bloodType);
     }
 
     private static int patientCount = 0; // Static variable for Patient IDs
@@ -29,11 +31,11 @@ public class Patient extends User {
         this.medicalRecords = medicalRecords;
     }
 
-    public List<AppointmentInformation> getAppointments() {
+    public List<Appointment> getAppointments() {
         return appointments;
     }
 
-    public void setAppointments(List<AppointmentInformation> appointments) {
+    public void setAppointments(List<Appointment> appointments) {
         this.appointments = appointments;
     }
 

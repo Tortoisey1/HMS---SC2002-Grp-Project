@@ -7,18 +7,18 @@ import java.util.ArrayList;
 import entities.Account;
 import merged.Role;
 
-public class AccountDataManager implements DataManager<Account, String> {
+public class StaffManagement implements DataManager {
 
-    private ArrayList<Account> accountList;
+    private ArrayList<Account> staffList;
     private static DataManager<Account, String> accountDataManager;
-    private final String filePath;
+    private final String inputFilePath = "staffs.csv";
+    private final String outputFilePath = "newstaffs.csv";
 
-    AccountDataManager() {
-        filePath = "account.csv";
-        accountList = new ArrayList<Account>();
+    AccountDataManager(){
+        staffList = new ArrayList<Staff>();
         try {
             retrieveAll();
-        } catch (IOException e) {
+        }catch(IOException e){
             System.out.println(e);
         }
 
@@ -116,5 +116,4 @@ public class AccountDataManager implements DataManager<Account, String> {
         br.close();
 
     }
-
 }

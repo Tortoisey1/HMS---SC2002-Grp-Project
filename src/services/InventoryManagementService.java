@@ -11,6 +11,7 @@ import information.Medicine;
 import information.ReplenishmentRequest;
 
 public class InventoryManagementService {
+    //whoever is touching this do realise that i shift the list into a medicinedata management so help me change thx
     private static List<Medicine> medicineList;
     private static List<ReplenishmentRequest> replenishmentRequests;
 

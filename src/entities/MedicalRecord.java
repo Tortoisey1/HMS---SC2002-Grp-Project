@@ -15,8 +15,8 @@ public class MedicalRecord {
     private Gender gender; // Gender
     private ContactInfo contactInfo; // Contact Information
     private final BloodType bloodType; // Blood Type
-    private List<Diagnosis> pastDiagnoses; // Past Diagnoses
-    private List<Treatment> pastTreatments; // Past Treatments
+    private List<String> pastDiagnoses; // Past Diagnoses
+    private List<String> pastTreatments; // Past Treatments
 
     public MedicalRecord(int patientId, String patientName, LocalDate dateOfBirth, Gender gender,
             ContactInfo contactInfo, BloodType bloodType, List<String> pastDiagnoses, List<String> pastTreatments) {
@@ -71,19 +71,19 @@ public class MedicalRecord {
     }
 
 
-    public List<Diagnosis> getPastDiagnoses() {
+    public List<String> getPastDiagnoses() {
         return pastDiagnoses;
     }
 
-    public void setPastDiagnoses(List<Diagnosis> pastDiagnoses) {
+    public void setPastDiagnoses(List<String> pastDiagnoses) {
         this.pastDiagnoses = pastDiagnoses;
     }
 
-    public List<Treatment> getPastTreatments() {
+    public List<String> getPastTreatments() {
         return pastTreatments;
     }
 
-    public void setPastTreatments(List<Treatment> pastTreatments) {
+    public void setPastTreatments(List<String> pastTreatments) {
         this.pastTreatments = pastTreatments;
     }
 }

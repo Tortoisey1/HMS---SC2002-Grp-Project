@@ -15,7 +15,7 @@ public class PatientMenu implements Menu {
 
             try {
                 int choice = Integer.valueOf(Global.getScanner().nextLine());
-
+                int selection = Global.getScanner().nextInt();
                 // can cast since checked when logging in, this menu only called when type is
                 // matched
                 callService(choice, (Patient) user);
@@ -47,6 +47,7 @@ public class PatientMenu implements Menu {
                 InformationAccessServicePatient.updatePersonalInformation(patient);
                 break;
             case 3:
+                InformationAccessServicePatient.
 
                 break;
             case 4:

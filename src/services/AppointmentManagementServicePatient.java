@@ -13,7 +13,7 @@ public class AppointmentManagementServicePatient {
     // ● View available appointment slots with doctors.
     public void viewAppointmentSlots(){
         //call the main doctor holder
-        system.doctors
+        system.appoint
         
         //then for each doctor in the list print the appointment slots
     }

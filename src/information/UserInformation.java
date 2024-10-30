@@ -3,15 +3,16 @@ package information;
 import enums.UserType;
 import information.id.UserID;
 
-public abstract class UserInformation {
+public class UserInformation {
     private UserType userType;
     private UserID ID;
     private String password;
     private PrivateInformation privateInformation;
+    private boolean firstLogin = true;
 
     public UserInformation(UserType userType, UserID iD, String password, PrivateInformation privateInformation) {
         this.userType = userType;
-        ID = iD;
+        this.ID = iD;
         this.password = "password"; // default password is password
         this.privateInformation = privateInformation;
     }

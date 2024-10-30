@@ -1,16 +1,14 @@
 package information;
 
-import information.ContactInfo;
 import enums.Gender;
-import java.time.LocalDate;
 
 public class PrivateInformation {
     private String name;
-    private LocalDate dateOfBirth;
+    private String dateOfBirth;
     private Gender gender;
     private ContactInfo contactInfo;
 
-    public PrivateInformation(String name, LocalDate dateOfBirth, Gender gender, ContactInfo contactInfo) {
+    public PrivateInformation(String name, String dateOfBirth, Gender gender, ContactInfo contactInfo) {
         this.name = name;
         this.dateOfBirth = dateOfBirth;
         this.gender = gender;
@@ -27,11 +25,11 @@ public class PrivateInformation {
         this.name = name;
     }
 
-    public LocalDate getDateOfBirth() {
+    public String getDateOfBirth() {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(LocalDate dateOfBirth) {
+    public void setDateOfBirth(String dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 
