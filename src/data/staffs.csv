@@ -1,0 +1,2 @@
+StaffType,password,name,DOB,Gender,phoneNumber,email
+DOCTOR,password,Tom,01/02/1999,MALE,99999999,testing@gmail.com
