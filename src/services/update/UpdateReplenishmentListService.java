@@ -1,5 +1,6 @@
 package update;
 
+import exceptions.TypeErrorException;
 import information.ReplenishmentRequest;
 
 public class UpdateReplenishmentListService implements UpdateService {
@@ -17,8 +18,8 @@ public class UpdateReplenishmentListService implements UpdateService {
     }
 
     @Override
-    public void update(Object object) {
-        if (object !instanceof ReplenishmentRequest) {
+    public void update(Object object) throws TypeErrorException {
+        if (!(object instanceof ReplenishmentRequest)) {
             throw new TypeErrorException("Not type of replenishment request");
         }
 
