@@ -1,6 +1,13 @@
 package entities;
 
+import information.UserInformation;
+
 public class Pharmacist extends Staff {
+
+    public Pharmacist(UserInformation userInformation) {
+        super(userInformation);
+        //TODO Auto-generated constructor stub
+    }
     // Pharmacists can view the Appointment Outcome Record to fulfill medication 
     // prescriptions orders from doctors. 
     // ○ Pharmacists can update the status of prescription in the Appointment Outcome 
