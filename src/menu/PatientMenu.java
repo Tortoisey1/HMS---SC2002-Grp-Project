@@ -47,7 +47,7 @@ public class PatientMenu implements Menu {
                 InformationAccessServicePatient.updatePersonalInformation(patient);
                 break;
             case 3:
-                InformationAccessServicePatient.
+                App.
 
                 break;
             case 4:

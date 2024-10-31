@@ -1,6 +1,9 @@
+package app;
+
 import management.MedicineDataManager;
 import management.PatientDataManager;
 import management.StaffDataManager;
+import management.AppointmentDataManager;
 import menu.AppMenu;
 
 public class HMSApp {
@@ -9,6 +12,7 @@ public class HMSApp {
         PatientDataManager patientData = new PatientDataManager();
         MedicineDataManager medicineData = new MedicineDataManager();
         StaffDataManager staffData = new StaffDataManager();
+        AppointmentDataManager appointmentData = new AppointmentDataManager();
 
         // /first menu
         AppMenu menu = new AppMenu();
@@ -31,6 +35,7 @@ public class HMSApp {
             patientData.writeAll();
             medicineData.writeAll();
             staffData.writeAll();
+            appointmentData.writeAll();
         } catch (Exception e) {
             // TODO: handle exception
             System.out.println(e.getMessage());

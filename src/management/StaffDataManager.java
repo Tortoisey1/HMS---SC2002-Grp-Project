@@ -5,11 +5,9 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
 import entities.Staff;
-import entities.User;
 import enums.Gender;
 import enums.UserType;
 import information.ContactInfo;
-import information.Medicine;
 import information.PrivateInformation;
 import information.UserInformation;
 import information.id.UserID;
@@ -51,13 +49,16 @@ public class StaffDataManager implements DataManager<Staff, String> {
         String line = "";
         BufferedReader br = new BufferedReader(new FileReader(inputFilePath));
         int count = 0;
+
+        staffs.clear();
+
         while ((line = br.readLine()) != null) {
             if (count > 0) {
                 String[] data = line.split(",");
 
                 // get the staff type
                 String type = data[0].substring(0, 1).toUpperCase() + data[0].substring(1).toLowerCase();
-                String idName = type + "ID";
+                String idName = "information.id." + type + "ID";
 
                 try {
                     // Use reflection to create an instance
@@ -82,7 +83,7 @@ public class StaffDataManager implements DataManager<Staff, String> {
 
     @Override
     public void writeAll() throws IOException {
-        BufferedWriter bw = new BufferedWriter(new FileWriter(outputFilePath));
+        BufferedWriter bw = new BufferedWriter(new FileWriter(outputFilePath, false));
         String[] header = { "Staff_id", "Staff_Type", "password", "Name", "DOB",
                 "Gender", "PhoneNumber", "Email" };
 

@@ -1,36 +1,36 @@
 package management;
+
 import java.io.*;
 import java.util.ArrayList;
 
-import merged.Appointment;
-import merged.AppointmentStatus;
+import enums.MedicalService;
+import information.Appointment;
+import enums.AppointmentStatus;
 
-public class AppointmentDataManager implements DataManager<Appointment,String>{
-    private ArrayList<Appointment> appointmentList;
+public class AppointmentDataManager implements DataManager<Appointment, String> {
+    private static ArrayList<Appointment> appointmentList = new ArrayList<Appointment>();
     private static AppointmentDataManager appointmentDataManager;
-    private final String filePath;
+    private final String inputFilePath = "data/appointments.csv";
+    private final String outputFilePath = "data/newappointments.csv";
 
-    AppointmentDataManager(){
-        filePath = "appointments.csv";
-        appointmentList = new ArrayList<>();
+    public AppointmentDataManager() {
         try {
             retrieveAll();
-        }catch (IOException e){
+        } catch (IOException e) {
             System.out.println(e);
         }
     }
 
-
-    public static AppointmentDataManager getInstance(){
-        if(appointmentDataManager == null){
+    public static AppointmentDataManager getInstance() {
+        if (appointmentDataManager == null) {
             return appointmentDataManager = new AppointmentDataManager();
         }
-        return  appointmentDataManager;
+        return appointmentDataManager;
     }
 
     @Override
     public Appointment retrieve(String AppointmentId) {
-        for(Appointment appointment : appointmentList) {
+        for (Appointment appointment : appointmentList) {
             if (appointment.getAppointmentId().equals(AppointmentId)) {
                 return appointment;
             }
@@ -40,65 +40,66 @@ public class AppointmentDataManager implements DataManager<Appointment,String>{
 
     @Override
     public void update(Appointment newAppointment) {
-        int count = 0;
-        try {
-            for(Appointment temp : appointmentList){
-                if(temp.getAppointmentId().equals(newAppointment.getAppointmentId())){
-                    appointmentList.set(count,newAppointment);
-                    writeAll();
-                    System.out.println("Updated details");
-                }
-                count++;
-            }
+        // int count = 0;
+        // try {
+        // for (Appointment temp : appointmentList) {
+        // if (temp.getAppointmentId().equals(newAppointment.getAppointmentId())) {
+        // appointmentList.set(count, newAppointment);
+        // writeAll();
+        // System.out.println("Updated details");
+        // }
+        // count++;
+        // }
 
-            writeAll();
-        } catch (IOException e) {
-            System.out.println(e);
-        }
+        // writeAll();
+        // } catch (IOException e) {
+        // System.out.println(e);
+        // }
     }
 
     @Override
     public boolean delete(Appointment appointment) {
-        try{
+        try {
             appointmentList.remove(appointment);
-            writeAll();
-        }catch(IOException e){
-            System.out.println(e);
+            // writeAll();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
         return true;
     }
 
     @Override
     public boolean add(Appointment appointment) {
-         try{
-             appointmentList.add(appointment);
-             writeAll();
-             return true;
-         }catch (IOException e){
-             System.out.println(e);
-         }
-         return false;
+        try {
+            appointmentList.add(appointment);
+            // writeAll();
+            return true;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return false;
     }
 
     @Override
     public void retrieveAll() throws IOException {
         String line = "";
-        BufferedReader br = new BufferedReader(new FileReader(filePath));
+        BufferedReader br = new BufferedReader(new FileReader(inputFilePath));
         int count = 0;
-        while((line = br.readLine()) != null){
+
+        appointmentList.clear();
+
+        while ((line = br.readLine()) != null) {
             if (count > 0) {
                 String[] data = line.split(",");
                 appointmentList.add(
                         new Appointment(
                                 data[0],
                                 data[1],
-                                AppointmentStatus.valueOf(data[2]),
-                                data[3],
-                                data[4],
+                                data[2],
+                                AppointmentStatus.valueOf(data[3]),
+                                MedicalService.valueOf(data[4]),
                                 data[5],
-                                data[6]
-                        )
-                );
+                                data[6]));
             }
             count++;
         }
@@ -107,40 +108,41 @@ public class AppointmentDataManager implements DataManager<Appointment,String>{
 
     @Override
     public void writeAll() throws IOException {
-        BufferedWriter bw = new BufferedWriter(new FileWriter(filePath));
-        String[] header = {"Appointment_id","Patient_id","Appointment_status","Date",
-                "Treatment", "Time", "Doctor"};
+        BufferedWriter bw = new BufferedWriter(new FileWriter(outputFilePath, false));
+        String[] header = { "Appointment_id", "Date", "Patient_id", "Appointment_status",
+                "Treatment", "Time", "Doctor" };
 
-        for(String h : header){
+        for (String h : header) {
             bw.write(h);
             bw.write(",");
         }
-        for(Appointment temp : appointmentList){
+        for (Appointment temp : appointmentList) {
             bw.newLine();
             bw.write(temp.getAppointmentId());
+            bw.write(",");
+            bw.write(temp.getDateOfTreatment());
             bw.write(",");
             bw.write(temp.getPatientId());
             bw.write(",");
             bw.write(temp.getStatus().toString());
             bw.write(",");
-            bw.write(temp.getDateOfTreatment());
-            bw.write(",");
-            bw.write(temp.getTreatmentTitle());
+            bw.write(temp.getMedicalService().toString());
             bw.write(",");
             bw.write(temp.getTimeOfTreatment());
             bw.write(",");
-            bw.write(temp.getDoctor());
+            bw.write(temp.getDoctorID());
         }
         bw.flush();
         bw.close();
     }
+
     @Override
     public ArrayList<Appointment> getList() {
         return appointmentList;
     }
 
-    public int returnNextId(){
-       return appointmentList.size() + 1;
+    public int returnNextId() {
+        return appointmentList.size() + 1;
     }
 
 }

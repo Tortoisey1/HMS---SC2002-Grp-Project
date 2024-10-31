@@ -1,71 +1,67 @@
 package information;
 
+import java.time.LocalDate;
 import enums.AppointmentStatus;
-import information.id.DoctorID;
-import information.id.PatientID;
-import information.medical.AppointmentOutcomeRecord;
-import kovan.Appointment;
-
-import java.time.LocalDateTime;
+import enums.MedicalService;
 
 public class Appointment implements Comparable<Appointment> {
-    private PatientID patientId;
-    private DoctorID doctorId;
-    private AppointmentStatus appointmentStatus;
-    private LocalDateTime appointmentDateTime;
-    private AppointmentOutcomeRecord appointmentOutcomeRecord;
-    // from kovan
-    private String appointmentID;
-    private String timeOfTreatment;
+    private String appointmentId;
     private String dateOfTreatment;
+    private String patientId;
+    private AppointmentStatus status;
+    private MedicalService medicalService;
+    private String timeOfTreatment;
+    private String doctorID;
 
-    public Appointment(PatientID patientId, DoctorID doctorId, AppointmentStatus appointmentStatus,
-            LocalDateTime appointmentDateTime, AppointmentOutcomeRecord appointmentOutcomeRecord) {
+    public Appointment(String appointmentId, String dateOfTreatment, String patientId, AppointmentStatus status,
+            MedicalService medicalService, String timeOfTreatment, String doctorID) {
+        this.appointmentId = appointmentId;
+        this.dateOfTreatment = dateOfTreatment;
         this.patientId = patientId;
-        this.doctorId = doctorId;
-        this.appointmentStatus = appointmentStatus;
-        this.appointmentDateTime = appointmentDateTime;
-        this.appointmentOutcomeRecord = appointmentOutcomeRecord;
+        this.status = status;
+        this.medicalService = medicalService;
+        this.timeOfTreatment = timeOfTreatment;
+        this.doctorID = doctorID;
     }
 
-    public PatientID getPatientId() {
-        return patientId;
+    public String getDateOfTreatment() {
+        return dateOfTreatment;
     }
 
-    public void setPatientId(PatientID patientId) {
-        this.patientId = patientId;
+    public AppointmentStatus getStatus() {
+        return status;
     }
 
-    public DoctorID getDoctorId() {
-        return doctorId;
+    public void setDateOfTreatment(String dateOfTreatment) {
+        this.dateOfTreatment = dateOfTreatment;
     }
 
-    public void setDoctorId(DoctorID doctorId) {
-        this.doctorId = doctorId;
+    public void setStatus(AppointmentStatus status) {
+        this.status = status;
     }
 
-    public AppointmentStatus getAppointmentStatus() {
-        return appointmentStatus;
+    public String getAppointmentId() {
+        return appointmentId;
     }
 
-    public void setAppointmentStatus(AppointmentStatus appointmentStatus) {
-        this.appointmentStatus = appointmentStatus;
+    public void setAppointmentId(String appointmentId) {
+        this.appointmentId = appointmentId;
     }
 
-    public LocalDateTime getAppointmentDateTime() {
-        return appointmentDateTime;
+    public String getTimeOfTreatment() {
+        return timeOfTreatment;
     }
 
-    public void setAppointmentDateTime(LocalDateTime appointmentDateTime) {
-        this.appointmentDateTime = appointmentDateTime;
+    public void setTimeOfTreatment(String timeOfTreatment) {
+        this.timeOfTreatment = timeOfTreatment;
     }
 
-    public AppointmentOutcomeRecord getAppointmentOutcomeRecord() {
-        return appointmentOutcomeRecord;
+    public int getMonthOfAppointment() {
+        return LocalDate.parse(dateOfTreatment).getMonthValue();
     }
 
-    public void setAppointmentOutcomeRecord(AppointmentOutcomeRecord appointmentOutcomeRecord) {
-        this.appointmentOutcomeRecord = appointmentOutcomeRecord;
+    public int getDateOfAppointment() {
+        return LocalDate.parse(dateOfTreatment).getDayOfMonth();
     }
 
     @Override
@@ -74,6 +70,30 @@ public class Appointment implements Comparable<Appointment> {
             return 1;
         }
         return -1;
+    }
+
+    public MedicalService getMedicalService() {
+        return medicalService;
+    }
+
+    public void setMedicalService(MedicalService medicalService) {
+        this.medicalService = medicalService;
+    }
+
+    public String getPatientId() {
+        return patientId;
+    }
+
+    public void setPatientId(String patientId) {
+        this.patientId = patientId;
+    }
+
+    public String getDoctorID() {
+        return doctorID;
+    }
+
+    public void setDoctorID(String doctorID) {
+        this.doctorID = doctorID;
     }
 
 }

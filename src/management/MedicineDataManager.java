@@ -42,6 +42,9 @@ public class MedicineDataManager implements DataManager<Medicine, String> {
         String line = "";
         BufferedReader br = new BufferedReader(new FileReader(inputFilePath));
         int count = 0;
+
+        medicines.clear();
+
         while ((line = br.readLine()) != null) {
             if (count > 0) {
                 String[] data = line.split(",");
@@ -55,7 +58,7 @@ public class MedicineDataManager implements DataManager<Medicine, String> {
 
     @Override
     public void writeAll() throws IOException {
-        BufferedWriter bw = new BufferedWriter(new FileWriter(outputFilePath));
+        BufferedWriter bw = new BufferedWriter(new FileWriter(outputFilePath, false));
         String[] header = { "name", "currentStock", "alertStockLvl" };
 
         for (String h : header) {
@@ -66,9 +69,11 @@ public class MedicineDataManager implements DataManager<Medicine, String> {
             bw.newLine();
             bw.write(m.getName());
             bw.write(",");
-            bw.write(m.getCurrentStock());
+            bw.write(Integer.toString(m.getCurrentStock()));
             bw.write(",");
-            bw.write(m.getAlertStockLvl()); //will have to update this also since administrator can change or whoever it is
+            bw.write(Integer.toString(m.getAlertStockLvl())); // will have to update this also since administrator can
+                                                              // change or whoever
+            // it is
             bw.write(",");
         }
         bw.flush();

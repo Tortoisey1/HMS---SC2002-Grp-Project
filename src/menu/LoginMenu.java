@@ -7,13 +7,10 @@ import exceptions.InvalidAmountException;
 import exceptions.InvalidTypeException;
 import exceptions.NotInSystem;
 import information.id.UserID;
-import management.UserManagement;
 import services.LoginService;
 import java.lang.reflect.*;
 
-public class LoginMenu implements Menu {
-
-    @Override
+public class LoginMenu {
     public void printMenu() {
         int choice;
 
@@ -62,7 +59,7 @@ public class LoginMenu implements Menu {
                     Class<?> menuClass = Class.forName(className);
                     Menu userMenu = (Menu) menuClass.getDeclaredConstructor().newInstance();
 
-                    //print the menu for the specific class
+                    // print the menu for the specific class
 
                     userMenu.printMenu(currentUser);
                 } catch (ClassNotFoundException e) {

@@ -1,3 +1,5 @@
+package app;
+
 import exceptions.InvalidChoiceException;
 import menu.LoginMenu;
 

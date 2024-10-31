@@ -77,6 +77,9 @@ public class PatientDataManager implements DataManager<Patient, String> {
         String line = "";
         BufferedReader br = new BufferedReader(new FileReader(inputFilePath));
         int count = 0;
+
+        patients.clear();
+
         while ((line = br.readLine()) != null) {
             if (count > 0) {
                 String[] data = line.split(",");
@@ -94,7 +97,7 @@ public class PatientDataManager implements DataManager<Patient, String> {
 
     @Override
     public void writeAll() throws IOException {
-        BufferedWriter bw = new BufferedWriter(new FileWriter(outputFilePath));
+        BufferedWriter bw = new BufferedWriter(new FileWriter(outputFilePath, false));
         String[] header = { "Patient_id", "password", "Name", "DOB",
                 "Gender", "PhoneNumber", "Email", "BloodType", "MedicalRecords" };
 
