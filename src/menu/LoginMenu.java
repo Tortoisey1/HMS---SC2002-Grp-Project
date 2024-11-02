@@ -1,0 +1,105 @@
+package menu;
+import app.Global;
+import entities.User;
+import enums.UserType;
+import exceptions.InvalidAmountException;
+import exceptions.InvalidPasswordException;
+import services.authentication.LoginService;
+
+import java.util.Scanner;
+
+
+public class LoginMenu extends Menu {
+
+    @Override
+    public void printMenu(User user) {}
+
+    @Override
+    public void printMenu() {
+        int choice;
+
+        System.out.println("What kind of user are you? ");
+        UserType.printUserTypes();
+
+        try {
+            choice = Integer.parseInt(Global.getScanner().nextLine());
+            System.out.println("What is your user ID? ");
+            String selectedUserID = Global.getScanner().nextLine();
+            System.out.println("What is your password?");
+            String password = Global.getScanner().nextLine();
+
+            loginLogic(choice, selectedUserID, password);
+
+            if (choice <= 0 || choice > UserType.values().length) {
+                throw new InvalidAmountException("No such user type choice; don't play.");
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid input. Please enter a number corresponding to your user type.");
+            System.exit(0);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            System.exit(0);
+        }
+    }
+
+    private void loginLogic(int userTypeChoice, String id, String passwordAttempt) {
+
+        UserType selectedUserType = UserType.values()[userTypeChoice - 1];
+        try {
+            User currentUser = LoginService.getInstance().login(selectedUserType,id,passwordAttempt);
+            if (currentUser != null) {
+                // based on the different user type will show different menu which comes with
+                // the different functions
+                if(LoginService.getInstance().checkFirstLogin(currentUser)){
+                    changePasswordPrompt(currentUser);
+
+                }
+                String userType = currentUser.getUserInformation().getUserType().name();
+
+                String className = userType.substring(0, 1).toUpperCase() + userType.substring(1).toLowerCase()
+                        + "Menu";
+                try {
+                    // Use reflection to find the class and create an instance
+                    Class<?> menuClass = Class.forName("menu."+className);
+                    Menu userMenu = (Menu) menuClass.getDeclaredConstructor().newInstance();
+
+                    //print the menu for the specific class
+
+                    userMenu.printMenu(currentUser);
+                } catch (ClassNotFoundException e) {
+                    System.out.println("No menu found for user type: " + userType);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+        } catch (Exception e) {
+            // TODO: handle exception
+            System.out.println(e.getMessage());
+        }
+
+    }
+
+    public void changePasswordPrompt(User account){
+        Scanner scanner = Global.getScanner();
+        String newPasswordField;
+
+        while(true){
+            try {
+                System.out.println("Enter new password: ");
+                newPasswordField = scanner.nextLine();
+                if(LoginService.getInstance().changePassword(account, newPasswordField)){
+                    System.out.println("Password has successfully been changed!");
+                    break;
+                }
+            }catch(InvalidPasswordException e){
+                System.out.println(e);
+            }
+        }
+    }
+
+
+
+
+
+}
