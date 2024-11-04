@@ -2,7 +2,7 @@ package app;
 import entities.Patient;
 import entities.Staff;
 import information.Appointment;
-import information.Medicine;
+import information.medical.Medication;
 import management.*;
 import menu.AppMenu;
 
@@ -14,8 +14,9 @@ public class HMSApp {
         // load the data files first
         DataManager<Appointment,String> appointmentData = AppointmentDataManager.getInstance();
         DataManager<Patient,String> patientData = PatientDataManager.getInstance();
-        DataManager<Medicine,String> medicineData = MedicineDataManager.getInstance();
+        DataManager<Medication,String> medicationRequestData = MedicationRequestDataManager.getInstance();
         DataManager<Staff,String> staffData =  StaffDataManager.getInstance();
+        InventoryDataManager inventoryData = InventoryDataManager.getInstance();
 
         // /first menu
         AppMenu menu = new AppMenu();
@@ -34,7 +35,10 @@ public class HMSApp {
                 staffData.writeAll();
 
                 System.out.println("Writing medicine data...");
-                medicineData.writeAll();
+                medicationRequestData.writeAll();
+
+                System.out.println("Writing inventory data...");
+                inventoryData.writeAll();
             } catch (IOException e) {
                 System.err.println("Error writing data during shutdown: " + e.getMessage());
             } catch (Exception e) {

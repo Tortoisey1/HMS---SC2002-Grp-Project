@@ -1,14 +1,12 @@
 package management;
 
 import java.io.*;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
 import entities.*;
 import enums.Gender;
 import enums.UserType;
 import information.ContactInfo;
-import information.Medicine;
 import information.PrivateInformation;
 import information.UserInformation;
 import information.id.*;
