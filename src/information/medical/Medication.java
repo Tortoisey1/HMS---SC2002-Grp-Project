@@ -7,18 +7,21 @@ public class Medication {
     private MedicationStatus status;
     private int stock;
     private int stockAlertLevel;
-
+    private String appointmentId;
+    private String medicationId;
 
     public Medication(){}
 
-    public Medication(String name, MedicationStatus status){
+    public Medication(String appointmentId, String medicationId, MedicationStatus status, String name){
         this.name = name;
         this.status = status;
+        this.appointmentId = appointmentId;
+        this.medicationId = medicationId;
     }
 
-    public Medication(String name,MedicationStatus status, int stock){
+    public Medication(String medicationId, String name, int stock){
+        this.medicationId = medicationId;
         this.name = name;
-        this.status = status;
         this.stock = stock;
     }
 
@@ -41,5 +44,8 @@ public class Medication {
     public void setStatus(MedicationStatus status) {
         this.status = status;
     }
-    
+    public String getAppointmentId() {return appointmentId;}
+    public void setAppointmentId(String appointmentId) {this.appointmentId = appointmentId;}
+    public String getMedicationId() {return medicationId;}
+    public void setMedicationId(String medicationId) {this.medicationId = medicationId;}
 }
