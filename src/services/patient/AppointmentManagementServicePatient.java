@@ -127,7 +127,7 @@ public class AppointmentManagementServicePatient extends AppointmentManagementSe
                         patientID,
                         doctorID,
                         AppointmentStatus.PENDING,
-                        new AppointmentOutcomeRecord(new ConsultationNotes(),new ArrayList<>()),
+                        new AppointmentOutcomeRecord(new ConsultationNotes(),new ArrayList<Medication>()),
                         optionForTime(option),
                         date.toString(),
                         MedicalService.valueOf(treatment),

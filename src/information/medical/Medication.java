@@ -8,6 +8,20 @@ public class Medication {
     private int stock;
     private int stockAlertLevel;
 
+
+    public Medication(){}
+
+    public Medication(String name, MedicationStatus status){
+        this.name = name;
+        this.status = status;
+    }
+
+    public Medication(String name,MedicationStatus status, int stock){
+        this.name = name;
+        this.status = status;
+        this.stock = stock;
+    }
+
     public int getStock() {
         return stock;
     }
