@@ -12,11 +12,6 @@ public class AppointmentOutcomeRecord {
             List<Medication> medications) {
         this.consultationNotes = consultationNotes;
         this.medications = medications;
-        if(this.medications != null && this.medications.size() > 1){
-            for (Medication medication : this.medications) {
-                medication.setStatus(MedicationStatus.PENDING);
-            }
-        }
     }
 
     public List<Medication> getMedications() {
