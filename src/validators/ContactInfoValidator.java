@@ -5,7 +5,7 @@ import exceptions.InvalidPhoneNumberException;
 
 public class ContactInfoValidator {
     public static boolean validatePhoneNumber(String phoneNumber) throws InvalidPhoneNumberException {
-        if (phoneNumber.length() != 10 || !phoneNumber.matches("\\d{8}")) {
+        if (phoneNumber.length() != 8 || !phoneNumber.matches("\\d{8}")) {
             throw new InvalidPhoneNumberException("Invalid phone number. Must be a 8-digit number.");
         }
         return true;

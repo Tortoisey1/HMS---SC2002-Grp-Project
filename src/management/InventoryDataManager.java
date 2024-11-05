@@ -111,7 +111,8 @@ public class InventoryDataManager implements DataManager<Medication, String>{
             bw.write(",");
             bw.write(m.getName());
             bw.write(",");
-            bw.write(m.getStock()); //will have to update this also since administrator can change or whoever it is
+            bw.write(String.valueOf(m.getStock()));
+            bw.write(",");
         }
         bw.flush();
         bw.close();

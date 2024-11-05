@@ -18,7 +18,7 @@ public class AppointmentDataManager implements DataManager<Appointment,String> {
     private static DataManager<Appointment,String> appointmentDataManager;
     private final String filePath;
 
-    AppointmentDataManager(){
+    public AppointmentDataManager(){
         filePath = "src/data/appointments.csv";
         appointmentList = new ArrayList<>();
         try {

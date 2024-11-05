@@ -6,6 +6,7 @@ import exceptions.InvalidChoiceException;
 import services.patient.AppointmentManagementServicePatient;
 import services.patient.InformationAccessServicePatient;
 import app.Global;
+import services.patient.MedicalBillingServicePatient;
 
 public class PatientMenu extends Menu {
 
@@ -34,7 +35,8 @@ public class PatientMenu extends Menu {
                 "Choice 5: Cancel an Appointment\n" +
                 "Choice 6: View Scheduled Appointments\n" +
                 "Choice 7: View Past Apointment Outcome Records\n" +
-                "Choice 8: Logout");
+                "Choice 8: View Outstanding Billing\n" +
+                "Choice 9: Logout");
     }
 
     private void callService(int choice, Patient patient) throws InvalidChoiceException {
@@ -61,6 +63,9 @@ public class PatientMenu extends Menu {
                 AppointmentManagementServicePatient.getInstance(patient).displayOutcomeRecordsForThisPatient();
                 break;
             case 8:
+                MedicalBillingServicePatient.getInstance(patient).retrieveUnPaidBills();
+                break;
+            case 9:
                 System.out.println("Successful logout");
                 System.exit(0);
                 break;
