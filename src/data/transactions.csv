@@ -1,0 +1,3 @@
+Transaction_Ref,Patient_ID,Transaction_Status,Appointment_ID,Consultation_Fee,DateOfAppointment,
+TR9702as0d-5420,P001,UNPAID,AP964507f3-6580,90,2024-09-07,
+TR9201203d-12312,P001,UNPAID,APb5ef0eba-af33,90,2024-10-07,
