@@ -3,7 +3,6 @@ import java.time.LocalDate;
 import java.util.*;
 
 import information.CustomCalendar;
-import merged.Appointment;
 import merged.Global;
 import merged.Patient;
 import ui.AppointmentInterface;

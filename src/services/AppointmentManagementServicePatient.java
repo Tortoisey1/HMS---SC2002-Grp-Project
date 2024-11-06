@@ -5,17 +5,48 @@ import app.AppLogic;
 import entities.Doctor;
 import enums.AppointmentStatus;
 import exceptions.InvalidAmountException;
+import information.Appointment;
 import information.AppointmentInformation;
 import information.medical.AppointmentOutcomeRecord;
 
 public class AppointmentManagementServicePatient {
     // Patients can:
     // ● View available appointment slots with doctors.
-    public void viewAppointmentSlots(){
-        //call the main doctor holder
-        system.appoint
-        
-        //then for each doctor in the list print the appointment slots
+    public static void viewAppointmentSlots() {
+        // call the main doctor holder
+        ArrayList<Appointment> filteredList;
+        int input;
+        boolean valid = false;
+        do {
+            System.out.println("Press (1) to view your upcoming appointments");
+            System.out.println("Press (2) to view your past appointments");
+            input = scanner.nextInt();
+            if (input == 1 || input == 2) {
+                valid = true;
+                filteredList = appointmentController.getAppointmentsForPatient(patientId, input);
+                if (input == 1) {
+                    System.out.println("Your Upcoming appointments");
+                } else {
+                    System.out.println("Your History");
+                }
+                if (filteredList != null) {
+                    filteredList.forEach((appointment -> {
+                        System.out.println("==========================================");
+                        System.out.println("Appointment ID: " + appointment.getAppointmentId());
+                        System.out.println("Your ID: " + appointment.getPatientId());
+                        System.out.println("Date: " + appointment.getDateOfTreatment());
+                        System.out.println("Appointment Status: " + appointment.getStatus());
+                        System.out.println("Treatment: " + appointment.getTreatmentTitle());
+                        System.out.println("Time:" + appointment.getTimeOfTreatment());
+                        System.out.println("==========================================");
+                    }));
+                } else {
+                    System.out.println("No records!");
+                }
+            }
+        } while (!valid);
+
+        // then for each doctor in the list print the appointment slots
     }
 
     // ● Schedule Appointments: Choose a doctor, date, and available time slot

@@ -1,24 +1,20 @@
 package menu;
 
-import app.AppLogic;
+import app.Global;
 import entities.User;
 import enums.UserType;
 import exceptions.InvalidAmountException;
-import exceptions.InvalidTypeException;
-import exceptions.NotInSystem;
-import information.id.UserID;
 import services.LoginService;
-import java.lang.reflect.*;
 
 public class LoginMenu {
     public void printMenu() {
-        int choice;
+        int choice = 0;
 
         System.out.println("What kind of user are you? ");
         UserType.printUserTypes();
 
         try {
-            choice = Integer.valueOf(AppLogic.getScanner().nextLine());
+            choice = Integer.valueOf(Global.getScanner().nextLine());
 
             if (choice <= 0 || choice > UserType.values().length) {
                 throw new InvalidAmountException("No such user type choice; don't play.");
@@ -32,17 +28,17 @@ public class LoginMenu {
         }
 
         System.out.println("What is your user ID? ");
-        String selectedUserID = AppLogic.getScanner().nextLine();
+        String selectedUserID = Global.getScanner().nextLine();
 
         System.out.println("What is your password?");
-        String password = AppLogic.getScanner().nextLine();
+        String password = Global.getScanner().nextLine();
 
         loginLogic(choice, selectedUserID, password);
 
     }
 
     private void loginLogic(int userTypeChoice, String id, String passwordAttempt) {
-
+        
         UserType selectedUserType = UserType.values()[userTypeChoice - 1];
 
         try {

@@ -139,7 +139,7 @@ public class PatientDataManager implements DataManager<Patient, String> {
         return patients;
     }
 
-    public boolean checkPatientExist(String id) {
+    public static boolean checkPatientExist(String id) {
         for (Patient patient : patients) {
             if (patient.getUserInformation().getID().getId().equals(id)) {
                 return true;

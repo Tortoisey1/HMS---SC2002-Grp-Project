@@ -119,7 +119,7 @@ public class StaffDataManager implements DataManager<Staff, String> {
         return staffs;
     }
 
-    public boolean checkMedicineExist(String id) {
+    public static boolean checkStaffExist(String id) {
         for (Staff s : staffs) {
             if (s.getUserInformation().getID().getId().equals(id)) {
                 return true;

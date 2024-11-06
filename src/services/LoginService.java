@@ -1,16 +1,14 @@
 package services;
 
-import java.util.Scanner;
-
+import app.Global;
 import entities.User;
 import enums.UserType;
-import exceptions.InvalidAmountException;
 import exceptions.InvalidTypeException;
 import exceptions.InvalidUserException;
-import exceptions.LoginAttemptsExceededException;
 import exceptions.NotInSystem;
 import information.id.UserID;
-import management.UserManagement;
+import management.PatientDataManager;
+import management.StaffDataManager;
 
 public class LoginService {
     private final int maxPasswordTries = 3;
@@ -18,8 +16,11 @@ public class LoginService {
     // users will change their password upon initial login
     public static User login(UserType selectedUserType, String id, String passwordAttempt) {
         // check if its user first attempt
-        String className = selectedUserType.name().substring(0, 1) + selectedUserType.name().substring(1).toLowerCase()
+        String className = "information.id." + selectedUserType.name().substring(0, 1)
+                + selectedUserType.name().substring(1).toLowerCase()
                 + "ID";
+
+        System.out.println(className);
 
         try {
             // Dynamically load the class using reflection
@@ -29,17 +30,34 @@ public class LoginService {
             if (userID.isValidUserId(id)) {
                 System.out.println("Valid " + selectedUserType + " ID.");
 
-                // check whether the user is in the system
-                if (UserManagement.checkUserExist(id)) {
-                    // then check the password for that user
-                    User user = UserManagement.getUser(id);
-                    if (user.getUserInformation().getPassword().equals(passwordAttempt)) {
-                        return user;
-                    } else {
-                        throw new InvalidUserException("Wrong password");
+                if (selectedUserType.equals(UserType.PATIENT)) {
+                    // check whether the user is in the system
+                    if (PatientDataManager.checkPatientExist(id)) {
+                        // then check the password for that user
+                        User user = PatientDataManager.getInstance().retrieve(id);
+                        if (user.getUserInformation().getPassword().equals(passwordAttempt)) {
+                            return user;
+                        } else {
+                            throw new InvalidUserException("Wrong password");
+                        }
+
                     }
 
-                } else {
+                }
+
+                else {
+                    // check whether the user is in the system
+                    if (StaffDataManager.checkStaffExist(id)) {
+                        // then check the password for that user
+                        User user = StaffDataManager.getInstance().retrieve(id);
+                        if (user.getUserInformation().getPassword().equals(passwordAttempt)) {
+                            return user;
+                        } else {
+                            throw new InvalidUserException("Wrong password");
+                        }
+
+                    }
+
                     throw new NotInSystem("User does not exist in the hospital dont play");
                 }
             } else {
@@ -60,8 +78,7 @@ public class LoginService {
 
     public static void changePassword(User user) {
         System.out.println("What's the password you want to change to?");
-        Scanner scanner = new Scanner(System.in);
-        String newPassword = scanner.nextLine();
-        user.setPassword(null);
+        String newPassword = Global.getScanner().nextLine();
+        user.getUserInformation().setPassword(newPassword);
     }
 }

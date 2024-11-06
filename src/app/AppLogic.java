@@ -9,7 +9,6 @@ public class AppLogic {
             case 1:
                 LoginMenu loginMenu = new LoginMenu();
                 loginMenu.printMenu();
-
                 break;
 
             case 0:
