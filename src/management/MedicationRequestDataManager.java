@@ -55,7 +55,7 @@ public class MedicationRequestDataManager implements DataManager<Medication, Str
                         data[0],
                         data[1],
                         MedicationStatus.valueOf(data[2]),
-                        data[2]
+                        data[3]
                 ));
             }
             count++;
