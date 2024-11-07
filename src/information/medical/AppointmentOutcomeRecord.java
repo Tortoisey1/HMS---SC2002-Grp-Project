@@ -2,14 +2,16 @@ package information.medical;
 
 import java.util.List;
 
+import enums.AppointmentStatus;
 import enums.MedicationStatus;
 
 public class AppointmentOutcomeRecord {
     private ConsultationNotes consultationNotes;
     private List<Medication> medications;
 
+
     public AppointmentOutcomeRecord(ConsultationNotes consultationNotes,
-            List<Medication> medications) {
+                                    List<Medication> medications) {
         this.consultationNotes = consultationNotes;
         this.medications = medications;
     }
@@ -29,5 +31,4 @@ public class AppointmentOutcomeRecord {
     public void setConsultationNotes(ConsultationNotes consultationNotes) {
         this.consultationNotes = consultationNotes;
     }
-
 }
