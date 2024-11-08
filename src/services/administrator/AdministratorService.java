@@ -1,33 +1,38 @@
 package services.administrator;
 
-import entities.Staff;
+import app.Global;
 import enums.UserType;
+import enums.Gender;
+import entities.Staff;
 import exceptions.StaffExistException;
 import exceptions.StaffDoesNotExistException;
+import information.ContactInfo;
 import information.PrivateInformation;
 import information.UserInformation;
 import information.id.AdministratorID;
 import information.id.UserID;
-import app.Global;
-import services.UserService;
-import services.InventoryManagementService;
-import services.administrator.ConcreteStaffManagementService;
-import information.ContactInfo;
-import enums.Gender;
+import information.Appointment;
+import information.medical.Medication;
+import management.AppointmentDataManager;
+import management.InventoryDataManager;
+import management.StaffDataManager;
 
+import java.util.List;
+import java.util.Scanner;
 
-
-public class AdministratorService extends UserService {
-    private InventoryManagementService inventoryManagementService;
-    private ConcreteStaffManagementService staffManagementService;
+public class AdministratorService {
+    private InventoryDataManager inventoryDataManager;
+    private StaffDataManager staffDataManager;
+    private AppointmentDataManager appointmentDataManager;
 
     public AdministratorService() {
-        inventoryManagementService = new InventoryManagementService();
-        staffManagementService = new ConcreteStaffManagementService(); // Use the concrete class here
+        this.inventoryDataManager = InventoryDataManager.getInstance();
+        this.staffDataManager = (StaffDataManager) StaffDataManager.getInstance();
+        this.appointmentDataManager = (AppointmentDataManager) AppointmentDataManager.getInstance();
     }
 
-    // Method for managing staff, providing options for adding, updating, or
-    // removing staff
+    // Method for managing staff, providing options for adding, removing, or
+    // updating staff
     public void manageStaff() {
         System.out.println("Manage Staff:");
         System.out.println("1. Add Staff");
@@ -53,78 +58,58 @@ public class AdministratorService extends UserService {
     }
 
     private void addStaff() {
+        Scanner scanner = Global.getScanner();
+
         // Collect staff details
         System.out.print("Enter Staff Name: ");
-        String name = Global.getScanner().nextLine();
-    
+        String name = scanner.nextLine();
         System.out.print("Enter Date of Birth (e.g., YYYY-MM-DD): ");
-        String dateOfBirth = Global.getScanner().nextLine();
-    
+        String dateOfBirth = scanner.nextLine();
         System.out.print("Enter Gender (MALE or FEMALE): ");
-        String genderStr = Global.getScanner().nextLine();
-        Gender gender = Gender.valueOf(genderStr.toUpperCase()); // Assuming Gender enum has MALE and FEMALE
-    
+        Gender gender = Gender.valueOf(scanner.nextLine().toUpperCase());
         System.out.print("Enter Contact Phone Number: ");
-        String phoneNumber = Global.getScanner().nextLine();
-    
+        String phoneNumber = scanner.nextLine();
         System.out.print("Enter Contact Email: ");
-        String email = Global.getScanner().nextLine();
-    
-        // Assuming ContactInfo has a constructor that accepts phone number and email
+        String email = scanner.nextLine();
+
         ContactInfo contactInfo = new ContactInfo(phoneNumber, email);
-    
-        // Create PrivateInformation object with all necessary parameters
         PrivateInformation privateInfo = new PrivateInformation(name, dateOfBirth, gender, contactInfo);
-    
-        // Other UserInformation details
+
         System.out.print("Enter Staff Role (e.g., ADMINISTRATOR): ");
-        String role = Global.getScanner().nextLine();
-        UserType userType = UserType.valueOf(role.toUpperCase());
-    
-        UserID userId = new AdministratorID(); // Assuming appropriate UserID implementation
+        UserType userType = UserType.valueOf(scanner.nextLine().toUpperCase());
+        UserID userId = new AdministratorID();
         System.out.print("Enter Staff Password: ");
-        String password = Global.getScanner().nextLine();
-    
-        // Create UserInformation object
+        String password = scanner.nextLine();
+
         UserInformation userInfo = new UserInformation(userType, userId, password, privateInfo);
-    
-        // Create the Staff object
         Staff staff = new Staff(userInfo);
-    
-        // Add the new staff to the management service
-        try {
-            staffManagementService.addStaff(staff);
+
+        if (staffDataManager.retrieve(userId.getId()) == null) {
+            staffDataManager.add(staff);
             System.out.println("Staff added successfully.");
-        } catch (StaffExistException e) {
-            System.out.println(e.getMessage());
+        } else {
+            System.out.println("Staff with this ID already exists.");
         }
     }
-    
 
     private void removeStaff() {
         System.out.print("Enter Staff ID to remove: ");
         String staffId = Global.getScanner().nextLine();
-        UserID userId = new AdministratorID(staffId); // Or any appropriate UserID implementation
+        Staff staff = staffDataManager.retrieve(staffId);
 
-        try {
-            Staff staff = staffManagementService.findStaff(userId);
-            if (staff != null) {
-                staffManagementService.removeStaff(staff);
-                System.out.println("Staff removed successfully.");
-            } else {
-                System.out.println("Staff not found.");
-            }
-        } catch (StaffDoesNotExistException e) {
-            System.out.println(e.getMessage());
+        if (staff != null) {
+            staffDataManager.getList().remove(staff);
+            System.out.println("Staff removed successfully.");
+        } else {
+            System.out.println("Staff not found.");
         }
     }
 
     private void updateStaff() {
         System.out.print("Enter Staff ID to update: ");
         String staffId = Global.getScanner().nextLine();
-        UserID userId = new AdministratorID(staffId); // Convert to UserID
+        Staff staff = staffDataManager.retrieve(staffId);
 
-        Staff staff = staffManagementService.findStaff(userId);
         if (staff != null) {
             System.out.println("Select the information you want to update:");
             System.out.println("1. User Type");
@@ -136,14 +121,9 @@ public class AdministratorService extends UserService {
             switch (choice) {
                 case 1:
                     System.out.print("Enter new User Type (e.g., ADMIN, DOCTOR): ");
-                    String userTypeStr = Global.getScanner().nextLine();
-                    try {
-                        UserType newUserType = UserType.valueOf(userTypeStr.toUpperCase());
-                        staff.getUserInformation().setUserType(newUserType);
-                        System.out.println("User Type updated successfully.");
-                    } catch (IllegalArgumentException e) {
-                        System.out.println("Invalid User Type. No changes were made.");
-                    }
+                    UserType newUserType = UserType.valueOf(Global.getScanner().nextLine().toUpperCase());
+                    staff.getUserInformation().setUserType(newUserType);
+                    System.out.println("User Type updated successfully.");
                     break;
 
                 case 2:
@@ -154,41 +134,47 @@ public class AdministratorService extends UserService {
                     break;
 
                 default:
-                    System.out.println("Invalid choice. No changes were made.");
+                    System.out.println("Invalid choice.");
                     break;
             }
 
-            // Save the updated staff information
-            staffManagementService.updateStaffList(staff);
+            staffDataManager.update(staff);
             System.out.println("Staff information updated successfully.");
-
         } else {
             System.out.println("Staff not found.");
         }
     }
 
     public void viewAppointmentDetails() {
-        System.out.println("Viewing appointment details...");
-        // Logic to retrieve and display appointment details
-        // Placeholder implementation
-        // Example: appointmentService.getAllAppointments()
+        List<Appointment> appointments = appointmentDataManager.getList();
+        System.out.println("Appointment Details:");
+        for (Appointment appointment : appointments) {
+            System.out.println("Appointment ID: " + appointment.getAppointmentID());
+            System.out.println("Date: " + appointment.getDateOfTreatment()); // Changed from getDate() to
+                                                                             // getDateOfTreatment()
+            System.out.println("Status: " + appointment.getAppointmentStatus());
+            System.out.println("-----------------------------");
+        }
     }
 
     public void manageInventory() {
-        System.out.println("Managing inventory...");
-        // Example: Use inventoryManagementService to manage stock levels
-        // Placeholder implementation for managing inventory
+        System.out.println("Current Medication Inventory:");
+        List<Medication> inventoryList = inventoryDataManager.getList();
+        for (Medication medication : inventoryList) {
+            System.out.println("Medication ID: " + medication.getMedicationId() +
+                    ", Name: " + medication.getName() +
+                    ", Stock: " + medication.getStock());
+        }
     }
 
     public void approveReplenishmentRequest() {
-        System.out.println("Approving replenishment requests...");
-        // Logic to approve replenishment requests
-        // Placeholder implementation for approval
-    }
-
-    @Override
-    public boolean logout() {
-        System.out.println("Administrator logged out.");
-        return true;
+        System.out.println("Checking inventory for low stock items...");
+        List<Medication> inventoryList = inventoryDataManager.getList();
+        for (Medication medication : inventoryList) {
+            if (medication.getStock() < 10) {
+                System.out.println("Replenishment request submitted for: " + medication.getName() +
+                        ", Current Stock: " + medication.getStock());
+            }
+        }
     }
 }
