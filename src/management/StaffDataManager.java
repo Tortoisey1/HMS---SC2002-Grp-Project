@@ -180,9 +180,23 @@ public class StaffDataManager implements DataManager<Staff, String> {
     }
 
     @Override
-    public boolean add(Staff T1) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'add'");
+public boolean add(Staff newStaff) {
+    if (retrieve(newStaff.getUserInformation().getID().getId()) == null) { // Check if staff doesn't already exist
+        staffs.add(newStaff); // Add the new staff to the list
+        try {
+            writeAll(); // Save the updated staff list to the file
+        } catch (IOException e) {
+            System.out.println("Error saving new staff data: " + e.getMessage());
+            return false; // Return false if saving fails
+        }
+        return true; // Return true if successfully added
+    } else {
+        System.out.println("Staff with this ID already exists.");
+        return false; // Return false if staff already exists
     }
+}
+
+
+    
 
 }

@@ -2,6 +2,7 @@ package services.administrator;
 
 import app.Global;
 import enums.UserType;
+import enums.AppointmentStatus;
 import enums.Gender;
 import entities.Staff;
 import exceptions.StaffExistException;
@@ -17,6 +18,7 @@ import management.AppointmentDataManager;
 import management.InventoryDataManager;
 import management.StaffDataManager;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -38,6 +40,7 @@ public class AdministratorService {
         System.out.println("1. Add Staff");
         System.out.println("2. Remove Staff");
         System.out.println("3. Update Staff");
+        System.out.println("4. Display Filtered Staff List");
         System.out.print("Choose an option: ");
 
         int choice = Integer.parseInt(Global.getScanner().nextLine());
@@ -52,9 +55,31 @@ public class AdministratorService {
             case 3:
                 updateStaff();
                 break;
+            case 4:
+                filterAndDisplayStaff();
+                break;
             default:
                 System.out.println("Invalid choice.");
         }
+    }
+
+    private void filterAndDisplayStaff() {
+        Scanner scanner = Global.getScanner();
+        System.out.print("Enter role to filter by (e.g., DOCTOR, ADMINISTRATOR) or leave blank: ");
+        String role = scanner.nextLine().trim();
+        if (role.isEmpty())
+            role = null;
+
+        System.out.print("Enter gender to filter by (e.g., MALE, FEMALE) or leave blank: ");
+        String gender = scanner.nextLine().trim();
+        if (gender.isEmpty())
+            gender = null;
+
+        System.out.print("Enter age to filter by or leave blank: ");
+        String ageInput = scanner.nextLine().trim();
+        Integer age = ageInput.isEmpty() ? null : Integer.parseInt(ageInput);
+
+        displayFilteredStaff(role, gender, age);
     }
 
     private void addStaff() {
@@ -145,28 +170,6 @@ public class AdministratorService {
         }
     }
 
-    public void viewAppointmentDetails() {
-        List<Appointment> appointments = appointmentDataManager.getList();
-        System.out.println("Appointment Details:");
-        for (Appointment appointment : appointments) {
-            System.out.println("Appointment ID: " + appointment.getAppointmentID());
-            System.out.println("Date: " + appointment.getDateOfTreatment()); // Changed from getDate() to
-                                                                             // getDateOfTreatment()
-            System.out.println("Status: " + appointment.getAppointmentStatus());
-            System.out.println("-----------------------------");
-        }
-    }
-
-    public void manageInventory() {
-        System.out.println("Current Medication Inventory:");
-        List<Medication> inventoryList = inventoryDataManager.getList();
-        for (Medication medication : inventoryList) {
-            System.out.println("Medication ID: " + medication.getMedicationId() +
-                    ", Name: " + medication.getName() +
-                    ", Stock: " + medication.getStock());
-        }
-    }
-
     public void approveReplenishmentRequest() {
         System.out.println("Checking inventory for low stock items...");
         List<Medication> inventoryList = inventoryDataManager.getList();
@@ -175,6 +178,170 @@ public class AdministratorService {
                 System.out.println("Replenishment request submitted for: " + medication.getName() +
                         ", Current Stock: " + medication.getStock());
             }
+        }
+    }
+
+    private void displayFilteredStaff(String role, String gender, Integer age) {
+        List<Staff> staffList = staffDataManager.getList();
+        for (Staff staff : staffList) {
+            boolean matchesRole = role == null
+                    || staff.getUserInformation().getUserType().toString().equalsIgnoreCase(role);
+            boolean matchesGender = gender == null || staff.getUserInformation().getPrivateInformation().getGender()
+                    .toString().equalsIgnoreCase(gender);
+            boolean matchesAge = age == null || staff.getAge() == age;
+
+            if (matchesRole && matchesGender && matchesAge) {
+                System.out.println("Staff ID: " + staff.getUserInformation().getID().getId());
+                System.out.println("Name: " + staff.getUserInformation().getPrivateInformation().getName());
+                System.out.println("Role: " + staff.getUserInformation().getUserType());
+                System.out.println("Gender: " + staff.getUserInformation().getPrivateInformation().getGender());
+                System.out.println("Age: " + staff.getAge());
+                System.out.println("-----------------------------");
+            }
+        }
+    }
+
+    // View all appointments
+    public void viewAppointmentDetails() {
+        List<Appointment> appointments = appointmentDataManager.getList();
+        System.out.println("Appointment Details:");
+        for (Appointment appointment : appointments) {
+            System.out.println("Appointment ID: " + appointment.getAppointmentID());
+            System.out.println("Patient ID: " + appointment.getPatientId().getId());
+            System.out.println("Doctor ID: " + appointment.getDoctorId().getId());
+            System.out.println("Status: " + appointment.getAppointmentStatus());
+            System.out.println("Date: " + appointment.getDateOfTreatment());
+            System.out.println("Time: " + appointment.getTimeOfTreatment());
+            if (appointment.getAppointmentStatus() == AppointmentStatus.COMPLETED) {
+                System.out.println("Outcome Record: " + appointment.getAppointmentOutcomeRecord());
+            }
+            System.out.println("-----------------------------");
+        }
+    }
+
+    // Manage inventory by viewing, adding, updating stock levels
+    public void manageInventory() {
+        System.out.println("Manage Inventory:");
+        System.out.println("1. View Inventory");
+        System.out.println("2. Add or Update Medication Stock");
+        System.out.println("3. Update Low Stock Alert Level");
+        System.out.print("Choose an option: ");
+
+        int choice = Integer.parseInt(Global.getScanner().nextLine());
+
+        switch (choice) {
+            case 1:
+                displayInventory();
+                break;
+            case 2:
+                addOrUpdateMedicationStock();
+                break;
+            case 3:
+                updateLowStockAlertLevel();
+                break;
+            default:
+                System.out.println("Invalid choice.");
+        }
+    }
+
+    private void displayInventory() {
+        List<Medication> inventoryList = inventoryDataManager.getList();
+        System.out.println("Current Medication Inventory:");
+        for (Medication medication : inventoryList) {
+            System.out.println("Medication ID: " + medication.getMedicationId());
+            System.out.println("Name: " + medication.getName());
+            System.out.println("Stock: " + medication.getStock());
+            System.out.println("Low Stock Alert Level: " + medication.getLowStockLevel());
+            System.out.println("-----------------------------");
+        }
+    }
+
+    private void addOrUpdateMedicationStock() {
+        System.out.print("Enter Medication ID: ");
+        String medicationId = Global.getScanner().nextLine();
+        System.out.print("Enter Stock Quantity: ");
+        int stock = Integer.parseInt(Global.getScanner().nextLine());
+
+        Medication medication = inventoryDataManager.retrieve(medicationId);
+        if (medication != null) {
+            medication.setStock(stock);
+            System.out.println("Stock updated for medication: " + medication.getName());
+        } else {
+            System.out.println("Medication not found.");
+        }
+    }
+
+    private void updateLowStockAlertLevel() {
+        System.out.print("Enter Medication ID: ");
+        String medicationId = Global.getScanner().nextLine();
+        System.out.print("Enter new Low Stock Alert Level: ");
+        int alertLevel = Integer.parseInt(Global.getScanner().nextLine());
+
+        Medication medication = inventoryDataManager.retrieve(medicationId);
+        if (medication != null) {
+            medication.setLowStockLevel(alertLevel);
+            System.out.println("Low stock alert level updated for medication: " + medication.getName());
+        } else {
+            System.out.println("Medication not found.");
+        }
+    }
+
+    public void addOrUpdateMedicationStock(String medicationId, int stock) {
+        Medication medication = inventoryDataManager.retrieve(medicationId);
+        if (medication != null) {
+            medication.setStock(stock);
+            System.out.println("Stock updated for medication: " + medication.getName());
+            try {
+                inventoryDataManager.writeAll();
+            } catch (IOException e) {
+                System.out.println("Error updating inventory: " + e.getMessage());
+            }
+        } else {
+            System.out.println("Medication not found in inventory.");
+        }
+    }
+
+    // Update low stock level alert line
+    public void updateLowStockAlertLevel(String medicationId, int newAlertLevel) {
+        Medication medication = inventoryDataManager.retrieve(medicationId);
+        if (medication != null) {
+            medication.setLowStockLevel(newAlertLevel);
+            System.out.println("Low stock alert level updated for medication: " + medication.getName());
+            try {
+                inventoryDataManager.writeAll();
+            } catch (IOException e) {
+                System.out.println("Error updating inventory: " + e.getMessage());
+            }
+        } else {
+            System.out.println("Medication not found in inventory.");
+        }
+    }
+
+    // Approve replenishment requests from pharmacists
+    public void approveReplenishmentRequest(String medicationId, int requestedStock) {
+        Medication medication = inventoryDataManager.retrieve(medicationId);
+        if (medication != null) {
+            medication.setStock(medication.getStock() + requestedStock);
+            System.out.println("Replenishment approved for medication: " + medication.getName());
+            try {
+                inventoryDataManager.writeAll();
+            } catch (IOException e) {
+                System.out.println("Error saving replenishment: " + e.getMessage());
+            }
+        } else {
+            System.out.println("Medication not found.");
+        }
+    }
+
+    // Initialize system data from files
+    public void initializeSystemData() {
+        try {
+            staffDataManager.retrieveAll();
+            System.out.println("Staff data loaded successfully.");
+            inventoryDataManager.retrieveAll();
+            System.out.println("Inventory data loaded successfully.");
+        } catch (IOException e) {
+            System.out.println("Error loading system data: " + e.getMessage());
         }
     }
 }

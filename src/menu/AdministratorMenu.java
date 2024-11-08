@@ -3,7 +3,6 @@ package menu;
 import entities.User;
 import services.administrator.AdministratorService;
 import app.Global;
-// import menu.Menu;
 
 public class AdministratorMenu extends Menu {
     private AdministratorService adminService;

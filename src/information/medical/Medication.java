@@ -7,6 +7,7 @@ public class Medication {
     private MedicationStatus status;
     private int stock;
     private int stockAlertLevel;
+    private int lowStockLevel;
     private String appointmentId;
     private String medicationId;
 
@@ -48,4 +49,11 @@ public class Medication {
     public void setAppointmentId(String appointmentId) {this.appointmentId = appointmentId;}
     public String getMedicationId() {return medicationId;}
     public void setMedicationId(String medicationId) {this.medicationId = medicationId;}
+    public int getLowStockLevel() {
+        return lowStockLevel;
+    }
+
+    public void setLowStockLevel(int lowStockLevel) {
+        this.lowStockLevel = lowStockLevel;
+    }
 }
