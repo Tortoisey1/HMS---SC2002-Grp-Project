@@ -6,27 +6,47 @@ import information.id.PharmacistID;
 
 public class ReplenishmentRequest {
     private AdministratorID id;
-    private String medicineName;
+    private String medicationName;
     private int amount;
     private String dateOfRequest;
     private boolean approvalResult;
+    private String replenishmentId;
+    private String medicationId;
 
-    public ReplenishmentRequest(String medicineName,
-                                int amount,
-                                String dateOfRequest,
-                                boolean approvalResult) {
-        this.medicineName = medicineName;
+
+    public ReplenishmentRequest(){}
+
+    public ReplenishmentRequest(
+            String replenishmentId,
+            String medicationId,
+            String medicationName,
+            int amount,
+            AdministratorID id,
+            String dateOfRequest
+    ){
+        this.replenishmentId = replenishmentId;
+        this.medicationId = medicationId;
+        this.medicationName = medicationName;
         this.amount = amount;
+        this.id = id;
         this.dateOfRequest = dateOfRequest;
-        this.approvalResult = approvalResult;
     }
 
-    public String getMedicineName() {
-        return medicineName;
+
+    public String getMedicationName() {
+        return medicationName;
     }
 
-    public void setMedicineName(String medicineName) {
-        this.medicineName = medicineName;
+    public void setMedicationName(String medicationName) {
+        this.medicationName = medicationName;
+    }
+
+    public String getMedicationId() {
+        return medicationId;
+    }
+
+    public void setMedicationId(String medicationId) {
+        this.medicationId = medicationId;
     }
 
     public int getAmount() {
@@ -55,5 +75,17 @@ public class ReplenishmentRequest {
 
     public boolean isApprovalResult() {
         return approvalResult;
+    }
+
+    public void setApprovalResult(boolean approvalResult) {
+        this.approvalResult = approvalResult;
+    }
+
+    public String getReplenishmentId() {
+        return replenishmentId;
+    }
+
+    public void setReplenishmentId(String replenishmentId) {
+        this.replenishmentId = replenishmentId;
     }
 }

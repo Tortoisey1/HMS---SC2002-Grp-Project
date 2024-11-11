@@ -8,6 +8,8 @@ public class GenerateIdHelper {
         switch (typeOfId){
             case "AP" :
                return "AP" + takeSubString(uid);
+            case "RR":
+                return "RR" + takeSubString(uid);
             default:
                 return null;
         }
