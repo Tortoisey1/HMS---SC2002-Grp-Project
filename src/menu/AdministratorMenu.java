@@ -1,4 +1,4 @@
-/*package menu;
+package menu;
 
 import entities.User;
 import services.administrator.AdministratorService;
@@ -65,4 +65,4 @@ public class AdministratorMenu extends Menu {
         System.out.println("Approving replenishment requests...");
         adminService.approveReplenishmentRequest();
     }
-}*/
+}
