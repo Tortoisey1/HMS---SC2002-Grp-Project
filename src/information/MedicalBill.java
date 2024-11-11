@@ -14,15 +14,13 @@ public class MedicalBill {
     private String dateOfAppointment;
     private boolean moreThanOneMonth;
     private PatientID patientID;
-    private double medicineCost;
 
     public MedicalBill(String ref,
                        PatientID patientID,
                        TransactionStatus transactionStatus,
                        long consultationFee,
                        String appointmentId,
-                       String dateOfAppointment,
-                       double medicineCost
+                       String dateOfAppointment
                        ){
         this.transactionRef = ref;
         this.patientID = patientID;
@@ -30,7 +28,6 @@ public class MedicalBill {
         this.consultationFee = consultationFee;
         this.appointmentId = appointmentId;
         this.dateOfAppointment = dateOfAppointment;
-        this.medicineCost = medicineCost;
     }
 
 
@@ -97,11 +94,4 @@ public class MedicalBill {
         return patientID;
     }
 
-    public double getMedicineCost() {
-        return medicineCost;
-    }
-
-    public void setMedicineCost(double medicineCost) {
-        this.medicineCost = medicineCost;
-    }
 }

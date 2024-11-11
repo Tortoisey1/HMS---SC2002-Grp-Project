@@ -94,7 +94,7 @@ public class AppointmentOutcomeRecordPharmacistService {
         for (Medication medication: invlist){
             if (medication.getStock() < 10){
                 System.out.println("Low stock detected for: " + medication.getName() + ", Current Stock: " + medication.getStock() + ".");
-                ReplenishmentRequest replenishmentRequest = new ReplenishmentRequest(medication.getName(), medication.getStock(), medication.get);
+                ReplenishmentRequest replenishmentRequest = new ReplenishmentRequest(medication.getName(), medication.getStock(), LocalDate.now().toString(), false);
                 replenishmentRequests.add(replenishmentRequest);
                 System.out.println("Replenishment request created for: " + medication.getName() + ", Current Stock: " + medication.getStock() + ", Requested Amount: " + replenishmentRequest.getAmount());
             }
