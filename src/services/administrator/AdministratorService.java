@@ -282,20 +282,20 @@ public class AdministratorService {
         }
     }
     // Approve replenishment requests from pharmacists
-    public void approveReplenishmentRequest(String medicationId, int requestedStock) {
-        Medication medication = inventoryDataManager.retrieve(medicationId);
-        if (medication != null) {
-            medication.setStock(medication.getStock() + requestedStock);
-            System.out.println("Replenishment approved for medication: " + medication.getName());
-            try {
-                inventoryDataManager.writeAll();
-            } catch (IOException e) {
-                System.out.println("Error saving replenishment: " + e.getMessage());
-            }
-        } else {
-            System.out.println("Medication not found.");
-        }
-    }
+    // public void approveReplenishmentRequest(String medicationId, int requestedStock) {
+    //     Medication medication = inventoryDataManager.retrieve(medicationId);
+    //     if (medication != null) {
+    //         medication.setStock(medication.getStock() + requestedStock);
+    //         System.out.println("Replenishment approved for medication: " + medication.getName());
+    //         try {
+    //             inventoryDataManager.writeAll();
+    //         } catch (IOException e) {
+    //             System.out.println("Error saving replenishment: " + e.getMessage());
+    //         }
+    //     } else {
+    //         System.out.println("Medication not found.");
+    //     }
+    // }
 
     // Initialize system data from files
     public void initializeSystemData() {

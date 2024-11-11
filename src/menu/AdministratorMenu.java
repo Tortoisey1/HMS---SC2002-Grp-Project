@@ -3,12 +3,15 @@ package menu;
 import entities.User;
 import services.administrator.AdministratorService;
 import app.Global;
+import services.administrator.AdministratorService_Replenishment;
 
 public class AdministratorMenu extends Menu {
     private AdministratorService adminService;
+    private AdministratorService_Replenishment adminService_Replenishment;
 
     public AdministratorMenu() {
         this.adminService = new AdministratorService();
+        this.adminService_Replenishment = new AdministratorService_Replenishment();
     }
 
     public void printMenu(User currentUser) {
@@ -63,6 +66,6 @@ public class AdministratorMenu extends Menu {
 
     private void approveReplenishmentRequests() {
         System.out.println("Approving replenishment requests...");
-        adminService.approveReplenishmentRequest();
+        adminService_Replenishment.approveReplenishmentRequest();
     }
 }
