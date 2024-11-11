@@ -4,42 +4,52 @@ import app.Global;
 import enums.AppointmentStatus;
 import enums.MedicationStatus;
 import information.Appointment;
+import information.MedicalBill;
+import information.ReplenishmentRequest;
+import information.id.AdministratorID;
+import information.id.PharmacistID;
 import information.medical.Medication;
 import management.AppointmentDataManager;
 import management.DataManager;
 import management.InventoryDataManager;
 import management.MedicationRequestDataManager;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 public class AppointmentOutcomeRecordPharmacistService {
     private InventoryDataManager inventoryDataManager;
     private DataManager<Medication,String> requestDataManager;
     private DataManager<Appointment, String> appointmentDataManager;
+    private List<ReplenishmentRequest> replenishmentRequests;
     public AppointmentOutcomeRecordPharmacistService(){
         this.inventoryDataManager = InventoryDataManager.getInstance();
         this.requestDataManager = MedicationRequestDataManager.getInstance();
         this.appointmentDataManager = AppointmentDataManager.getInstance();
+        this.replenishmentRequests = new ArrayList<>();
     }
 
     public void viewAppointmentOutcomeRecord() {
         ArrayList<Appointment> originalRecords = appointmentDataManager.getList();
         for (Appointment record : originalRecords) {
-            if (record.getAppointmentStatus() == AppointmentStatus.COMPLETED) {
-                System.out.println("Appointment ID: " + record.getAppointmentID());
-                System.out.println("Medications:");
-                Medication medication = requestDataManager.retrieve(record.getAppointmentID());
-                if (medication != null) {
-                    if (medication.getStatus() == MedicationStatus.PENDING) {
-                        System.out.println("MedicationID: " + medication.getMedicationId());
-                        System.out.println("Name: " + medication.getName());
-                        System.out.println("Status: " + medication.getStatus());
+            if( ChronoUnit.DAYS.between(LocalDate.parse(record.getDateOfTreatment()), LocalDate.now()) == 0) {
+                if(record.getAppointmentStatus() == AppointmentStatus.COMPLETED){
+                    System.out.println("Appointment ID: " + record.getAppointmentID());
+                    System.out.println("Medications:");
+                    Medication medication = requestDataManager.retrieve(record.getAppointmentID());
+                    if (medication != null) {
+                        if (medication.getStatus() == MedicationStatus.PENDING) {
+                            System.out.println("MedicationID: " + medication.getMedicationId());
+                            System.out.println("Name: " + medication.getName());
+                            System.out.println("Status: " + medication.getStatus());
+                        }
+                    } else {
+                        System.out.println("Medication has already been DISPENSED");
                     }
-                } else {
-                    System.out.println("Medication has already been DISPENSED");
+                }else {
+                    System.out.println("No medications found in this appointment.");
                 }
-            }else {
-                System.out.println("No medications found in this appointment.");
             }
         }
     }
@@ -52,7 +62,10 @@ public class AppointmentOutcomeRecordPharmacistService {
         if (medication != null){
             if (medication.getStatus() == MedicationStatus.PENDING){
                 medication.setStatus(MedicationStatus.DISPENSED);
+                double priceOfMedication = inventoryDataManager.retrieve(medication.getMedicationId()).getPrice();
                 System.out.println("Prescription for medication ID: " + medication.getMedicationId() + " has been updated to the state DISPENSED.");
+
+                // this is for medical Bill later
                 inventoryDataManager.decrementStock(medication.getMedicationId(), 1);
                 try {
                     ((MedicationRequestDataManager) requestDataManager).writeAll();
@@ -80,8 +93,12 @@ public class AppointmentOutcomeRecordPharmacistService {
         List<Medication> invlist = inventoryDataManager.getList();
         for (Medication medication: invlist){
             if (medication.getStock() < 10){
-                System.out.println("Replenishment request submitted for: " + medication.getName() + ", Current Stock: " + medication.getStock() + ".");
+                System.out.println("Low stock detected for: " + medication.getName() + ", Current Stock: " + medication.getStock() + ".");
+                ReplenishmentRequest replenishmentRequest = new ReplenishmentRequest(medication.getName(), 10 - medication.getStock());
+                replenishmentRequests.add(replenishmentRequest);
+                System.out.println("Replenishment request created for: " + medication.getName() + ", Current Stock: " + medication.getStock() + ", Requested Amount: " + replenishmentRequest.getAmount());
             }
         }
+        System.out.println("Total replenishment requests submitted: " + replenishmentRequests.size());
     }
 }

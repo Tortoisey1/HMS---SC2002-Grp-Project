@@ -88,7 +88,8 @@ public class InventoryDataManager implements DataManager<Medication, String>{
                 inventory.add(new Medication(
                         data[0],
                         data[1],
-                        Integer.parseInt(data[2])
+                        Integer.parseInt(data[2]),
+                        Double.parseDouble(data[3])
                 ));
             }
             count++;
@@ -99,7 +100,7 @@ public class InventoryDataManager implements DataManager<Medication, String>{
     @Override
     public void writeAll() throws IOException {
         BufferedWriter bw = new BufferedWriter(new FileWriter(inputFilePath));
-        String[] header = { "Medication_ID","Medication_name","stock"};
+        String[] header = { "Medication_ID","Medication_name","stock", "price"};
 
         for (String h : header) {
             bw.write(h);
@@ -112,6 +113,8 @@ public class InventoryDataManager implements DataManager<Medication, String>{
             bw.write(m.getName());
             bw.write(",");
             bw.write(String.valueOf(m.getStock()));
+            bw.write(",");
+            bw.write(String.valueOf(m.getPrice()));
             bw.write(",");
         }
         bw.flush();

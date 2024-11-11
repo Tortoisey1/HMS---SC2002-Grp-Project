@@ -6,10 +6,9 @@ public class Medication {
     private String name;
     private MedicationStatus status;
     private int stock;
-    private int stockAlertLevel;
-    private int lowStockLevel;
     private String appointmentId;
     private String medicationId;
+    private double price;
 
     public Medication(){}
 
@@ -20,10 +19,11 @@ public class Medication {
         this.medicationId = medicationId;
     }
 
-    public Medication(String medicationId, String name, int stock){
+    public Medication(String medicationId, String name, int stock, double price){
         this.medicationId = medicationId;
         this.name = name;
         this.stock = stock;
+        this.price = price;
     }
 
     public int getStock() {
@@ -49,11 +49,11 @@ public class Medication {
     public void setAppointmentId(String appointmentId) {this.appointmentId = appointmentId;}
     public String getMedicationId() {return medicationId;}
     public void setMedicationId(String medicationId) {this.medicationId = medicationId;}
-    public int getLowStockLevel() {
-        return lowStockLevel;
+    public double getPrice() {
+        return price;
     }
 
-    public void setLowStockLevel(int lowStockLevel) {
-        this.lowStockLevel = lowStockLevel;
+    public void setPrice(double price) {
+        this.price = price;
     }
 }
