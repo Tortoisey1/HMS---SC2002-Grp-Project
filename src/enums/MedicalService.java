@@ -7,5 +7,11 @@ public enum MedicalService {
     MRI,
     ULTRASOUND,
     VACCINATION,
-    PHYSIOTHERAPY
+    PHYSIOTHERAPY;
+
+    public static void printMedicalServices() {
+        for (MedicalService service : MedicalService.values()) {
+            System.out.println((service.ordinal() + 1) + ". " + service);
+        }
+    }
 }

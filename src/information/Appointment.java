@@ -19,17 +19,15 @@ public class Appointment implements Comparable<Appointment> {
     private String appointmentID;
     private String doctorName;
 
-
-
     public Appointment(PatientID patientId,
-                       DoctorID doctorId,
-                       AppointmentStatus appointmentStatus,
-                       AppointmentOutcomeRecord appointmentOutcomeRecord,
-                       String timeOfTreatment,
-                       String dateOfTreatment,
-                       MedicalService medicalService,
-                       String appointmentId,
-                       String doctorName
+            DoctorID doctorId,
+            AppointmentStatus appointmentStatus,
+            AppointmentOutcomeRecord appointmentOutcomeRecord,
+            String timeOfTreatment,
+            String dateOfTreatment,
+            MedicalService medicalService,
+            String appointmentId,
+            String doctorName
 
     ) {
         this.patientId = patientId;
@@ -102,6 +100,7 @@ public class Appointment implements Comparable<Appointment> {
     public void setDateOfTreatment(String dateOfTreatment) {
         this.dateOfTreatment = dateOfTreatment;
     }
+
     public String getAppointmentID() {
         return appointmentID;
     }
@@ -110,19 +109,28 @@ public class Appointment implements Comparable<Appointment> {
         this.appointmentID = appointmentID;
     }
 
-    public int getMonthOfAppointment(){
+    public int getMonthOfAppointment() {
         return LocalDate.parse(dateOfTreatment).getMonthValue();
     }
 
-    public int getDateOfAppointment(){
+    public int getDateOfAppointment() {
         return LocalDate.parse(dateOfTreatment).getDayOfMonth();
     }
+
     @Override
     public int compareTo(Appointment other) {
         if (this.getDateOfAppointment() > other.getDateOfAppointment()) {
             return 1;
         }
         return -1;
+    }
+
+    public MedicalService getMedicalService() {
+        return medicalService;
+    }
+
+    public void setMedicalService(MedicalService medicalService) {
+        this.medicalService = medicalService;
     }
 
 }

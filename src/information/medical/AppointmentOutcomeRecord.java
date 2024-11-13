@@ -9,9 +9,8 @@ public class AppointmentOutcomeRecord {
     private ConsultationNotes consultationNotes;
     private List<Medication> medications;
 
-
     public AppointmentOutcomeRecord(ConsultationNotes consultationNotes,
-                                    List<Medication> medications) {
+            List<Medication> medications) {
         this.consultationNotes = consultationNotes;
         this.medications = medications;
     }
@@ -22,6 +21,10 @@ public class AppointmentOutcomeRecord {
 
     public void setMedications(List<Medication> medications) {
         this.medications = medications;
+    }
+
+    public void addMedications(Medication medication) {
+        this.medications.add(medication);
     }
 
     public ConsultationNotes getConsultationNotes() {

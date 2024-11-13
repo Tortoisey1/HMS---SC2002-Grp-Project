@@ -1,101 +1,189 @@
-//package services;
-//
-//import java.util.Map;
-//import java.util.List;
-//
-//import information.AppointmentInformation;
-//import information.ConsultationNotes;
-//import information.id.DoctorID;
-//import information.medical.AppointmentOutcomeRecord;
-//import information.medical.Medication;
-//import menu.medicalServiceMenu;
-//
-//import app.AppLogic;
-//import enums.AppointmentStatus;
-//import enums.MedicalService;
-//import exceptions.InvalidAmountException;
-//
-//import java.util.HashMap;
-//import java.util.ArrayList;
-//
-//public class AppointmentManagementServiceDoctor {
-//    // main service holds a map of list of appointments with key is the doctors id
-//    private static Map<DoctorID, ArrayList<AppointmentInformation>> doctorAppointments = new HashMap<DoctorID, ArrayList<AppointmentInformation>>();
-//
-//    // Doctors can view their personal schedule and set their availability for
-//    // appointments.
-//    public static void viewPersonalSchedule(DoctorID id) {
-//        // view the schedule
-//        AppointmentManagementServiceDoctor.displayAppointments(id);
-//
-//    }
-//
-//    // ○ Doctors can accept or decline appointment requests.
-//    public static void acceptAppointmentRequest(DoctorID id, AppointmentInformation appointmentInformation) {
-//        ArrayList<AppointmentInformation> appointmentList = AppointmentManagementServiceDoctor.doctorAppointments
-//                .getOrDefault(id, null);
-//        appointmentList.add(appointmentInformation);
-//        appointmentInformation.setAppointmentStatus(AppointmentStatus.COMPLETED);
-//    }
-//
-//    public static void declineAppointmentRequest(DoctorID id) {
-//        displayAppointments(id);
-//
-//        ArrayList<AppointmentInformation> appointmentList = AppointmentManagementServiceDoctor.doctorAppointments
-//                .getOrDefault(id, null);
-//        // choose the appointment from the arrayList
-//        appointmentListMenu.printMenu();
-//        int choice = Integer.valueOf(AppLogic.getScanner().nextLine());
-//        if (choice <= 0 || choice > appointmentList.size()) {
-//            throw new InvalidAmountException("No such appointment dont play me");
-//        }
-//
-//        AppointmentInformation appointment = appointmentList.get(choice - 1);
-//        appointment.setAppointmentStatus(AppointmentStatus.CANCELLED);
-//    }
-//
-//    // ○ Doctors can view the list of their upcoming appointments.
-//    public static void displayAppointments(DoctorID id) {
-//        ArrayList<AppointmentInformation> appointmentList = AppointmentManagementServiceDoctor.doctorAppointments
-//                .getOrDefault(id, null);
-//
-//        for (AppointmentInformation appointmentInformation : appointmentList) {
-//            System.out.println(appointmentInformation);
-//        }
-//    }
-//
-//    // ○ Appointment Outcome Record: After each completed appointment, the doctor
-//    // will record the:
-//    // ● Date of Appointment
-//    // ● Type of service provided (e.g., consultation, X-ray, blood test etc).
-//    // ● Any prescribed medications: -
-//    // medication name -
-//    // status (default is pending)
-//    // ● Consultation notes
-//
-//    public static void updateAppointmentOutcomeRecord(
-//            AppointmentInformation appointmentInformation) {
-//        // the doctor is the one that creates the record after the appointment and
-//        // patients can only vieww it
-//        System.out.println("What medical service did you provide today");
-//        medicalServiceMenu.printMenu();
-//
-//        int choice = Integer.valueOf(AppLogic.getScanner().nextLine());
-//        if (choice <= 0 || choice > MedicalService.values().length) {
-//            throw new InvalidAmountException("No such choice");
-//        }
-//
-//        MedicalService medicalService = MedicalService.values()[choice - 1];
-//
-//        ConsultationNotes notes = new ConsultationNotes();
-//        notes.updateNotes();
-//
-//        List<Medication> medications = new List<Medication>();
-//        medications.updateMedications();
-//
-//        appointmentInformation.setAppointmentStatus(AppointmentStatus.COMPLETED);
-//
-//        appointmentInformation.setAppointmentOutcomeRecord(new AppointmentOutcomeRecord(medicalService, notes, null));
-//    }
-//
-//}
+package services.doctor;
+
+import entities.Doctor;
+import entities.Patient;
+import entities.Staff;
+import enums.AppointmentStatus;
+import enums.MedicalService;
+import enums.MedicationStatus;
+import information.Appointment;
+import information.medical.ConsultationNotes;
+import information.medical.Medication;
+import management.AppointmentDataManager;
+import management.DataManager;
+import menu.CustomCalendar;
+import services.AppointmentManagementService;
+import app.Global;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Scanner;
+
+public class AppointmentManagementServiceDoctor extends AppointmentManagementService {
+
+    private static AppointmentManagementServiceDoctor appointmentManagementServiceDoctor;
+    private Doctor currentDoctor;
+
+    public AppointmentManagementServiceDoctor(
+            DataManager<Appointment, String> appointmentDataManager, Doctor currentDoctor) {
+        super(appointmentDataManager);
+        this.currentDoctor = currentDoctor;
+    }
+
+    public static AppointmentManagementServiceDoctor getInstance(Doctor doctor) {
+        if (appointmentManagementServiceDoctor == null) {
+            appointmentManagementServiceDoctor = new AppointmentManagementServiceDoctor(
+                    AppointmentDataManager.getInstance(), doctor);
+        }
+        return appointmentManagementServiceDoctor;
+    }
+
+    public void viewPersonalSchedule() {
+        // get the filtered appointments for this specific doctor
+        List<Appointment> filteredAppointments = getAppointmentsForDoctor(
+                this.currentDoctor.getUserInformation().getID().getId());
+        System.out.println("=== Personal Schedule ===");
+        if (filteredAppointments.size() == 0) {
+            System.out.println("No appointments scheduled.");
+        } else {
+            for (Appointment appointment : filteredAppointments) {
+                System.out.println(appointment);
+            }
+        }
+    }
+
+    // public void setAvailability(Doctor doctor) {
+    // Scanner scanner = Global.getScanner();
+    // CustomCalendar customCalendar = new CustomCalendar();
+    // System.out.println("Setting availability for appointments.");
+    // customCalendar.generateSlots();
+    // int choice;
+    // try {
+    // choice = scanner.nextInt();
+    // } catch (Exception e) {
+    // System.out.println("Invalid input. Please try again.");
+    // return;
+    // }
+    // String time = customCalendar.getTimeSlot(choice);
+    // if (!time.equals("invalid")) {
+    // System.out.println("Availability set for: " + time);
+    // } else {
+    // System.out.println("Invalid time slot selection.");
+    // }
+    // }
+
+    public void handleAppointmentRequests() {
+        // Ensure getPendingAppointmentsForDoctor is implemented
+        List<Appointment> requests = getPendingAppointmentsForDoctor(
+                this.currentDoctor.getUserInformation().getID().getId());
+        if (requests.isEmpty()) {
+            System.out.println("No pending appointment requests.");
+            return;
+        }
+        for (Appointment request : requests) {
+            System.out.println(request);
+            System.out.println("Accept (1) or Decline (2)?");
+            int choice = -1;
+
+            try {
+                choice = Integer.valueOf(Global.getScanner().nextLine());
+
+                switch (choice) {
+                    case 1:
+                        startAppointment(request);
+                        break;
+                    case 2:
+                        request.setAppointmentStatus(AppointmentStatus.CANCELLED);
+                        break;
+                    default:
+                        System.out.println("Invalid choice!");
+                        break;
+                }
+
+            } catch (Exception e) {
+                // TODO: handle exception
+                System.out.println(e.getMessage());
+            }
+        }
+    }
+
+    private void startAppointment(Appointment appointment) {
+        int choice = -1;
+
+        System.out.println("Start appointment:");
+        System.out.println("What is the service you provided:");
+        MedicalService.printMedicalServices();
+
+        try {
+            choice = Integer.valueOf(Global.getScanner().nextLine());
+            appointment.setMedicalService(MedicalService.values()[choice - 1]);
+
+            while (true) {
+                System.out.println("(1) to add\n (0) to quit");
+                try {
+                    int selection = Integer.valueOf(Global.getScanner().nextLine());
+
+                    switch (selection) {
+                        case 0:
+                            System.out.println("Exiting adding medicines");
+                            break;
+                        case 1:
+                            System.out.println("What medication does the patient need?");
+
+                            String medicineName = Global.getScanner().nextLine();
+                            appointment.getAppointmentOutcomeRecord()
+                                    .addMedications(new Medication(medicineName, MedicationStatus.PENDING));
+
+                            break;
+
+                        default:
+                            System.out.println("Invalid choice");
+                            break;
+                    }
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                    break;
+                }
+            }
+
+            System.out.println("Enter consultation notes:");
+            System.out.println("Enter the critical details:");
+            String criticalDetails = Global.getScanner().nextLine();
+
+            System.out.println("Enter complaints:");
+            String complaints = Global.getScanner().nextLine();
+
+            System.out.println("Enter furtherInfo");
+            String infos = Global.getScanner().nextLine();
+
+            appointment.getAppointmentOutcomeRecord()
+                    .setConsultationNotes(new ConsultationNotes(criticalDetails, complaints, infos));
+
+        } catch (Exception e) {
+            // TODO: handle exception
+            System.out.println(e.getMessage());
+        }
+
+    }
+
+    // private void recordAppointmentOutcome(Doctor doctor) {
+    // ArrayList<Appointment> appointments =
+    // appointmentDataManager.getAppointmentsForDoctor(
+    // doctor.getUserInformation().getID().getId());
+    // if (appointments == null || appointments.isEmpty()) {
+    // System.out.println("No appointments to record outcome for.");
+    // return;
+    // }
+    // for (Appointment appointment : appointments) {
+    // if (appointment.getAppointmentStatus() == AppointmentStatus.CONFIRMED) {
+    // System.out.println("Recording outcome for: " + appointment);
+    // System.out.println("Enter consultation notes:");
+    // String notes = Global.getScanner().nextLine();
+    // appointment.getAppointmentOutcomeRecord().getConsultationNotes().setCriticalDetails(notes);
+    // appointment.setAppointmentStatus(AppointmentStatus.COMPLETED);
+    // System.out.println("Outcome recorded.");
+    // }
+    // }
+    // }
+}

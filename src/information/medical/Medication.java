@@ -10,16 +10,22 @@ public class Medication {
     private String medicationId;
     private double price;
 
-    public Medication(){}
+    public Medication() {
+    }
 
-    public Medication(String appointmentId, String medicationId, MedicationStatus status, String name){
+    public Medication(String medicationName, MedicationStatus status) {
+        this.name = medicationName;
+        this.status = status;
+    }
+
+    public Medication(String appointmentId, String medicationId, MedicationStatus status, String name) {
         this.name = name;
         this.status = status;
         this.appointmentId = appointmentId;
         this.medicationId = medicationId;
     }
 
-    public Medication(String medicationId, String name, int stock, double price){
+    public Medication(String medicationId, String name, int stock, double price) {
         this.medicationId = medicationId;
         this.name = name;
         this.stock = stock;
@@ -29,6 +35,7 @@ public class Medication {
     public int getStock() {
         return stock;
     }
+
     public void setStock(int stock) {
         this.stock = stock;
     }
@@ -36,19 +43,35 @@ public class Medication {
     public String getName() {
         return name;
     }
+
     public void setName(String name) {
         this.name = name;
     }
+
     public MedicationStatus getStatus() {
         return status;
     }
+
     public void setStatus(MedicationStatus status) {
         this.status = status;
     }
-    public String getAppointmentId() {return appointmentId;}
-    public void setAppointmentId(String appointmentId) {this.appointmentId = appointmentId;}
-    public String getMedicationId() {return medicationId;}
-    public void setMedicationId(String medicationId) {this.medicationId = medicationId;}
+
+    public String getAppointmentId() {
+        return appointmentId;
+    }
+
+    public void setAppointmentId(String appointmentId) {
+        this.appointmentId = appointmentId;
+    }
+
+    public String getMedicationId() {
+        return medicationId;
+    }
+
+    public void setMedicationId(String medicationId) {
+        this.medicationId = medicationId;
+    }
+
     public double getPrice() {
         return price;
     }
