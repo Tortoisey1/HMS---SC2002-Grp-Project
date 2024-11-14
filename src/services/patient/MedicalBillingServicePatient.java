@@ -56,12 +56,12 @@ public class MedicalBillingServicePatient {
                 System.out.println("Press (" + key + ") to pay for appointment on " +
                         value.getDateOfAppointment());
                 System.out.println("STATUS:" + value.getTransactionStatus().toString());
-                System.out.println("FEE: $ " + value.getConsultationFee());
+                System.out.println("FEE: $ " + value.getTotalFee());
                 System.out.println("TransactionRef: $ " + value.getTransactionRef());
                 value.checkMoreThanOneMonth();
                 if(value.getMoreThanOneMonth()){
                     System.out.println("Additional $10 for late payment not made more than 30 days");
-                    long totalFee = value.getConsultationFee() + 10;
+                    long totalFee = value.getTotalFee() + 10;
                     System.out.println("Total Fee:$ " + totalFee);
                 }
                 System.out.println("===========================");

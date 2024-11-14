@@ -3,16 +3,15 @@ package services.pharmacist;
 import app.Global;
 import enums.AppointmentStatus;
 import enums.MedicationStatus;
+import enums.TransactionStatus;
 import information.Appointment;
 import information.MedicalBill;
 import information.ReplenishmentRequest;
 import information.id.AdministratorID;
+import information.id.PatientID;
 import information.id.PharmacistID;
 import information.medical.Medication;
-import management.AppointmentDataManager;
-import management.DataManager;
-import management.InventoryDataManager;
-import management.MedicationRequestDataManager;
+import management.*;
 import services.helper.GenerateIdHelper;
 
 import java.io.IOException;
@@ -24,11 +23,13 @@ public class AppointmentOutcomeRecordPharmacistService {
     private InventoryDataManager inventoryDataManager;
     private DataManager<Medication,String> requestDataManager;
     private DataManager<Appointment, String> appointmentDataManager;
+    private DataManager<MedicalBill, String> medicalBillDataManager;
     private List<ReplenishmentRequest> replenishmentRequests;
     public AppointmentOutcomeRecordPharmacistService(){
         this.inventoryDataManager = InventoryDataManager.getInstance();
         this.requestDataManager = MedicationRequestDataManager.getInstance();
         this.appointmentDataManager = AppointmentDataManager.getInstance();
+        this.medicalBillDataManager = MedicalBillDataManager.getInstance();
         this.replenishmentRequests = new ArrayList<>();
     }
 
@@ -38,6 +39,7 @@ public class AppointmentOutcomeRecordPharmacistService {
             if( ChronoUnit.DAYS.between(LocalDate.parse(record.getDateOfTreatment()), LocalDate.now()) == 0) {
                 if(record.getAppointmentStatus() == AppointmentStatus.COMPLETED){
                     System.out.println("Appointment ID: " + record.getAppointmentID());
+                    System.out.println("Date Completed: " + record.getDateOfTreatment());
                     System.out.println("Medications:");
                     Medication medication = requestDataManager.retrieve(record.getAppointmentID());
                     if (medication != null) {
@@ -65,9 +67,22 @@ public class AppointmentOutcomeRecordPharmacistService {
             if (medication.getStatus() == MedicationStatus.PENDING){
                 medication.setStatus(MedicationStatus.DISPENSED);
                 double priceOfMedication = inventoryDataManager.retrieve(medication.getMedicationId()).getPrice();
-                System.out.println("Prescription for medication ID: " + medication.getMedicationId() + " has been updated to the state DISPENSED.");
+                PatientID patientId = appointmentDataManager.retrieve(appointmentid).getPatientId();
+                // once dispensed then calculate the total bill (medication dispensed + 50 consultation fee)
+                // receipt/bill to be sent to patient
 
-                // this is for medical Bill later
+                MedicalBill receipt = new MedicalBill(
+                        GenerateIdHelper.generateId("TR"),
+                        patientId,
+                        TransactionStatus.UNPAID,
+                        (long) (50 + priceOfMedication),
+                        appointmentid,
+                        LocalDate.now().toString()
+                );
+
+                medicalBillDataManager.add(receipt);
+                System.out.println("Prescription for medication ID: " + medication.getMedicationId() + " has been updated to the state DISPENSED.");
+                System.out.println("Receipt Transaction ref: " + receipt.getTransactionRef() + " generated");
                 inventoryDataManager.decrementStock(medication.getMedicationId(), 1);
                 try {
                     ((MedicationRequestDataManager) requestDataManager).writeAll();
@@ -96,14 +111,14 @@ public class AppointmentOutcomeRecordPharmacistService {
         for (Medication medication: invlist){
             if (medication.getStock() < 10){
                 System.out.println("Low stock detected for: " + medication.getName() + ", Current Stock: " + medication.getStock() + ".");
-                ReplenishmentRequest replenishmentRequest = new ReplenishmentRequest(
-                        GenerateIdHelper.generateId("RR"),
-                        medication.getMedicationId(),
-                        medication.getName(),
-
-                )
-                replenishmentRequests.add(replenishmentRequest);
-                System.out.println("Replenishment request created for: " + medication.getName() + ", Current Stock: " + medication.getStock() + ", Requested Amount: " + replenishmentRequest.getAmount());
+//                ReplenishmentRequest replenishmentRequest = new ReplenishmentRequest(
+//                        GenerateIdHelper.generateId("RR"),
+//                        medication.getMedicationId(),
+//                        medication.getName(),
+//
+//                )
+//                replenishmentRequests.add(replenishmentRequest);
+//                System.out.println("Replenishment request created for: " + medication.getName() + ", Current Stock: " + medication.getStock() + ", Requested Amount: " + replenishmentRequest.getAmount());
             }
         }
         System.out.println("Total replenishment requests submitted: " + replenishmentRequests.size());

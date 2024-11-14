@@ -88,4 +88,17 @@ public class ReplenishmentRequest {
     public void setReplenishmentId(String replenishmentId) {
         this.replenishmentId = replenishmentId;
     }
+
+    @Override
+    public String toString() {
+        return "ReplenishmentRequest{" +
+                "id=" + id +
+                ", medicationName='" + medicationName + '\'' +
+                ", amount=" + amount +
+                ", dateOfRequest='" + dateOfRequest + '\'' +
+                ", approvalResult=" + approvalResult +
+                ", replenishmentId='" + replenishmentId + '\'' +
+                ", medicationId='" + medicationId + '\'' +
+                '}';
+    }
 }

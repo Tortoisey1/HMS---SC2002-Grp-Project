@@ -26,4 +26,12 @@ public class MedicalInformation {
     public void addTreatment(Appointment treatment) {
         pastTreatments.add(treatment);
     }
+
+    @Override
+    public String toString() {
+        return "MedicalInformation{" +
+                "bloodType=" + bloodType +
+                ", pastTreatments=" + pastTreatments.stream().toList() +
+                '}';
+    }
 }

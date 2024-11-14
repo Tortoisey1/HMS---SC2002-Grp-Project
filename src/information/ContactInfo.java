@@ -29,4 +29,11 @@ public class ContactInfo {
         this.emailAddress = emailAddress;
     }
 
+    @Override
+    public String toString() {
+        return "ContactInfo{" +
+                "phoneNumber='" + phoneNumber + '\'' +
+                ", emailAddress='" + emailAddress + '\'' +
+                '}';
+    }
 }

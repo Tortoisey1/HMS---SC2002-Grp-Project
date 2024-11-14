@@ -133,4 +133,18 @@ public class Appointment implements Comparable<Appointment> {
         this.medicalService = medicalService;
     }
 
+    @Override
+    public String toString() {
+        return "Appointment{" +
+                "patientId=" + patientId +
+                ", doctorId=" + doctorId +
+                ", appointmentStatus=" + appointmentStatus +
+                ", timeOfTreatment='" + timeOfTreatment + '\'' +
+                ", medicalService=" + medicalService +
+                ", dateOfTreatment='" + dateOfTreatment + '\'' +
+                ", appointmentOutcomeRecord=" + appointmentOutcomeRecord +
+                ", appointmentID='" + appointmentID + '\'' +
+                ", doctorName='" + doctorName + '\'' +
+                '}';
+    }
 }

@@ -120,7 +120,7 @@ public class MedicalBillDataManager implements DataManager<MedicalBill,String> {
     @Override
     public void writeAll() throws IOException {
         BufferedWriter bw = new BufferedWriter(new FileWriter(filePath));
-        String[] header = {"Transaction_Ref", "Patient_ID", "Transaction_Status","Appointment_ID","Consultation_Fee",
+        String[] header = {"Transaction_Ref", "Patient_ID", "Transaction_Status","Appointment_ID","Total_Fee",
                 "DateOfAppointment"};
         for(String h : header){
             bw.write(h);
@@ -137,7 +137,7 @@ public class MedicalBillDataManager implements DataManager<MedicalBill,String> {
             bw.write(",");
             bw.write(temp.getAppointmentId());
             bw.write(",");
-            bw.write(String.valueOf(temp.getConsultationFee()));
+            bw.write(String.valueOf(temp.getTotalFee()));
             bw.write(",");
             bw.write(String.valueOf(temp.getDateOfAppointment()));
             bw.write(",");

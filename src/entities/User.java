@@ -20,4 +20,10 @@ public abstract class User {
         this.userInformation = userInformation;
     }
 
+    @Override
+    public String toString() {
+        return "User{" +
+                "userInformation=" + userInformation.toString() +
+                '}';
+    }
 }

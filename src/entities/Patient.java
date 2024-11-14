@@ -7,6 +7,7 @@ import information.medical.MedicalRecord;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import enums.BloodType;
 
@@ -54,4 +55,12 @@ public class Patient extends User {
         this.medicalRecords = medicalRecords;
     }
 
+    @Override
+    public String toString() {
+        return "Patient{" +
+                "appointments=" + appointments.stream().toList() +
+                ", medicalInformation=" + medicalInformation.toString() +
+                ", medicalRecords=" + medicalRecords.stream().toString() +
+                '}';
+    }
 }

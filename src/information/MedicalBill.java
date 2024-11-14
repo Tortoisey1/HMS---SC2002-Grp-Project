@@ -1,15 +1,13 @@
 package information;
-
 import enums.TransactionStatus;
 import information.id.PatientID;
-
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 
 public class MedicalBill {
     private String transactionRef;
     private TransactionStatus transactionStatus;
-    private long consultationFee;
+    private long totalFee;
     private String appointmentId;
     private String dateOfAppointment;
     private boolean moreThanOneMonth;
@@ -18,14 +16,14 @@ public class MedicalBill {
     public MedicalBill(String ref,
                        PatientID patientID,
                        TransactionStatus transactionStatus,
-                       long consultationFee,
+                       long totalFee,
                        String appointmentId,
                        String dateOfAppointment
                        ){
         this.transactionRef = ref;
         this.patientID = patientID;
         this.transactionStatus = transactionStatus;
-        this.consultationFee = consultationFee;
+        this.totalFee = totalFee;
         this.appointmentId = appointmentId;
         this.dateOfAppointment = dateOfAppointment;
     }
@@ -47,14 +45,12 @@ public class MedicalBill {
         this.transactionRef = transactionRef;
     }
 
-    public long getConsultationFee() {
-        return consultationFee;
+    public long getTotalFee() {
+        return totalFee;
     }
-
-    public void setConsultationFee(long consultationFee) {
-        this.consultationFee = consultationFee;
+    public void setTotalFee(long totalFee) {
+        this.totalFee = totalFee;
     }
-
     public String getDateOfAppointment() {
         return dateOfAppointment;
     }
@@ -94,4 +90,16 @@ public class MedicalBill {
         return patientID;
     }
 
+    @Override
+    public String toString() {
+        return "MedicalBill{" +
+                "transactionRef='" + transactionRef + '\'' +
+                ", transactionStatus=" + transactionStatus +
+                ", totalFee=" + totalFee +
+                ", appointmentId='" + appointmentId + '\'' +
+                ", dateOfAppointment='" + dateOfAppointment + '\'' +
+                ", moreThanOneMonth=" + moreThanOneMonth +
+                ", patientID=" + patientID.getId()+
+                '}';
+    }
 }

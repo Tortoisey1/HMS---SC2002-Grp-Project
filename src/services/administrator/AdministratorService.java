@@ -224,6 +224,7 @@ public class AdministratorService {
         System.out.println("Manage Inventory:");
         System.out.println("1. View Inventory");
         System.out.println("2. Add or Update Medication Stock");
+        System.out.println("3. Update Low Stock Alert Level");
         System.out.print("Choose an option: ");
 
         int choice = Integer.parseInt(Global.getScanner().nextLine());
@@ -234,6 +235,9 @@ public class AdministratorService {
                 break;
             case 2:
                 addOrUpdateMedicationStock();
+                break;
+            case 3:
+                updateLowStockAlertLevel();
                 break;
             default:
                 System.out.println("Invalid choice.");
@@ -247,6 +251,7 @@ public class AdministratorService {
             System.out.println("Medication ID: " + medication.getMedicationId());
             System.out.println("Name: " + medication.getName());
             System.out.println("Stock: " + medication.getStock());
+          //  System.out.println("Low Stock Alert Level: " + medication.getLowStockLevel());
             System.out.println("-----------------------------");
         }
     }
@@ -266,6 +271,20 @@ public class AdministratorService {
         }
     }
 
+    private void updateLowStockAlertLevel() {
+        System.out.print("Enter Medication ID: ");
+        String medicationId = Global.getScanner().nextLine();
+        System.out.print("Enter new Low Stock Alert Level: ");
+        int alertLevel = Integer.parseInt(Global.getScanner().nextLine());
+
+        Medication medication = inventoryDataManager.retrieve(medicationId);
+        if (medication != null) {
+          //  medication.setLowStockLevel(alertLevel);
+            System.out.println("Low stock alert level updated for medication: " + medication.getName());
+        } else {
+            System.out.println("Medication not found.");
+        }
+    }
 
     public void addOrUpdateMedicationStock(String medicationId, int stock) {
         Medication medication = inventoryDataManager.retrieve(medicationId);
@@ -281,21 +300,38 @@ public class AdministratorService {
             System.out.println("Medication not found in inventory.");
         }
     }
+
+    // Update low stock level alert line
+    public void updateLowStockAlertLevel(String medicationId, int newAlertLevel) {
+        Medication medication = inventoryDataManager.retrieve(medicationId);
+        if (medication != null) {
+            //   medication.setLowStockLevel(newAlertLevel);
+            System.out.println("Low stock alert level updated for medication: " + medication.getName());
+            try {
+                inventoryDataManager.writeAll();
+            } catch (IOException e) {
+                System.out.println("Error updating inventory: " + e.getMessage());
+            }
+        } else {
+            System.out.println("Medication not found in inventory.");
+        }
+    }
+
     // Approve replenishment requests from pharmacists
-    // public void approveReplenishmentRequest(String medicationId, int requestedStock) {
-    //     Medication medication = inventoryDataManager.retrieve(medicationId);
-    //     if (medication != null) {
-    //         medication.setStock(medication.getStock() + requestedStock);
-    //         System.out.println("Replenishment approved for medication: " + medication.getName());
-    //         try {
-    //             inventoryDataManager.writeAll();
-    //         } catch (IOException e) {
-    //             System.out.println("Error saving replenishment: " + e.getMessage());
-    //         }
-    //     } else {
-    //         System.out.println("Medication not found.");
-    //     }
-    // }
+    public void approveReplenishmentRequest(String medicationId, int requestedStock) {
+        Medication medication = inventoryDataManager.retrieve(medicationId);
+        if (medication != null) {
+            medication.setStock(medication.getStock() + requestedStock);
+            System.out.println("Replenishment approved for medication: " + medication.getName());
+            try {
+                inventoryDataManager.writeAll();
+            } catch (IOException e) {
+                System.out.println("Error saving replenishment: " + e.getMessage());
+            }
+        } else {
+            System.out.println("Medication not found.");
+        }
+    }
 
     // Initialize system data from files
     public void initializeSystemData() {

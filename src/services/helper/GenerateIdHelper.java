@@ -10,6 +10,8 @@ public class GenerateIdHelper {
                return "AP" + takeSubString(uid);
             case "RR":
                 return "RR" + takeSubString(uid);
+            case "TR":
+                return "TR" + takeSubString(uid);
             default:
                 return null;
         }

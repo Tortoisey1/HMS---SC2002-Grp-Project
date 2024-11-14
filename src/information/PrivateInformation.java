@@ -48,4 +48,14 @@ public class PrivateInformation {
     public void setContactInfo(ContactInfo contactInfo) {
         this.contactInfo = contactInfo;
     }
+
+    @Override
+    public String toString() {
+        return "PrivateInformation{" +
+                "name='" + name + '\'' +
+                ", dateOfBirth='" + dateOfBirth + '\'' +
+                ", gender=" + gender +
+                ", contactInfo=" + contactInfo.toString() +
+                '}';
+    }
 }

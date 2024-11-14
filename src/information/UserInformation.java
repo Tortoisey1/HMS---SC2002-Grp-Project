@@ -62,4 +62,14 @@ public class UserInformation {
         this.privateInformation = privateInformation;
     }
 
+    @Override
+    public String toString() {
+        return "UserInformation{" +
+                "userType=" + userType +
+                ", ID=" + ID +
+                ", password='" + password + '\'' +
+                ", privateInformation=" + privateInformation +
+                ", firstLogin=" + firstLogin +
+                '}';
+    }
 }
