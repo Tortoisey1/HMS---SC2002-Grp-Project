@@ -2,16 +2,18 @@ package entities;
 
 import information.UserInformation;
 
+
+/**
+ * Pharmacist class implements the basic behaviours from Staff
+ */
 public class Pharmacist extends Staff {
+    /**
+     * Constructs a Pharmacist and initialize the field needed with super
+     * from the class User
+     * @param userInformation with the basic information respective to
+     * each user
+     */
     public Pharmacist(UserInformation userInformation) {
         super(userInformation);
     }
-    // Pharmacists can view the Appointment Outcome Record to fulfill medication
-    // prescriptions orders from doctors.
-    // ○ Pharmacists can update the status of prescription in the Appointment Outcome
-    // Record (e.g., pending to dispensed).
-    // ○ Pharmacists can monitor the inventory of medications, including tracking stock
-    // levels.
-    // ○ Pharmacists can submit replenishment requests to administrators when stock
-    // levels are low.
 }

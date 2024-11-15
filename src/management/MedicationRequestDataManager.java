@@ -1,17 +1,31 @@
 package management;
 
 import enums.MedicationStatus;
+import information.MedicalBill;
 import information.medical.Medication;
-
 import java.io.*;
 import java.util.ArrayList;
 
+/**
+ * A DataManager for Medical Request that implements interface {@link DataManager}
+ * Collect data from CSV file with {@link BufferedReader} and write back to CSV file with {@link BufferedWriter}
+ * {@param MedicalBill} for the data collected
+ * {@param String} for the ID of medication in String
+ * Holds all the data type {@link MedicalBill}
+ */
 public class MedicationRequestDataManager implements DataManager<Medication, String> {
 
     private static DataManager<Medication, String> medicineDataManager;
     private final String inputFilePath = "src/data/medication_request.csv";;
     private static ArrayList<Medication> mediationRequest = new ArrayList<Medication>();
 
+    /**
+     * Constructs an MedicationRequestDataManager
+     * {@code filePath} for the directory of the CSV
+     * {@code retrieveAll()} to retrieve all the data from CSV and
+     * instantiate each of the data to type {@link MedicalBill} when app begin
+     * and finally, add each data to {@code mediationRequest}
+     */
     public MedicationRequestDataManager() {
         try {
             retrieveAll();
@@ -20,6 +34,12 @@ public class MedicationRequestDataManager implements DataManager<Medication, Str
         }
     }
 
+    /**
+     * Singleton for the MedicalBillDataManager
+     * Declared and initialized the Constructor to {@code transactionDataManager} when app begin
+     * Type {@link DataManager}
+     * Down casting when needed
+     */
     public static DataManager<Medication, String> getInstance() {
         if (medicineDataManager == null) {
             medicineDataManager = new MedicationRequestDataManager();

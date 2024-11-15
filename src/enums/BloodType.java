@@ -1,5 +1,9 @@
 package enums;
 
+
+/**
+ * All the BloodType
+ */
 public enum BloodType {
     A_POSITIVE,
     A_NEGATIVE,

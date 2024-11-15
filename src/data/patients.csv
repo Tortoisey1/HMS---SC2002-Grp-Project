@@ -1,4 +1,4 @@
 Patient_id,password,Name,DOB,Gender,PhoneNumber,Email,BloodType,First_login,
 P001,Password12!,Jake,01/01/2010,MALE,99999998,g.com,A,false
-P002,Password12!,Mary,01/01/2010,MALE,999,g.com,A,false
-P003,Password12!,Jane,01/01/2010,MALE,999,g.com,A,false
+P002,Password12!,Mary,01/01/2010,MALE,99999996,P002@.com,A,true
+P003,Password12!,Jane,01/01/2010,MALE,99999999,P003@.com,A,true

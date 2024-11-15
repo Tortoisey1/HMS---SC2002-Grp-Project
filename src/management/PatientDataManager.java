@@ -2,23 +2,34 @@ package management;
 
 import java.io.*;
 import java.util.ArrayList;
-
 import entities.Patient;
 import enums.AppointmentStatus;
 import enums.BloodType;
 import enums.Gender;
 import enums.UserType;
-import information.ContactInfo;
-import information.PrivateInformation;
-import information.UserInformation;
+import information.*;
 import information.id.PatientID;
 
+/**
+ * A DataManager for Patients that implements interface {@link DataManager}
+ * Collect data from CSV file with {@link BufferedReader} and write back to CSV file with {@link BufferedWriter}
+ * {@param Patient} for the data collected
+ * {@param String} for the Patient ID in String
+ * Holds all the data type {@link Patient}
+ */
 public class PatientDataManager implements DataManager<Patient, String> {
 
     private static DataManager<Patient, String> patientDataManager;
     private final String inputFilePath = "src/data/patients.csv";
     private ArrayList<Patient> patients = new ArrayList<Patient>();
 
+    /**
+     * Constructs an PatientDataManager
+     * {@code filePath} for the directory of the CSV
+     * {@code retrieveAll()} to retrieve all the data from CSV and
+     * instantiate each of the data to type {@link Patient} when app begin
+     * and finally, add each data to {@code patients}
+     */
     public PatientDataManager() {
         try {
             retrieveAll();
@@ -27,6 +38,12 @@ public class PatientDataManager implements DataManager<Patient, String> {
         }
     }
 
+    /**
+     * Singleton for the MedicalBillDataManager
+     * Declared and initialized the Constructor to {@code patientDataManager} when app begin
+     * Type {@link DataManager}
+     * Down casting when needed
+     */
     public static DataManager<Patient, String> getInstance() {
         if (patientDataManager == null) {
             patientDataManager = new PatientDataManager();
@@ -34,6 +51,10 @@ public class PatientDataManager implements DataManager<Patient, String> {
         return patientDataManager;
     }
 
+    /**
+     * Retrieve a patient bill based on the {@param patientId} from {@code patients}
+     * @return the {@link Patient} if found else null
+     */
     @Override
     public Patient retrieve(String patientId) {
         for (Patient p : patients) {
@@ -44,6 +65,11 @@ public class PatientDataManager implements DataManager<Patient, String> {
         return null;
     }
 
+    /**
+     * update details of Patient with {@param newDetails}
+     * search through the {@code patients} and update it based on the Patient ID on that index
+     * @return true if update is successful else false
+     */
     @Override
     public boolean update(Patient newDetails) {
         int count = 0;
@@ -57,6 +83,12 @@ public class PatientDataManager implements DataManager<Patient, String> {
         return false;
     }
 
+    /**
+     * delete the Patient from {@code patients} based on the {@param patientId}
+     * retrieve the memory reference of Patient and if not null
+     * {@code patients} removes it
+     * @return true if delete is successful else false
+     */
     @Override
     public boolean delete(String patientId) {
         Patient patient = retrieve(patientId);
@@ -66,11 +98,22 @@ public class PatientDataManager implements DataManager<Patient, String> {
         return false;
     }
 
+    /**
+     * add the Patient {@param patient} to {@code patients }
+     * @return true if add is successful else false
+     */
     @Override
     public boolean add(Patient patient) {
         return patients.add(patient);
     }
 
+    /**
+     * Retrieve all the Medical Bills with {@link BufferedReader} from CSV of path {@code filePath}
+     * Start collecting when count == 1 as count = 0 is the headers
+     * Add each data and instantiate them to type {@link MedicalBill}
+     * Add it to {@code transactionList}
+     * @throws IOException when file not found
+     */
     @Override
     public void retrieveAll() throws IOException {
         String line = "";
@@ -118,6 +161,13 @@ public class PatientDataManager implements DataManager<Patient, String> {
         br.close();
     }
 
+    /**
+     * Write all the data of type {@link MedicalBill} back into CSV with {@link BufferedWriter}
+     * path {@code filePath}
+     * For each Medical Bill from {@code transactionList}
+     * Parse each fields from {@link MedicalBill} to String before adding into the CSV
+     * @throws IOException when file not found
+     */
     @Override
     public void writeAll() throws IOException {
         BufferedWriter bw = new BufferedWriter(new FileWriter(inputFilePath));
@@ -151,6 +201,10 @@ public class PatientDataManager implements DataManager<Patient, String> {
         bw.close();
     }
 
+    /**
+     * Retrieve {@link ArrayList} of all Appointments with type {@link Appointment}
+     * @return {@code appointmentList}
+     */
     @Override
     public ArrayList<Patient> getList() {
         return patients;

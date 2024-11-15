@@ -10,9 +10,20 @@ import menu.AppMenu;
 import java.io.IOException;
 
 
+
+
+/**
+ * HMSApp class will be the entire interface of this app.
+ * From the beginning to the end when terminated from logout.
+ */
+
 public class HMSApp {
+    /**
+     * Main method to begin the application.
+     * Beginning: Initialized all the required databases with retrieved data
+     * Ending: Save all the data back to the respective CSV
+     */
     public static void main(String[] args) {
-        // load the data files first
         DataManager<Appointment,String> appointmentData = AppointmentDataManager.getInstance();
         DataManager<Patient,String> patientData = PatientDataManager.getInstance();
         DataManager<MedicalBill,String> medicalBillData = MedicalBillDataManager.getInstance();
@@ -20,7 +31,6 @@ public class HMSApp {
         DataManager<Staff,String> staffData =  StaffDataManager.getInstance();
         InventoryDataManager inventoryData = InventoryDataManager.getInstance();
 
-        // /first menu
         AppMenu menu = new AppMenu();
         menu.printMenu();
 
