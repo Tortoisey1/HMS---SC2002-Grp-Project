@@ -39,7 +39,7 @@ public class PatientDataManager implements DataManager<Patient, String> {
     }
 
     /**
-     * Singleton for the MedicalBillDataManager
+     * Singleton for the PatientDataManager
      * Declared and initialized the Constructor to {@code patientDataManager} when app begin
      * Type {@link DataManager}
      * Down casting when needed
@@ -210,6 +210,9 @@ public class PatientDataManager implements DataManager<Patient, String> {
         return patients;
     }
 
+    /**
+     * @return true if patient exists compared with {@param id}
+     */
     public boolean checkPatientExist(String id) {
         for (Patient patient : patients) {
             if (patient.getUserInformation().getID().getId().equals(id)) {
