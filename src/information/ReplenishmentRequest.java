@@ -12,6 +12,7 @@ public class ReplenishmentRequest {
     private boolean approvalResult;
     private String replenishmentId;
     private String medicationId;
+    private String endorsedby;
 
 
     public ReplenishmentRequest(){}
@@ -22,13 +23,14 @@ public class ReplenishmentRequest {
             String medicationName,
             int amount,
             AdministratorID id,
-            String dateOfRequest
-    ){
+            String endorsedby,
+            String dateOfRequest){
         this.replenishmentId = replenishmentId;
         this.medicationId = medicationId;
         this.medicationName = medicationName;
         this.amount = amount;
         this.id = id;
+        this.endorsedby = endorsedby;
         this.dateOfRequest = dateOfRequest;
     }
 
@@ -89,16 +91,19 @@ public class ReplenishmentRequest {
         this.replenishmentId = replenishmentId;
     }
 
+    public String getEndorsedby() {
+        return endorsedby;
+    }
+
+    public void setEndorsedby(String endorsedby){
+        this.endorsedby = endorsedby;
+    }
+
     @Override
     public String toString() {
-        return "ReplenishmentRequest{" +
-                "id=" + id +
-                ", medicationName='" + medicationName + '\'' +
-                ", amount=" + amount +
-                ", dateOfRequest='" + dateOfRequest + '\'' +
-                ", approvalResult=" + approvalResult +
-                ", replenishmentId='" + replenishmentId + '\'' +
-                ", medicationId='" + medicationId + '\'' +
-                '}';
+        return "ReplenishmentRequest{" + "replenishmentId='" + replenishmentId + '\'' +
+                ", medicationId='" + medicationId + '\'' + ", medicationName='" +
+                medicationName + '\'' + ", amount=" + amount + ", endorsedby='" +
+                endorsedby + '\'' + ", dateofRequest='" + dateOfRequest + '\'' + '}';
     }
 }

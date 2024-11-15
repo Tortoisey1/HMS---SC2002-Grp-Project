@@ -2,10 +2,13 @@ package management;
 
 import entities.Patient;
 import enums.MedicationStatus;
+import information.ReplenishmentRequest;
 import information.medical.Medication;
 
 import java.io.*;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class InventoryDataManager implements DataManager<Medication, String>{
 

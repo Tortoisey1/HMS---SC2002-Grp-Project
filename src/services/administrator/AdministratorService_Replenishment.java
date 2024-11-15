@@ -12,7 +12,7 @@ public class AdministratorService_Replenishment {
     this.inventoryDataManager = InventoryDataManager.getInstance();
   }
 
-  public void approveReplenishmentRequest() {
+  public void approveReplenishmentRequest(String replenishmentId, boolean isapproved) {
     System.out.println("Checking inventory for low stock items...");
     List<Medication> inventoryList = inventoryDataManager.getList();
     for (Medication medication : inventoryList) {
