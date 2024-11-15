@@ -3,14 +3,29 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.ArrayList;
-
 import enums.AppointmentStatus;
 import information.Appointment;
 
+
+
+/**
+ * CustomCalendar class provides the GUI of a Calendar based on the month and year for the user
+ */
 public class CustomCalendar {
 
+    /**
+     * Constructs a CustomCalendar
+     */
     public CustomCalendar(){}
 
+    /**
+     * generateCalendar() to create the GUI of the Calendar for the user to view
+     * @param year for the year of the Calendar to present
+     * @param month for the month of the Calendar to present
+     * @param filteredAppointments a list of {@link Appointment} that are not meant for booking
+     * Uses {@link LocalDate} to calculate and print out the correct Calendar
+     * {@link Appointment} in the {@param filteredAppointments} will be marked with one of the legends
+     */
     public void generateCalendar(int year, int month, ArrayList<Appointment> filteredAppointments){
         YearMonth ym = YearMonth.of(year,month);
         int increment = 1;
@@ -54,12 +69,18 @@ public class CustomCalendar {
         }
     }
 
+    /**
+     * legends to show the icons in the calendar
+     */
         public void legends(){
             System.out.println("Legends:");
             System.out.println("X: PASSED THE DATE");
             System.out.println("T: TAKEN");
         }
 
+    /**
+     * Display options for months
+     */
     public void generateMonths(){
         String[] options = {"(1)", "(2)", "(3)", "(4)", "(5)",
                 "(6)", "(7)", "(8)", "(9)", "(10)", "(11)", "(12)"};
@@ -73,6 +94,9 @@ public class CustomCalendar {
         }
     }
 
+    /**
+     * Display options for time
+     */
     public void generateSlots(){
         String[] slots = {"0900 - 1000", "1000 - 1100", "1100 - 1200",
                 "1200 - 1300", "1300 - 1400", "1400 - 1500", "1500 - 1600", "1600 - 1700"};
