@@ -8,17 +8,26 @@ import information.MedicalBill;
 import management.DataManager;
 import management.MedicalBillDataManager;
 import menu.dialogs.Dialog;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.InputMismatchException;
 
+/**
+ * This Service MedicalBillingServicePatient class handles the business logic of the app for Patient Menu
+ * It allows current patient to retrieve unpaid medical bills
+ * CreditCard Payment method to facilitate payment for the medical bills
+ */
 public class MedicalBillingServicePatient {
 
     private DataManager<MedicalBill, String> medicalBillDataManager;
     private static MedicalBillingServicePatient medicalBillingServicePatient;
     private Patient currentUser;
 
+    /**
+     * Constructs an MedicalBillingServicePatient
+     * @param medicalBillDataManager type {@link DataManager} for medicalBillDataManager to retrieve all {@link MedicalBill}
+     * @param currentUser type {@link Patient} for the current patient logged in
+     */
     public MedicalBillingServicePatient(
             DataManager<MedicalBill, String> medicalBillDataManager,
             Patient currentUser
@@ -27,6 +36,13 @@ public class MedicalBillingServicePatient {
         this.currentUser = currentUser;
     }
 
+    /**
+     * Singleton for the MedicalBillingServicePatient
+     * Declared and initialized the Constructor to {@code medicalBillingServicePatient}
+     * Retrieve Singletons of MedicalBillDataManager
+     * Initialized the {@code currentUser} with {@param patient} from {@link menu.PatientMenu}
+     * @return {@link MedicalBillingServicePatient}
+     */
     public static MedicalBillingServicePatient getInstance(Patient patient) {
         if (medicalBillingServicePatient == null) {
             return medicalBillingServicePatient = new MedicalBillingServicePatient(
@@ -37,6 +53,14 @@ public class MedicalBillingServicePatient {
         return medicalBillingServicePatient;
     }
 
+    /**
+     * retrieveUnPaidBills()
+     * Allow patient to retrieve all the {@link MedicalBill} with status {@link TransactionStatus} UNPAID
+     * Uses {@link PaymentService} function to facilitate payment for the medical bills
+     * Incur an additional fee of $10 for late payment
+     * handle {@exception InputMismatchException} if patient input wrong type of input
+     * handle {@exception NumberFormatException} if patient did not input an integer for it to parse
+     */
     public void retrieveUnPaidBills(){
         if(medicalBillDataManager instanceof MedicalBillDataManager){
             int count = 1;

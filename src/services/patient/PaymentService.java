@@ -2,14 +2,26 @@ package services.patient;
 
 
 import app.Global;
+import enums.TransactionStatus;
+import exceptions.InvalidPhoneNumberException;
 import information.MedicalBill;
 import menu.dialogs.Dialog;
 import validators.CreditCardValidator;
 
 import java.util.InputMismatchException;
-import java.util.TimerTask;
 
+/**
+ * This helper class provides static methods to facilitate payment for the medical bills
+ */
 public class PaymentService {
+    /**
+     * creditCardPrompt()
+     * to allow user to input their CC Details to pay
+     * Stimulate the verifying of the CC process
+     * by using {@link Thread}
+     * handle {@exception InputMismatchException} if patient input wrong type of input
+     * handle {@exception InterruptedException} if thread is interrupted
+     */
     public static boolean creditCardPrompt() {
         while (true) {
             try {
@@ -32,6 +44,10 @@ public class PaymentService {
         }
     }
 
+    /**
+     * Stimulate the verifying of the CC process
+     * by using {@link Thread}
+     */
     public static void processingStimulation() {
         for(int i = 0; i < 2; i++) {
             try {
