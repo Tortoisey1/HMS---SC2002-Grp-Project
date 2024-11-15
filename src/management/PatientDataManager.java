@@ -108,10 +108,10 @@ public class PatientDataManager implements DataManager<Patient, String> {
     }
 
     /**
-     * Retrieve all the Medical Bills with {@link BufferedReader} from CSV of path {@code filePath}
+     * Retrieve all the Patient with {@link BufferedReader} from CSV of path {@code filePath}
      * Start collecting when count == 1 as count = 0 is the headers
-     * Add each data and instantiate them to type {@link MedicalBill}
-     * Add it to {@code transactionList}
+     * Add each data and instantiate them to type {@link Patient}
+     * Add it to {@code patients}
      * @throws IOException when file not found
      */
     @Override
@@ -162,10 +162,10 @@ public class PatientDataManager implements DataManager<Patient, String> {
     }
 
     /**
-     * Write all the data of type {@link MedicalBill} back into CSV with {@link BufferedWriter}
+     * Write all the data of type {@link Patient} back into CSV with {@link BufferedWriter}
      * path {@code filePath}
-     * For each Medical Bill from {@code transactionList}
-     * Parse each fields from {@link MedicalBill} to String before adding into the CSV
+     * For each Patient from {@code patients}
+     * Parse each fields from {@link Patient} to String before adding into the CSV
      * @throws IOException when file not found
      */
     @Override
@@ -202,8 +202,8 @@ public class PatientDataManager implements DataManager<Patient, String> {
     }
 
     /**
-     * Retrieve {@link ArrayList} of all Appointments with type {@link Appointment}
-     * @return {@code appointmentList}
+     * Retrieve {@link ArrayList} of all Patients with type {@link Patient}
+     * @return {@code patients}
      */
     @Override
     public ArrayList<Patient> getList() {

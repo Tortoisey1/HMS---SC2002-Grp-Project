@@ -9,11 +9,10 @@ import information.MedicalBill;
 import information.ReplenishmentRequest;
 import information.id.AdministratorID;
 import information.id.PatientID;
-import information.id.PharmacistID;
 import information.medical.Medication;
 import management.*;
 import services.helper.GenerateIdHelper;
-
+import java.text.SimpleDateFormat;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
@@ -108,17 +107,31 @@ public class AppointmentOutcomeRecordPharmacistService {
     public void submitReplenishmentRequest(){
         System.out.println("Checking inventory for low stock items..");
         List<Medication> invlist = inventoryDataManager.getList();
+        ReplenishmentDataManager replenishmentDataManager = (ReplenishmentDataManager) ReplenishmentDataManager.getInstance();
         for (Medication medication: invlist){
             if (medication.getStock() < 10){
                 System.out.println("Low stock detected for: " + medication.getName() + ", Current Stock: " + medication.getStock() + ".");
-//                ReplenishmentRequest replenishmentRequest = new ReplenishmentRequest(
-//                        GenerateIdHelper.generateId("RR"),
-//                        medication.getMedicationId(),
-//                        medication.getName(),
-//
-//                )
-//                replenishmentRequests.add(replenishmentRequest);
-//                System.out.println("Replenishment request created for: " + medication.getName() + ", Current Stock: " + medication.getStock() + ", Requested Amount: " + replenishmentRequest.getAmount());
+                System.out.println("Low stock detected for: " +
+                        medication.getName() + ", Current Stock: " +
+                        medication.getStock() + ".");
+                int reqamt = 10 - medication.getStock();
+                AdministratorID administratorID = new AdministratorID();
+                String dateofreq = LocalDate.now().toString();
+                ReplenishmentRequest replenishmentRequest = new ReplenishmentRequest(
+                        GenerateIdHelper.generateId("RR"),
+                        medication.getMedicationId(),
+                        medication.getName(), reqamt, administratorID,
+                        "Administrator", dateofreq);
+                replenishmentRequest.setApprovalResult(false);
+                try {
+                    replenishmentDataManager.logreqtocsv(replenishmentRequest);
+                    replenishmentDataManager.add(replenishmentRequest);
+                    System.out.println("Replenishment request for " + medication.getName() +
+                            "has been submitted for approval");
+                }catch (IOException e){
+                    System.out.println("Error creating/logging replenishment request: " +
+                            e.getMessage());
+                }
             }
         }
         System.out.println("Total replenishment requests submitted: " + replenishmentRequests.size());
