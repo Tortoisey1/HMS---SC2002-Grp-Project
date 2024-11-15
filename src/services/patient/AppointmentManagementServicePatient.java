@@ -19,10 +19,19 @@ import management.StaffDataManager;
 import menu.dialogs.Dialog;
 import services.AppointmentManagementService;
 import services.helper.GenerateIdHelper;
-
 import java.time.LocalDate;
 import java.util.*;
 
+
+
+
+/**
+ * This Service AppointmentManagementServicePatient class handles the business logic of the app for Patient Menu and inherits
+ * all behaviours and properties from {@link AppointmentManagementService}
+ * It allows current patient to schedule, reschedule, cancel schedule
+ * {@code currentUser} to be initialized with the Patient logged in with type {@link Patient} and will be used throughout this service
+ * {@code doctorList} type {@link HashMap} to map each choice as key to the value of doctor with type {@link entities.Doctor}
+ */
 public class AppointmentManagementServicePatient extends AppointmentManagementService {
 
     private final DataManager<Staff,String> staffDataManager;
@@ -30,6 +39,13 @@ public class AppointmentManagementServicePatient extends AppointmentManagementSe
     private final HashMap<Integer,Staff> doctorList;
     private Patient currentUser;
 
+    /**
+     * Constructs an AppointmentManagementServicePatient
+     * @param appointmentDataManager type {@link DataManager} for AppointmentDataManager to retrieve appointments
+     * and initialized to required field in super()
+     * @param staffDataManager type {@link DataManager} for StaffDataManager to retrieve all doctors
+     * @param currentUser type {@link Patient} for the current patient logged in
+     */
     public AppointmentManagementServicePatient(
             DataManager<Appointment,String> appointmentDataManager,
             DataManager<Staff,String> staffDataManager,
@@ -42,7 +58,13 @@ public class AppointmentManagementServicePatient extends AppointmentManagementSe
         this.currentUser = currentUser;
     }
 
-
+    /**
+     * Singleton for the AppointmentManagementServicePatient
+     * Declared and initialized the Constructor to {@code appointmentServicePatient}
+     * Retrieve Singletons of StaffDataManager, AppointmentDataManager
+     * Initialized the {@code currentUser} with {@param patient} from {@link menu.PatientMenu}
+     * @return {@link AppointmentManagementServicePatient}
+     */
     public static AppointmentManagementServicePatient getInstance(Patient patient){
         if(appointmentServicePatient == null){
             return appointmentServicePatient = new AppointmentManagementServicePatient(
@@ -54,7 +76,15 @@ public class AppointmentManagementServicePatient extends AppointmentManagementSe
         return appointmentServicePatient;
     }
 
-
+    /**
+     * scheduleAppt() will be the main function to run the onboarding for scheduling
+     * Allow patient to schedule appointment
+     * Used {@link CustomCalendar} to create an actual GUI of the calendars for every month
+     * Patient pick the time slot for the appointment first
+     * Patient can only pick the dates that are not booked or dates after today based on {@link CustomCalendar}
+     * handle {@exception InputMismatchException} if patient input wrong type of input
+     * handle {@exception NumberFormatException} if patient did not input an integer for it to parse
+     */
     public void scheduleAppt(){
         Scanner scanner = Global.getScanner();
         int month, option;
@@ -108,6 +138,17 @@ public class AppointmentManagementServicePatient extends AppointmentManagementSe
 
     }
 
+    /**
+     * bookAppointment() will be a sub function used in {@code scheduleAppt()}
+     * @param dateOfTreatment for the date picked by the patient be used with {@link LocalDate}
+     * @param month for the month picked by the patient to be used with {@link LocalDate}
+     * @param patientId for the id of the current patient
+     * @param treatment for medical service picked
+     * @param doctorId for the id of the doctor picked
+     * @param doctorName for the name of the doctor picked
+     * Add this new appointment to the list of appointments in {@link AppointmentDataManager}
+     * @return {@code true} if add is successful
+     */
     public boolean bookAppointment(int dateOfTreatment,
                                    int month,
                                    int option,
@@ -138,6 +179,14 @@ public class AppointmentManagementServicePatient extends AppointmentManagementSe
         );
     }
 
+    /**
+     * validAppointment() as a helper function to check if the date picked is booked or already passed
+     * @param date for the date picked by the patient be used with {@link LocalDate}
+     * @param month for the month picked by the patient to be used with {@link LocalDate}
+     * @param doctorId for the id of the doctor picked
+     * Filter the list of appointments down to {@param doctorId} to see if doctor is free on that slot
+     * @return {@code false} if date of the appointment is booked or already passed else {@code true}
+     */
     public boolean validAppointment(int date, int month, String time, String doctorId) {
         LocalDate datePicked = LocalDate.of(LocalDate.now().getYear(),month,date);
         ArrayList<Appointment> filteredList;
@@ -155,6 +204,15 @@ public class AppointmentManagementServicePatient extends AppointmentManagementSe
         return true;
     }
 
+    /**
+     * cancelAppointment() allows patient to cancel their appointment
+     * Get the filtered list of {@link Appointment} for this current patient that have {@link AppointmentStatus} of CONFIRMED
+     * Use of {@link HashMap} with the key as the {@link Integer} and value as the {@link Appointment}
+     * Each key represent a choice and the value as the appointment
+     * Allow user to input the choice based on the key to cancel and the respective appointment will be deleted
+     * handle {@exception InputMismatchException} if patient input wrong type of input
+     * handle {@exception NumberFormatException} if patient did not input an integer for it to parse
+     */
     public void cancelAppointment(){
         HashMap<Integer,Appointment> appointmentHashMap = filterPendingConfirmedForPatient(currentUser.getUserInformation().getID().getId());
         String choice;
@@ -185,6 +243,15 @@ public class AppointmentManagementServicePatient extends AppointmentManagementSe
     }
 
 
+    /**
+     * updateAppointmentForPatient() allows patient to reschedule their appointment by time or date
+     * Get the filtered list of {@link Appointment} for this current patient
+     * Use of {@link HashMap} with the key as the {@link Integer} and value as the {@link Appointment}
+     * Each key represent a choice and the value as the appointment
+     * Allow user to input the choice based on the key to update and the respective appointment will be updated
+     * handle {@exception InputMismatchException} if patient input wrong type of input
+     * handle {@exception NumberFormatException} if patient did not input an integer for it to parse
+     */
     public void updateAppointmentForPatient(){
         HashMap<Integer,Appointment> appointmentHashMap = filterPendingConfirmedForPatient(currentUser.getUserInformation().getID().getId());
         int appointmentChoice, updateChoice, timeChoice;
@@ -247,6 +314,11 @@ public class AppointmentManagementServicePatient extends AppointmentManagementSe
         }
      }
 
+    /**
+     * displayPendingConfirmedAppointmentsForThisPatient() as a helper function to display each option of appointment
+     * @param appointmentHashMap for the hash map to display
+     * @param keyword for reusability (e.g. delete, update)
+     */
     public void displayPendingConfirmedAppointmentsForThisPatient(HashMap<Integer,Appointment> appointmentHashMap, String keyword){
         System.out.println(appointmentHashMap);
         appointmentHashMap.forEach((key,value) -> {
@@ -261,7 +333,10 @@ public class AppointmentManagementServicePatient extends AppointmentManagementSe
         });
     }
 
-
+    /**
+     * displayAppointmentsForThisPatient() as a helper function to display all the appointments
+     * based on the {@link AppointmentStatus} for the patient
+     */
     public void displayAppointmentsForThisPatient() {
         ArrayList<Appointment> confirmedList = filterConfirmedAppointmentsForPatient(currentUser.getUserInformation().getID().getId());
         ArrayList<Appointment> pendingList = filterPendingAppointmentsForPatient(currentUser.getUserInformation().getID().getId());
@@ -305,6 +380,9 @@ public class AppointmentManagementServicePatient extends AppointmentManagementSe
         }
     }
 
+    /**
+     * displayOutcomeRecordsForThisPatient() as a helper function to display all the past appointments that patient went
+     */
     public void displayOutcomeRecordsForThisPatient() {
         System.out.println("=== Past appointments ===");
         for (Appointment temp : currentUser.getMedicalInformation().getPastTreatments()) {
@@ -330,8 +408,15 @@ public class AppointmentManagementServicePatient extends AppointmentManagementSe
         }
     }
 
+    /**
+     * filterAppointmentsFromField() as a helper function to filter all the appointments based on
+     * @param time for the time picked by the patient be used
+     * @param month for the month picked by the patient to be used with {@link LocalDate}
+     * @param doctorId for the id of the doctor picked
+     * {@code Collections.sort()} to the list to sort the dates with {@link Comparable} from {@link Appointment}
+     * @return {@link ArrayList} all the appointments booked on the time, month and doctorId
+     */
     public ArrayList<Appointment> filterAppointmentsFromField(String time, int month, String doctorId) {
-        // deep copy of arraylist
         ArrayList<Appointment> filteredList = new ArrayList<>();
         ArrayList<Appointment> originalList = getAllAppointments();
         for(Appointment temp : originalList){
@@ -347,6 +432,14 @@ public class AppointmentManagementServicePatient extends AppointmentManagementSe
         return filteredList;
     }
 
+    /**
+     * filterAppointmentsFromOption() as a helper function to filter all the appointments based on
+     * @param option for the time picked by the patient be used
+     * @param monthField for the month picked by the patient to be used with {@link LocalDate}
+     * @param doctorId for the id of the doctor picked
+     * {@code Collections.sort()} to the list to sort the dates with {@link Comparable} from {@link Appointment}
+     * @return {@link ArrayList} all the appointments booked on the time, month and doctorId
+     */
     public ArrayList<Appointment> filterAppointmentsFromOption(int option, int monthField, String doctorId) {
         // deep copy of arraylist
         String time = optionForTime(option);
@@ -366,7 +459,12 @@ public class AppointmentManagementServicePatient extends AppointmentManagementSe
     }
 
 
-
+    /**
+     * optionForTreatment() as a helper function to list out all the Medical Service
+     * @return {@link String} of the {@link MedicalService}
+     * handle {@exception InputMismatchException} if patient input wrong type of input
+     * handle {@exception NumberFormatException} if patient did not input an integer for it to parse
+     */
     public String optionForTreatment() {
         int treatmentOption;
         while (true) {
@@ -412,6 +510,12 @@ public class AppointmentManagementServicePatient extends AppointmentManagementSe
         return null;
     }
 
+    /**
+     * optionForDate() as a helper function to list out all the date
+     * @return {@link String} of the {@link MedicalService}
+     * handle {@exception InputMismatchException} if patient input wrong type of input
+     * handle {@exception NumberFormatException} if patient did not input an integer for it to parse
+     */
     public String optionForDate(int month, String time, String doctorId){
         String dateOfTreatment;
         Scanner scanner = Global.getScanner();
@@ -445,6 +549,12 @@ public class AppointmentManagementServicePatient extends AppointmentManagementSe
     }
 
 
+    /**
+     * optionForDoctor() as a helper function to list out all the doctors
+     * @return {@link Staff} of the doctor selected
+     * handle {@exception InputMismatchException} if patient input wrong type of input
+     * handle {@exception NumberFormatException} if patient did not input an integer for it to parse
+     */
     public Staff optionForDoctor(){
         Scanner scanner = Global.getScanner();
         ArrayList<Staff> staffList = staffDataManager.getList();
@@ -479,7 +589,10 @@ public class AppointmentManagementServicePatient extends AppointmentManagementSe
 
     }
 
-
+    /**
+     * optionForTime() as a helper function to list out all the time slot
+     * @return {@link String} of time slot
+     */
     public String optionForTime(int option){
         switch (option){
             case 1 -> {
