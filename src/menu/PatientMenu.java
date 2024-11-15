@@ -3,13 +3,22 @@ package menu;
 import entities.Patient;
 import entities.User;
 import exceptions.InvalidChoiceException;
+import information.Appointment;
 import services.patient.AppointmentManagementServicePatient;
 import services.patient.InformationAccessServicePatient;
 import app.Global;
 import services.patient.MedicalBillingServicePatient;
 
+
+/**
+ * Menu for Patient only that inherits basic behaviours from Menu
+ * Display menu to patient that logged in
+ */
 public class PatientMenu extends Menu {
 
+    /**
+     * Main function for the menu to run the relevant services
+     */
     @Override
     public void printMenu(User user) {
         while (true) {
@@ -27,6 +36,9 @@ public class PatientMenu extends Menu {
         }
     }
 
+    /**
+     * Print the options available for patient
+     */
     private void printOptions() {
         System.out.println("Choice 1: View Medical Record\n" +
                 "Choice 2: Update Personal Information\n" +
@@ -39,6 +51,13 @@ public class PatientMenu extends Menu {
                 "Choice 9: Logout");
     }
 
+    /**
+     * Function for each service required for its respective business logics
+     * @param choice is the input given by user
+     * @param patient is Patient that logged in
+     * Used to pass in to the services {@link InformationAccessServicePatient},
+     * {@link AppointmentManagementServicePatient}, {@link MedicalBillingServicePatient},
+     */
     private void callService(int choice, Patient patient) throws InvalidChoiceException {
         switch (choice) {
             case 1:

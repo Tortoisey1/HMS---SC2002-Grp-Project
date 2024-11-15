@@ -1,8 +1,15 @@
 package services.helper;
+
 import java.util.UUID;
 
+/**
+ * This helper class provides static methods to generate IDs
+ */
 public class GenerateIdHelper {
-
+    /**
+     * @param typeOfId for the type of id to generate for
+     * @return the ID generated
+     */
     public static String generateId(String typeOfId){
         String uid = UUID.randomUUID().toString();
         switch (typeOfId){
@@ -17,6 +24,9 @@ public class GenerateIdHelper {
         }
     }
 
+    /**
+     * @return part of the String
+     */
     public static String takeSubString(String id){
         int pos = 0;
         for (int i = 0; i < 2; i++) {
