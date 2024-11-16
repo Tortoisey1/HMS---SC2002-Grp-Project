@@ -10,7 +10,7 @@ import java.util.List;
  */
 public class MedicalInformation {
     private final BloodType bloodType; // Blood Type// Past Diagnoses
-    private final List<Appointment> pastTreatments; // Past Treatments
+    private List<Appointment> pastTreatments; // Past Treatments
 
     /**
      * Constructs an MedicalInformation
@@ -56,3 +56,4 @@ public class MedicalInformation {
                 '}';
     }
 }
+
