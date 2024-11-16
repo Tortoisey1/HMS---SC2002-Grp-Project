@@ -2,6 +2,10 @@ package menu;
 
 import entities.User;
 import services.administrator.AdministratorService;
+import services.administrator.AdministratorService_Replenishment;
+
+import java.util.Scanner;
+
 import app.Global;
 
 public class AdministratorMenu extends Menu {
@@ -62,7 +66,16 @@ public class AdministratorMenu extends Menu {
     }
 
     private void approveReplenishmentRequests() {
-        System.out.println("Approving replenishment requests...");
-        adminService.approveReplenishmentRequest();
-    }
+    Scanner scanner = Global.getScanner();
+    System.out.print("Enter the replenishment request ID: ");
+    String replenishmentId = scanner.nextLine();
+
+    System.out.print("Approve this request? (yes/no): ");
+    String input = scanner.nextLine();
+    boolean isApproved = input.equalsIgnoreCase("yes");
+
+    AdministratorService_Replenishment replenishmentService = new AdministratorService_Replenishment();
+    replenishmentService.approveReplenishmentRequest(replenishmentId, isApproved);
+}
+
 }

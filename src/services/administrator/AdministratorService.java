@@ -170,16 +170,16 @@ public class AdministratorService {
         }
     }
 
-    public void approveReplenishmentRequest() {
-        System.out.println("Checking inventory for low stock items...");
-        List<Medication> inventoryList = inventoryDataManager.getList();
-        for (Medication medication : inventoryList) {
-            if (medication.getStock() < 10) {
-                System.out.println("Replenishment request submitted for: " + medication.getName() +
-                        ", Current Stock: " + medication.getStock());
-            }
-        }
-    }
+    // public void approveReplenishmentRequest() {
+    //     System.out.println("Checking inventory for low stock items...");
+    //     List<Medication> inventoryList = inventoryDataManager.getList();
+    //     for (Medication medication : inventoryList) {
+    //         if (medication.getStock() < 10) {
+    //             System.out.println("Replenishment request submitted for: " + medication.getName() +
+    //                     ", Current Stock: " + medication.getStock());
+    //         }
+    //     }
+    // }
 
     private void displayFilteredStaff(String role, String gender, Integer age) {
         List<Staff> staffList = staffDataManager.getList();

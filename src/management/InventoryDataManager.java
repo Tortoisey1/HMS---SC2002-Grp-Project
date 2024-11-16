@@ -1,15 +1,9 @@
 package management;
 
-
-
-import information.Appointment;
-import information.ReplenishmentRequest;
 import information.medical.Medication;
-import java.io.*;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
 
+import java.io.*;
+import java.util.ArrayList;
 
 /**
  * A DataManager for Inventory that implements interface {@link DataManager}
@@ -18,17 +12,17 @@ import java.util.Date;
  * {@param String} for the Medication ID in String
  * Holds all the data type {@link Medication}
  */
-public class InventoryDataManager implements DataManager<Medication, String>{
+public class InventoryDataManager implements DataManager<Medication, String> {
 
     private static InventoryDataManager inventoryDataManager;
-    private final String inputFilePath = "src/data/inventory.csv";;
-    private static ArrayList<Medication> inventory = new ArrayList<Medication>();
+    private final String inputFilePath = "src/data/inventory.csv";
+    private static ArrayList<Medication> inventory = new ArrayList<>();
 
     /**
      * Constructs an InventoryDataManager
      * {@code filePath} for the directory of the CSV
      * {@code retrieveAll()} to retrieve all the data from CSV and
-     * instantiate each of the data to type {@link Medication} when app begin
+     * instantiate each of the data to type {@link Medication} when the app begins
      * and finally, add each data to {@code inventory}
      */
     public InventoryDataManager() {
@@ -41,9 +35,9 @@ public class InventoryDataManager implements DataManager<Medication, String>{
 
     /**
      * Singleton for the InventoryDataManager
-     * Declared and initialized the Constructor to {@code inventoryDataManager} when app begin
+     * Declared and initialized the Constructor to {@code inventoryDataManager} when the app begins
      * Type {@link DataManager}
-     * Down casting when needed
+     * Downcasting when needed
      */
     public static InventoryDataManager getInstance() {
         if (inventoryDataManager == null) {
@@ -67,16 +61,16 @@ public class InventoryDataManager implements DataManager<Medication, String>{
     }
 
     /**
-     * update details of Medication in the inventory with {@param newDetails}
-     * search through the {@code inventory} and update it based on the Medication id on that index
+     * Update details of Medication in the inventory with {@param newDetails}
+     * Search through the {@code inventory} and update it based on the Medication ID on that index
      * @return true if update is successful else false
      */
     @Override
     public boolean update(Medication newDetails) {
         int count = 0;
-        for(Medication temp : inventory){
-            if(temp.getMedicationId().equals(newDetails.getMedicationId())){
-                inventory.set(count,newDetails);
+        for (Medication temp : inventory) {
+            if (temp.getMedicationId().equals(newDetails.getMedicationId())) {
+                inventory.set(count, newDetails);
                 return true;
             }
             count++;
@@ -85,18 +79,36 @@ public class InventoryDataManager implements DataManager<Medication, String>{
     }
 
     /**
-     * update number of stock by decrementing {@param stockToDispense} from stock for {@param medicationId}
-     * search through the {@code inventory} and update it based on the Medication id on that index
-     * decrement if {@code temp.getStock()} > {@param stockToDispense}
+     * Increment the stock of a medication by {@param stockToAdd} for {@param medicationId}
+     * Search through the {@code inventory} and update it based on the Medication ID
      * @return true if update is successful else false
      */
-    public boolean decrementStock(String medicationId, int stockToDispense){
+    public boolean incrementStock(String medicationId, int stockToAdd) {
         int count = 0;
-        for(Medication temp : inventory){
-            if(temp.getMedicationId().equals(medicationId)){
-                if(temp.getStock() > stockToDispense){
+        for (Medication temp : inventory) {
+            if (temp.getMedicationId().equals(medicationId)) {
+                temp.setStock(temp.getStock() + stockToAdd);
+                inventory.set(count, temp);
+                return true;
+            }
+            count++;
+        }
+        return false;
+    }
+
+    /**
+     * Decrement the stock of a medication by {@param stockToDispense} for {@param medicationId}
+     * Search through the {@code inventory} and update it based on the Medication ID
+     * Decrement if {@code temp.getStock()} > {@param stockToDispense}
+     * @return true if update is successful else false
+     */
+    public boolean decrementStock(String medicationId, int stockToDispense) {
+        int count = 0;
+        for (Medication temp : inventory) {
+            if (temp.getMedicationId().equals(medicationId)) {
+                if (temp.getStock() > stockToDispense) {
                     temp.setStock(temp.getStock() - stockToDispense);
-                    inventory.set(count,temp);
+                    inventory.set(count, temp);
                 }
                 return true;
             }
@@ -106,7 +118,7 @@ public class InventoryDataManager implements DataManager<Medication, String>{
     }
 
     /**
-     * delete the Medication from {@code inventory}
+     * Delete the Medication from {@code inventory}
      */
     @Override
     public boolean delete(String t1) {
@@ -114,7 +126,7 @@ public class InventoryDataManager implements DataManager<Medication, String>{
     }
 
     /**
-     * add the Medication {@param medication} to {@code inventory }
+     * Add the Medication {@param medication} to {@code inventory}
      * @return true if add is successful else false
      */
     @Override
@@ -122,13 +134,12 @@ public class InventoryDataManager implements DataManager<Medication, String>{
         return inventory.add(medication);
     }
 
-
     /**
      * Retrieve all the Medications with {@link BufferedReader} from CSV of path {@code filePath}
      * Start collecting when count == 1 as count = 0 is the headers
      * Add each data and instantiate them to type {@link Medication}
      * Add it to {@code inventory}
-     * @throws IOException when file not found
+     * @throws IOException when the file is not found
      */
     @Override
     public void retrieveAll() throws IOException {
@@ -155,13 +166,13 @@ public class InventoryDataManager implements DataManager<Medication, String>{
      * Write all the data of type {@link Medication} back into CSV with {@link BufferedWriter}
      * path {@code filePath}
      * For each Medication from {@code inventory}
-     * Parse each fields from Medication to String before adding into the CSV
-     * @throws IOException when file not found
+     * Parse each field from Medication to String before adding it into the CSV
+     * @throws IOException when the file is not found
      */
     @Override
     public void writeAll() throws IOException {
         BufferedWriter bw = new BufferedWriter(new FileWriter(inputFilePath));
-        String[] header = { "Medication_ID","Medication_name","stock", "price"};
+        String[] header = { "Medication_ID", "Medication_name", "stock", "price" };
 
         for (String h : header) {
             bw.write(h);
