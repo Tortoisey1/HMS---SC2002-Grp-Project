@@ -111,9 +111,6 @@ public class AppointmentOutcomeRecordPharmacistService {
         for (Medication medication: invlist){
             if (medication.getStock() < 10){
                 System.out.println("Low stock detected for: " + medication.getName() + ", Current Stock: " + medication.getStock() + ".");
-                System.out.println("Low stock detected for: " +
-                        medication.getName() + ", Current Stock: " +
-                        medication.getStock() + ".");
                 int reqamt = 10 - medication.getStock();
                 AdministratorID administratorID = new AdministratorID();
                 String dateofreq = LocalDate.now().toString();
@@ -127,13 +124,12 @@ public class AppointmentOutcomeRecordPharmacistService {
                     replenishmentDataManager.logreqtocsv(replenishmentRequest);
                     replenishmentDataManager.add(replenishmentRequest);
                     System.out.println("Replenishment request for " + medication.getName() +
-                            "has been submitted for approval");
+                            " has been submitted for approval");
                 }catch (IOException e){
                     System.out.println("Error creating/logging replenishment request: " +
                             e.getMessage());
                 }
             }
         }
-        System.out.println("Total replenishment requests submitted: " + replenishmentRequests.size());
     }
 }
