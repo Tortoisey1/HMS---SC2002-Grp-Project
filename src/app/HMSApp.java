@@ -10,8 +10,6 @@ import menu.AppMenu;
 import java.io.IOException;
 
 
-
-
 /**
  * HMSApp class will be the entire interface of this app.
  * From the beginning to the end when terminated from logout.

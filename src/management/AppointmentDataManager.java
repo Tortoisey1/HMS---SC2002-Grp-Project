@@ -79,6 +79,7 @@ public class AppointmentDataManager implements DataManager<Appointment,String> {
                 appointmentList.set(count,newAppointment);
                 return true;
             }
+            count++;
         }
         return false;
     }
