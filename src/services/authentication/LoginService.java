@@ -54,8 +54,6 @@ public class LoginService implements PasswordInterface {
                     throw new NotInSystem("No such account");
                 }
         } catch (NotInSystem e) {
-            System.exit(0);
-        } catch (Exception e) {
             System.out.println(e.getMessage());
             System.exit(0);
         }
