@@ -6,12 +6,23 @@ import exceptions.*;
 import management.PatientDataManager;
 import management.StaffDataManager;
 import menu.dialogs.Dialog;
+import services.patient.AppointmentManagementServicePatient;
 import validators.PasswordValidator;
 
+/**
+ * The LoginService that implements PasswordInterface, adhering to the Interface Segregation Principle.
+ * Responsible for the business logics to log in the different types of Users and act as a controller to verify the details
+ * of the account with the data manager.
+ */
 public class LoginService implements PasswordInterface {
     private final int maxPasswordTries = 3;
     private static LoginService loginService;
 
+    /**
+     * Singleton for the LoginService
+     * Declared and initialized the Constructor to {@code loginService}
+     * @return {@link LoginService}
+     */
     public static LoginService getInstance(){
         if(loginService == null){
             loginService = new LoginService();
@@ -19,9 +30,13 @@ public class LoginService implements PasswordInterface {
         return loginService;
     }
 
-    // users will change their password upon initial login
+    /**
+     * Check the {@link UserType} of the account and retrieve the instance of the respective Data Manager accordingly.
+     * Validate with Data Manager with the input: ID and password if it exists in the CSV and are identical.
+     * handle {@exception NotInSystem} if account is not found
+     * @return {@link User} if account found else NULL
+     */
     public User login(UserType selectedUserType, String id, String passwordAttempt) {
-        // check if its user first attempt
         User accountFound = null;
         try {
                 switch(selectedUserType){
@@ -33,22 +48,25 @@ public class LoginService implements PasswordInterface {
                     if(accountFound != null){
                         return accountFound;
                     }else{
-                        throw new ClassNotFoundException("No such account");
+                        throw new NotInSystem("No such account");
                     }
                 }else{
-                    throw new ClassNotFoundException("No such account");
+                    throw new NotInSystem("No such account");
                 }
-        } catch (ClassNotFoundException e) {
+        } catch (NotInSystem e) {
             System.exit(0);
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
             System.exit(0);
         }
         return null;
 
     }
 
-
+    /**
+     * Validate with Data Manager with the input: ID and password if it exists in the CSV and are identical.
+     * @return {@link User} if account found else NULL
+     */
     @Override
     public User validate(User accountFound,String accountId, String password)  {
         if(accountFound.getUserInformation().getPassword().equals(password) &&
@@ -61,6 +79,12 @@ public class LoginService implements PasswordInterface {
         return null;
     }
 
+    /**
+     * Check if the user isFirstLogin == true,
+     * If yes then user will be prompted to change password and update according to their respective
+     * DataManager
+     * @return {@code true} if password have been changed
+     */
     @Override
     public boolean changePassword(User account, String newPassword) throws InvalidPasswordException {
         if(PasswordValidator.validateNewPassword(newPassword)){
@@ -83,6 +107,11 @@ public class LoginService implements PasswordInterface {
             throw new InvalidPasswordException("Not following our password format!");
         }
     }
+
+    /**
+     * Getter method to get the field: firstLogin of the account
+     * @return {@code true} if firstLogin == true else {@code false}
+     */
     @Override
     public boolean checkFirstLogin(User account) {
         return account.getUserInformation().isFirstLogin();
