@@ -162,16 +162,4 @@ public class ReplenishmentDataManager implements DataManager<ReplenishmentReques
         return replenishmentRequests;
     }
 
-    /**
-     * add the {@param request} to CSV
-     */
-    public void logreqtocsv(ReplenishmentRequest request) throws IOException {
-        try (FileWriter fw = new FileWriter(inputFilePath, true);
-             PrintWriter pw = new PrintWriter(fw)){
-            pw.printf("%s,%s,%s,%d,%s,%s%n", request.getReplenishmentId(),
-                    request.getMedicationId(), request.getMedicationName(),
-                    request.getAmount(), request.getEndorsedby(),
-                    new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
-        }
-    }
 }

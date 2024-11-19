@@ -1,6 +1,7 @@
 package services.pharmacist;
 
 import app.Global;
+import entities.Patient;
 import enums.AppointmentStatus;
 import enums.MedicationStatus;
 import enums.TransactionStatus;
@@ -11,27 +12,49 @@ import information.id.AdministratorID;
 import information.id.PatientID;
 import information.medical.Medication;
 import management.*;
+import menu.CustomCalendar;
+import services.AppointmentManagementService;
 import services.helper.GenerateIdHelper;
-import java.text.SimpleDateFormat;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 
+
+/**
+ * This Service AppointmentOutcomeRecordPharmacistService class handles the business logic of the app for Pharmacist Menu
+ * It allows Pharmacist to request for replenishment, view Appointments that were completed on that day,
+ * View current inventory stocks and update the prescription for the Patients.
+ */
 public class AppointmentOutcomeRecordPharmacistService {
     private InventoryDataManager inventoryDataManager;
     private DataManager<Medication,String> requestDataManager;
     private DataManager<Appointment, String> appointmentDataManager;
     private DataManager<MedicalBill, String> medicalBillDataManager;
-    private List<ReplenishmentRequest> replenishmentRequests;
+    private DataManager<ReplenishmentRequest,String> replenishmentRequestDataManager;
+
+    /**
+     *  Constructs an AppointmentOutcomeRecordPharmacistService
+     *  {@code inventoryDataManager} to establish connection to the InventoryDataManager for Medication of {@link Medication}
+     *  {@code requestDataManager} to establish connection to the MedicationRequestDataManager for Requests of {@link Medication}
+     *  {@code appointmentDataManager} to establish connection to the AppointmentDataManager for Medication of {@link Appointment}
+     *  {@code medicalBillDataManager} to establish connection to the MedicalBillDataManager for Bills of {@link MedicalBill}
+     *  {@code replenishmentRequestDataManager} to establish connection to the ReplenishmentDataManager for replenishment
+     *  requests of {@link ReplenishmentRequest}
+     */
     public AppointmentOutcomeRecordPharmacistService(){
         this.inventoryDataManager = InventoryDataManager.getInstance();
         this.requestDataManager = MedicationRequestDataManager.getInstance();
         this.appointmentDataManager = AppointmentDataManager.getInstance();
         this.medicalBillDataManager = MedicalBillDataManager.getInstance();
-        this.replenishmentRequests = new ArrayList<>();
+        this.replenishmentRequestDataManager = ReplenishmentDataManager.getInstance();
     }
 
+    /**
+     * viewAppointmentOutcomeRecord() lists out the appointments that were completed on that day using
+     * {@link LocalDate}.now() with the date from the appointment
+     * List of {@link Medication} per Appointment will be shown if the {@link MedicationStatus} is {@code PENDING}
+     */
     public void viewAppointmentOutcomeRecord() {
         ArrayList<Appointment> originalRecords = appointmentDataManager.getList();
         for (Appointment record : originalRecords) {
@@ -56,7 +79,6 @@ public class AppointmentOutcomeRecordPharmacistService {
             }
         }
     }
-
     public void updatePrescriptionStatus(){
         Scanner sc = Global.getScanner();
         System.out.println("Enter the appointment Id to update the status of prescription: ");
@@ -67,9 +89,6 @@ public class AppointmentOutcomeRecordPharmacistService {
                 medication.setStatus(MedicationStatus.DISPENSED);
                 double priceOfMedication = inventoryDataManager.retrieve(medication.getMedicationId()).getPrice();
                 PatientID patientId = appointmentDataManager.retrieve(appointmentid).getPatientId();
-                // once dispensed then calculate the total bill (medication dispensed + 50 consultation fee)
-                // receipt/bill to be sent to patient
-
                 MedicalBill receipt = new MedicalBill(
                         GenerateIdHelper.generateId("TR"),
                         patientId,
@@ -83,12 +102,6 @@ public class AppointmentOutcomeRecordPharmacistService {
                 System.out.println("Prescription for medication ID: " + medication.getMedicationId() + " has been updated to the state DISPENSED.");
                 System.out.println("Receipt Transaction ref: " + receipt.getTransactionRef() + " generated");
                 inventoryDataManager.decrementStock(medication.getMedicationId(), 1);
-                try {
-                    ((MedicationRequestDataManager) requestDataManager).writeAll();
-                    System.out.println("Status is updated and has been succesfully saved.");
-                }catch (IOException e){
-                    System.out.println("Error saving the updated status of prescription: " + e.getMessage());
-                }
             }else {
                 System.out.println("The prescription status is not PENDING, so it is impossible for it to get updated.");
             }
@@ -107,7 +120,6 @@ public class AppointmentOutcomeRecordPharmacistService {
     public void submitReplenishmentRequest(){
         System.out.println("Checking inventory for low stock items..");
         List<Medication> invlist = inventoryDataManager.getList();
-        ReplenishmentDataManager replenishmentDataManager = (ReplenishmentDataManager) ReplenishmentDataManager.getInstance();
         for (Medication medication: invlist){
             if (medication.getStock() < 10){
                 System.out.println("Low stock detected for: " + medication.getName() + ", Current Stock: " + medication.getStock() + ".");
@@ -120,15 +132,7 @@ public class AppointmentOutcomeRecordPharmacistService {
                         medication.getName(), reqamt, administratorID,
                         "Administrator", dateofreq);
                 replenishmentRequest.setApprovalResult(false);
-                try {
-                    replenishmentDataManager.logreqtocsv(replenishmentRequest);
-                    replenishmentDataManager.add(replenishmentRequest);
-                    System.out.println("Replenishment request for " + medication.getName() +
-                            " has been submitted for approval");
-                }catch (IOException e){
-                    System.out.println("Error creating/logging replenishment request: " +
-                            e.getMessage());
-                }
+                replenishmentRequestDataManager.add(replenishmentRequest);
             }
         }
     }

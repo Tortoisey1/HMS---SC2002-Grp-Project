@@ -3,6 +3,7 @@ import entities.Patient;
 import entities.Staff;
 import information.Appointment;
 import information.MedicalBill;
+import information.ReplenishmentRequest;
 import information.medical.Medication;
 import management.*;
 import menu.AppMenu;
@@ -27,6 +28,7 @@ public class HMSApp {
         DataManager<MedicalBill,String> medicalBillData = MedicalBillDataManager.getInstance();
         DataManager<Medication,String> medicationRequestData = MedicationRequestDataManager.getInstance();
         DataManager<Staff,String> staffData =  StaffDataManager.getInstance();
+        DataManager<ReplenishmentRequest,String> replenishmentData = ReplenishmentDataManager.getInstance();
         InventoryDataManager inventoryData = InventoryDataManager.getInstance();
 
         AppMenu menu = new AppMenu();
@@ -49,6 +51,9 @@ public class HMSApp {
 
                 System.out.println("Writing staff data...");
                 staffData.writeAll();
+
+                System.out.println("Writing replenishment data...");
+                replenishmentData.writeAll();
 
                 System.out.println("Writing medicine data...");
                 medicationRequestData.writeAll();
