@@ -203,9 +203,11 @@ public class AdministratorService {
 
     // View all appointments
     public void viewAppointmentDetails() {
+    	int j=1;
         List<Appointment> appointments = appointmentDataManager.getList();
         System.out.println("Appointment Details:");
         for (Appointment appointment : appointments) {
+        	System.out.println("Appointment "+(j++));
             System.out.println("Appointment ID: " + appointment.getAppointmentID());
             System.out.println("Patient ID: " + appointment.getPatientId().getId());
             System.out.println("Doctor ID: " + appointment.getDoctorId().getId());
@@ -213,7 +215,44 @@ public class AdministratorService {
             System.out.println("Date: " + appointment.getDateOfTreatment());
             System.out.println("Time: " + appointment.getTimeOfTreatment());
             if (appointment.getAppointmentStatus() == AppointmentStatus.COMPLETED) {
-                System.out.println("Outcome Record: " + appointment.getAppointmentOutcomeRecord());
+                System.out.println("Outcome Record:");
+                System.out.println();
+                
+                
+                System.out.println("Consultation notes: ");
+                String notes=appointment.getAppointmentOutcomeRecord().getConsultationNotes().getCriticalDetails();
+                System.out.print("Critical Details: ");
+                if(notes!=null)System.out.println(notes);
+                else System.out.println("None");
+                
+                notes=appointment.getAppointmentOutcomeRecord().getConsultationNotes().getComplaints();
+                System.out.print("Complaints: ");
+                if(notes!=null)System.out.println(notes);
+                else System.out.println("None");
+                
+                notes=appointment.getAppointmentOutcomeRecord().getConsultationNotes().getFurtherInfo();
+                System.out.print("Further information: ");
+                if(notes!=null)System.out.println(notes);
+                else System.out.println("None");            
+                
+                System.out.println();
+                
+                if(appointment.getAppointmentOutcomeRecord().getMedications().size()==0) 
+                {
+                	System.out.println("No prescription(s)");
+                	System.out.println();
+                	return;
+                }
+                
+                System.out.println("Medication prescribed: ");
+                int k=1;
+                
+                for (Medication prescription : appointment.getAppointmentOutcomeRecord().getMedications()) {
+                    System.out.println("Prescription " + (k++) + ": " + prescription.getName());
+                }
+                
+                
+                
             }
             System.out.println("-----------------------------");
         }
