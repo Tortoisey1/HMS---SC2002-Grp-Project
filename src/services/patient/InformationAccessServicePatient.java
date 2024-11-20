@@ -5,6 +5,7 @@ import entities.Patient;
 import exceptions.InvalidEmailException;
 import exceptions.InvalidPhoneNumberException;
 import information.Appointment;
+import information.medical.Medication;
 import menu.CustomCalendar;
 import validators.ContactInfoValidator;
 import java.util.InputMismatchException;
@@ -32,9 +33,64 @@ public class InformationAccessServicePatient {
                         + patient.getUserInformation().getPrivateInformation().getContactInfo().getEmailAddress());
         System.out.println("Phone Number: "
                 + patient.getUserInformation().getPrivateInformation().getContactInfo().getPhoneNumber());
-        System.out.println("Your records: ");
+        
+        if(patient.getMedicalInformation().getPastTreatments().isEmpty()) 
+        {
+        	System.out.println("No medical records found!");
+        	System.out.println();
+        	return;
+        }
+        
+        
+        System.out.println();
+        System.out.println(patient.getMedicalInformation().getPastTreatments().size() + " records found! Your records: ");
+        
+        int z=1;
+        
         for (Appointment medicalRecord : patient.getMedicalInformation().getPastTreatments()) {
-            System.out.println(medicalRecord.getTreatmentTitle());
+        	System.out.println();
+        	System.out.println("Medical Record "+ (z++));
+            System.out.println("Treatment: "+medicalRecord.getTreatmentTitle());
+            System.out.println("Date of treatment: "+medicalRecord.getDateOfTreatment());
+            System.out.println("Doctor in charge: "+medicalRecord.getDoctorName());
+            System.out.println();
+            
+            System.out.println("Consultation notes: ");
+            
+            String notes= medicalRecord.getAppointmentOutcomeRecord().getConsultationNotes().getCriticalDetails();
+            System.out.print("Critical Details: ");
+            if(notes!=null)System.out.println(notes);
+            else System.out.println("None");
+            
+            notes=medicalRecord.getAppointmentOutcomeRecord().getConsultationNotes().getComplaints();
+            System.out.print("Complaints: ");
+            if(notes!=null)System.out.println(notes);
+            else System.out.println("None");
+            
+            notes=medicalRecord.getAppointmentOutcomeRecord().getConsultationNotes().getFurtherInfo();
+            System.out.print("Further information: ");
+            if(notes!=null)System.out.println(notes);
+            else System.out.println("None");            
+            
+            System.out.println();
+            
+            if(medicalRecord.getAppointmentOutcomeRecord().getMedications().size()==0) 
+            {
+            	System.out.println("No prescription(s)");
+            	System.out.println();
+            	return;
+            }
+            
+            System.out.println("Medication prescribed: ");
+            int k=1;
+            
+            for (Medication prescription : medicalRecord.getAppointmentOutcomeRecord().getMedications()) {
+                System.out.println("Prescription " + (k++) + ": " + prescription.getName());
+            }
+            
+            
+            
+            
         }
     }
 
