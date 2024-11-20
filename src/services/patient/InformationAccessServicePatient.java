@@ -1,4 +1,5 @@
 package services.patient;
+
 import app.*;
 import entities.Patient;
 import exceptions.InvalidEmailException;
@@ -9,18 +10,20 @@ import validators.ContactInfoValidator;
 import java.util.InputMismatchException;
 
 /**
- * This Service InformationAccessServicePatient class handles the business logic of the app for Patient Menu
+ * This Service InformationAccessServicePatient class handles the business logic
+ * of the app for Patient Menu
  * It allows patient to view and update Patient Details
  */
 public class InformationAccessServicePatient {
 
     /**
-     * Static viewMedicalRecord() without having to initialize InformationAccessServicePatient
+     * Static viewMedicalRecord() without having to initialize
+     * InformationAccessServicePatient
      * Display details for current patient based on the {@param patient}
      */
     public static void viewMedicalRecord(Patient patient) {
         System.out.println("======= These are your medical records ======");
-        System.out.println("Your ID: " + patient.getUserInformation().getID());
+        System.out.println("Your ID: " + patient.getUserInformation().getID().getId());
         System.out.println("Your Name: " + patient.getUserInformation().getPrivateInformation().getName());
         System.out.println("Your DOB: " + patient.getUserInformation().getPrivateInformation().getDateOfBirth());
         System.out.println("BloodType: " + patient.getMedicalInformation().getBloodType());
@@ -36,7 +39,8 @@ public class InformationAccessServicePatient {
     }
 
     /**
-     * Static viewMedicalRecord() without having to initialize InformationAccessServicePatient
+     * Static viewMedicalRecord() without having to initialize
+     * InformationAccessServicePatient
      * Display details for current patient based on the {@param patient}
      */
     public static void updatePersonalInformation(Patient patient) {
@@ -73,28 +77,28 @@ public class InformationAccessServicePatient {
             }
         }
 
-
     }
-
 
     /**
      * Static updateEmail() sub functions to allow user to update email
      * Used {@link ContactInfoValidator} to validate the email
      * Continuous prompt until patient give the valid email to update
-     * {@exception InvalidEmailException} to be handled
+     * {
+     * 
+     * @exception InvalidEmailException} to be handled
      */
-    public static void updateEmail(Patient patient){
+    public static void updateEmail(Patient patient) {
         String email;
-        while(true){
-            try{
+        while (true) {
+            try {
                 System.out.println("Key in your new email address: ");
                 email = Global.getScanner().nextLine();
-                if(ContactInfoValidator.validateEmail(email)){
+                if (ContactInfoValidator.validateEmail(email)) {
                     patient.getUserInformation().getPrivateInformation().getContactInfo().setEmailAddress(email);
                     System.out.println("Updated your email");
                     break;
                 }
-            }catch(InvalidEmailException e){
+            } catch (InvalidEmailException e) {
                 System.out.println(e);
             }
         }
@@ -104,20 +108,22 @@ public class InformationAccessServicePatient {
      * Static updatePhone() sub functions to allow user to update phone number
      * Used {@link ContactInfoValidator} to validate the phone number
      * Continuous prompt until patient give the valid phone number to update
-     * {@exception InvalidPhoneNumberException} to be handled
+     * {
+     * 
+     * @exception InvalidPhoneNumberException} to be handled
      */
-    public static void updatePhone(Patient patient){
+    public static void updatePhone(Patient patient) {
         String phone;
-        while(true){
-            try{
+        while (true) {
+            try {
                 System.out.println("Key in your new phone number: ");
                 phone = Global.getScanner().nextLine();
-                if(ContactInfoValidator.validatePhoneNumber(phone)){
+                if (ContactInfoValidator.validatePhoneNumber(phone)) {
                     patient.getUserInformation().getPrivateInformation().getContactInfo().setPhoneNumber(phone);
                     System.out.println("Updated your phone number");
                     break;
                 }
-            }catch(InvalidPhoneNumberException e){
+            } catch (InvalidPhoneNumberException e) {
                 System.out.println(e);
             }
         }
