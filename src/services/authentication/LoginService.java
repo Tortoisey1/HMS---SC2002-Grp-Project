@@ -100,6 +100,10 @@ public class LoginService implements PasswordInterface {
             if(account instanceof Pharmacist){
                 StaffDataManager.getInstance().update((Pharmacist) account);
             }
+            
+            if(account instanceof Administrator){
+                StaffDataManager.getInstance().update((Administrator) account);
+            }
             return true;
         } else {
             throw new InvalidPasswordException("Not following our password format!");
