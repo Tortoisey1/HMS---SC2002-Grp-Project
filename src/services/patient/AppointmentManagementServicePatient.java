@@ -334,7 +334,8 @@ public class AppointmentManagementServicePatient extends AppointmentManagementSe
                         }
                     }
                 } else {
-
+                    System.out.println("End of rescheduling");
+                    return;
                 }
             } catch (InputMismatchException | NumberFormatException e) {
                 Dialog.showInvalidInput("Appointment");
