@@ -1,4 +1,0 @@
-Staff_id,Staff_Type,password,Name,DOB,Gender,PhoneNumber,Email,First_login,
-D001,DOCTOR,password,Jack,01/10/2010,MALE,999,g.com,false,
-P001,PHARMACIST,password,Jack,01/10/2010,MALE,999,g.com,false,
-A001,ADMINISTRATOR,password,Jack,01/10/2010,MALE,999,g.com,false,

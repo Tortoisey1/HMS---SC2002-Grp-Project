@@ -1,4 +1,0 @@
-Patient_id,password,Name,DOB,Gender,PhoneNumber,Email,BloodType,First_login,
-P001,Password12!,Jake,01/01/2010,MALE,99999994,temp@gmail.com,A,false
-P002,Password123!,Mary,01/01/2010,MALE,99999996,P002@.com,A,false
-P003,Password12!,Jane,01/01/2010,MALE,99999999,P003@.com,A,true
