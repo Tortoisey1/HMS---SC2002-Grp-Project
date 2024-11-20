@@ -174,6 +174,7 @@ public class AppointmentManagementServiceDoctor extends AppointmentManagementSer
 
         System.out.println("Appointment successfully accepted!");
         appointment.setAppointmentStatus(AppointmentStatus.CONFIRMED);
+        System.out.println("Appointment status: "+ appointment.getAppointmentStatus().toString());
     }
 
     /**
