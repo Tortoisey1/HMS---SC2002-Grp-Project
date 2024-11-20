@@ -362,7 +362,7 @@ public class AppointmentManagementServicePatient extends AppointmentManagementSe
             System.out.println("Appointment Time: " + value.getTimeOfTreatment());
             System.out.println("Treatment: " + value.getTreatmentTitle());
             System.out.println("Doctor in charge: Dr " + value.getDoctorName());
-            System.out.println("Doctor ID: Dr " + value.getDoctorId());
+            System.out.println("Doctor ID: Dr " + value.getDoctorId().getId());
             System.out.println("Status:  " + value.getAppointmentStatus());
         });
     }
@@ -388,7 +388,7 @@ public class AppointmentManagementServicePatient extends AppointmentManagementSe
             System.out.println("Appointment Time: " + temp.getTimeOfTreatment());
             System.out.println("Treatment: " + temp.getTreatmentTitle());
             System.out.println("Doctor in charge: Dr " + temp.getDoctorName());
-            System.out.println("Doctor ID: Dr " + temp.getDoctorId());
+            System.out.println("Doctor ID: Dr " + temp.getDoctorId().getId());
             System.out.println("Status:  " + temp.getAppointmentStatus());
             System.out.println("=========================");
         }
@@ -400,7 +400,7 @@ public class AppointmentManagementServicePatient extends AppointmentManagementSe
             System.out.println("Appointment Time: " + temp.getTimeOfTreatment());
             System.out.println("Treatment: " + temp.getTreatmentTitle());
             System.out.println("Doctor in charge: Dr " + temp.getDoctorName());
-            System.out.println("Doctor ID: Dr " + temp.getDoctorId());
+            System.out.println("Doctor ID: Dr " + temp.getDoctorId().getId());
             System.out.println("Status:  " + temp.getAppointmentStatus());
             System.out.println("=========================");
         }
@@ -412,7 +412,7 @@ public class AppointmentManagementServicePatient extends AppointmentManagementSe
             System.out.println("Appointment Time: " + temp.getTimeOfTreatment());
             System.out.println("Treatment: " + temp.getTreatmentTitle());
             System.out.println("Doctor in charge: Dr " + temp.getDoctorName());
-            System.out.println("Doctor ID: Dr " + temp.getDoctorId());
+            System.out.println("Doctor ID: Dr " + temp.getDoctorId().getId());
             System.out.println("Status:  " + temp.getAppointmentStatus());
             System.out.println("=========================");
         }
@@ -430,7 +430,7 @@ public class AppointmentManagementServicePatient extends AppointmentManagementSe
             System.out.println("Appointment Time: " + temp.getTimeOfTreatment());
             System.out.println("Treatment: " + temp.getTreatmentTitle());
             System.out.println("Doctor in charge: Dr " + temp.getDoctorName());
-            System.out.println("Doctor ID: Dr " + temp.getDoctorId());
+            System.out.println("Doctor ID: Dr " + temp.getDoctorId().getId());
             System.out.println("Status:  " + temp.getAppointmentStatus());
             System.out.println("Medications:");
             int count = 1;
