@@ -9,7 +9,7 @@ import management.AppointmentDataManager;
 import management.DataManager;
 import management.MedicationRequestDataManager;
 import management.PatientDataManager;
-//import services.patient.InformationAccessServicePatient;
+
 
 import java.util.ArrayList;
 import java.util.HashSet;

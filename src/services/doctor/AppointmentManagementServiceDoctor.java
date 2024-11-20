@@ -13,6 +13,7 @@ import management.AppointmentDataManager;
 import management.MedicationRequestDataManager;
 import management.PatientDataManager;
 import management.DataManager;
+import management.InventoryDataManager;
 import menu.CustomCalendar;
 import services.AppointmentManagementService;
 import app.Global;
@@ -28,9 +29,7 @@ import java.util.stream.Collectors;
 public class AppointmentManagementServiceDoctor extends AppointmentManagementService {
 
     private DataManager<Medication,String> requestDataManager;
-    //private DataManager<Appointment, String> appointmentDataManager;
-
-
+    private InventoryDataManager inventoryDataManager;
 
     private static AppointmentManagementServiceDoctor appointmentManagementServiceDoctor;
     private Doctor currentDoctor;
@@ -40,7 +39,7 @@ public class AppointmentManagementServiceDoctor extends AppointmentManagementSer
         super(appointmentDataManager);
         this.currentDoctor = currentDoctor;
         this.requestDataManager = MedicationRequestDataManager.getInstance();
-        //this.appointmentDataManager = AppointmentDataManager.getInstance();
+        this.inventoryDataManager = InventoryDataManager.getInstance();
     }
 
     public static AppointmentManagementServiceDoctor getInstance(Doctor doctor) {
@@ -241,6 +240,13 @@ public class AppointmentManagementServiceDoctor extends AppointmentManagementSer
                         {
                             currentAppointment.getAppointmentOutcomeRecord()
                                     .addMedications(new Medication(correctMedicineName, MedicationStatus.PENDING));
+
+                            String MedicationID=findMedID(correctMedicineName);
+
+                            requestDataManager.add(new Medication(AppointmentID,MedicationID,MedicationStatus.PENDING,correctMedicineName));
+                            System.out.println("Medication successfully prescribed");
+                            System.out.println();
+
                         }
 
 
@@ -294,17 +300,11 @@ public class AppointmentManagementServiceDoctor extends AppointmentManagementSer
 
 
 
-
-
-
-
-
     public String medicineValidator(String medicineInput)
     {
-
         String normalizedInput=medicineInput.replace(" ", "").toLowerCase();
 
-        ArrayList<Medication> medicationList= requestDataManager.getList();
+        List<Medication> medicationList = inventoryDataManager.getList();
 
         for(Medication correctMedicineName : medicationList)
         {
@@ -318,6 +318,24 @@ public class AppointmentManagementServiceDoctor extends AppointmentManagementSer
 
 
         return null;
+    }
+
+
+    public String findMedID(String correctName)
+    {
+        List<Medication> medicationList = inventoryDataManager.getList();
+
+
+        for(Medication correctMedicineName : medicationList)
+        {
+            if(correctName.equals(correctMedicineName.getName()))
+            {
+                return correctMedicineName.getMedicationId();
+            }
+        }
+
+        return null;
+
     }
 
 }

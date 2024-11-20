@@ -6,7 +6,6 @@ import entities.User;
 import exceptions.InvalidChoiceException;
 import services.doctor.AppointmentManagementServiceDoctor;
 import services.doctor.MedicalRecordManagementServiceDoctor;
-import services.pharmacist.AppointmentOutcomeRecordPharmacistService;
 
 public class DoctorMenu extends Menu {
 
