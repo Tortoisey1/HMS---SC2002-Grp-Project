@@ -170,17 +170,6 @@ public class AdministratorService {
         }
     }
 
-    // public void approveReplenishmentRequest() {
-    //     System.out.println("Checking inventory for low stock items...");
-    //     List<Medication> inventoryList = inventoryDataManager.getList();
-    //     for (Medication medication : inventoryList) {
-    //         if (medication.getStock() < 10) {
-    //             System.out.println("Replenishment request submitted for: " + medication.getName() +
-    //                     ", Current Stock: " + medication.getStock());
-    //         }
-    //     }
-    // }
-
     private void displayFilteredStaff(String role, String gender, Integer age) {
         List<Staff> staffList = staffDataManager.getList();
         for (Staff staff : staffList) {
@@ -203,11 +192,11 @@ public class AdministratorService {
 
     // View all appointments
     public void viewAppointmentDetails() {
-    	int j=1;
+        int j = 1;
         List<Appointment> appointments = appointmentDataManager.getList();
         System.out.println("Appointment Details:");
         for (Appointment appointment : appointments) {
-        	System.out.println("Appointment "+(j++));
+            System.out.println("Appointment " + (j++));
             System.out.println("Appointment ID: " + appointment.getAppointmentID());
             System.out.println("Patient ID: " + appointment.getPatientId().getId());
             System.out.println("Doctor ID: " + appointment.getDoctorId().getId());
@@ -217,42 +206,44 @@ public class AdministratorService {
             if (appointment.getAppointmentStatus() == AppointmentStatus.COMPLETED) {
                 System.out.println("Outcome Record:");
                 System.out.println();
-                
-                
+
                 System.out.println("Consultation notes: ");
-                String notes=appointment.getAppointmentOutcomeRecord().getConsultationNotes().getCriticalDetails();
+                String notes = appointment.getAppointmentOutcomeRecord().getConsultationNotes().getCriticalDetails();
                 System.out.print("Critical Details: ");
-                if(notes!=null)System.out.println(notes);
-                else System.out.println("None");
-                
-                notes=appointment.getAppointmentOutcomeRecord().getConsultationNotes().getComplaints();
+                if (notes != null)
+                    System.out.println(notes);
+                else
+                    System.out.println("None");
+
+                notes = appointment.getAppointmentOutcomeRecord().getConsultationNotes().getComplaints();
                 System.out.print("Complaints: ");
-                if(notes!=null)System.out.println(notes);
-                else System.out.println("None");
-                
-                notes=appointment.getAppointmentOutcomeRecord().getConsultationNotes().getFurtherInfo();
+                if (notes != null)
+                    System.out.println(notes);
+                else
+                    System.out.println("None");
+
+                notes = appointment.getAppointmentOutcomeRecord().getConsultationNotes().getFurtherInfo();
                 System.out.print("Further information: ");
-                if(notes!=null)System.out.println(notes);
-                else System.out.println("None");            
-                
+                if (notes != null)
+                    System.out.println(notes);
+                else
+                    System.out.println("None");
+
                 System.out.println();
-                
-                if(appointment.getAppointmentOutcomeRecord().getMedications().size()==0) 
-                {
-                	System.out.println("No prescription(s)");
-                	System.out.println();
-                	return;
+
+                if (appointment.getAppointmentOutcomeRecord().getMedications().size() == 0) {
+                    System.out.println("No prescription(s)");
+                    System.out.println();
+                    return;
                 }
-                
+
                 System.out.println("Medication prescribed: ");
-                int k=1;
-                
+                int k = 1;
+
                 for (Medication prescription : appointment.getAppointmentOutcomeRecord().getMedications()) {
                     System.out.println("Prescription " + (k++) + ": " + prescription.getName());
                 }
-                
-                
-                
+
             }
             System.out.println("-----------------------------");
         }
@@ -290,7 +281,8 @@ public class AdministratorService {
             System.out.println("Medication ID: " + medication.getMedicationId());
             System.out.println("Name: " + medication.getName());
             System.out.println("Stock: " + medication.getStock());
-          //  System.out.println("Low Stock Alert Level: " + medication.getLowStockLevel());
+            // System.out.println("Low Stock Alert Level: " +
+            // medication.getLowStockLevel());
             System.out.println("-----------------------------");
         }
     }
@@ -318,7 +310,7 @@ public class AdministratorService {
 
         Medication medication = inventoryDataManager.retrieve(medicationId);
         if (medication != null) {
-          //  medication.setLowStockLevel(alertLevel);
+            // medication.setLowStockLevel(alertLevel);
             System.out.println("Low stock alert level updated for medication: " + medication.getName());
         } else {
             System.out.println("Medication not found.");
@@ -344,7 +336,7 @@ public class AdministratorService {
     public void updateLowStockAlertLevel(String medicationId, int newAlertLevel) {
         Medication medication = inventoryDataManager.retrieve(medicationId);
         if (medication != null) {
-            //   medication.setLowStockLevel(newAlertLevel);
+            // medication.setLowStockLevel(newAlertLevel);
             System.out.println("Low stock alert level updated for medication: " + medication.getName());
             try {
                 inventoryDataManager.writeAll();
