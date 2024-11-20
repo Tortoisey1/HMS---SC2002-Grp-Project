@@ -140,17 +140,38 @@ public class MedicalRecordManagementServiceDoctor {
             System.out.println("Doctor in charge: Dr " + medicalRecord.getDoctorName().toString());
             System.out.println();
 
-            System.out.println("Consulation Notes:");
-
-            System.out.println("Complaints: " + medicalRecord.getAppointmentOutcomeRecord().getConsultationNotes().getComplaints());
-            System.out.println("Critical Details: " + medicalRecord.getAppointmentOutcomeRecord().getConsultationNotes().getCriticalDetails());
-            System.out.println("Futher Information: " + medicalRecord.getAppointmentOutcomeRecord().getConsultationNotes().getFurtherInfo());
+            System.out.println("Consultation notes: ");
+            
+            String notes= medicalRecord.getAppointmentOutcomeRecord().getConsultationNotes().getCriticalDetails();
+            System.out.print("Critical Details: ");
+            if(notes!=null)System.out.println(notes);
+            else System.out.println("None");
+            
+            notes=medicalRecord.getAppointmentOutcomeRecord().getConsultationNotes().getComplaints();
+            System.out.print("Complaints: ");
+            if(notes!=null)System.out.println(notes);
+            else System.out.println("None");
+            
+            notes=medicalRecord.getAppointmentOutcomeRecord().getConsultationNotes().getFurtherInfo();
+            System.out.print("Further information: ");
+            if(notes!=null)System.out.println(notes);
+            else System.out.println("None");            
+            
             System.out.println();
-
-            System.out.println("Medication prescribed:");
-            int k = 1;
-            for (Medication medicine : medicalRecord.getAppointmentOutcomeRecord().getMedications()) {
-                System.out.println("Prescription " + (k++) + ": " + medicine.getName());
+            
+            if(medicalRecord.getAppointmentOutcomeRecord().getMedications().size()==0) 
+            {
+            	System.out.println("No prescription(s)");
+            	System.out.println();
+            	break;
+            }
+            else
+            {
+            	System.out.println("Medication prescribed:");
+                int k = 1;
+                for (Medication medicine : medicalRecord.getAppointmentOutcomeRecord().getMedications()) {
+                    System.out.println("Prescription " + (k++) + ": " + medicine.getName());
+                }
             }
         }
 
