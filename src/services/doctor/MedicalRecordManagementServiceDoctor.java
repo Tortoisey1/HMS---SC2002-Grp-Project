@@ -3,13 +3,12 @@ package services.doctor;
 import entities.Doctor;
 import entities.Patient;
 import information.Appointment;
-import information.medical.MedicalRecord;
+import information.MedicalBill;
 import information.medical.Medication;
 import management.AppointmentDataManager;
 import management.DataManager;
 import management.MedicationRequestDataManager;
 import management.PatientDataManager;
-
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -20,23 +19,44 @@ import java.util.stream.Collectors;
 
 import app.Global;
 
+/**
+ * The service class, MedicalRecordManagementServiceDoctor, only enables doctors to manage medical records. 
+ * Provides functionality to view and print detailed 
+ * medical records and general personal information of patients assigned to a doctor.
+ */
+
 public class MedicalRecordManagementServiceDoctor {
 
+    /**
+     * viewMedicalRecords()
+     * Displays the list of patients under the doctor's care and allows the doctor
+     * to view medical records of a selected patient.
+     * 
+     * @param doctor is the argument passed in whose patient records are to be viewed.
+     */
+	
+	
+
     public void viewMedicalRecords(Doctor doctor) {
-        // get the patients tagged under the doctor by checking the appointments
+    	
+    	/**
+         * @param appointments type {@link ArrayList} for appointments to retrieve all {@link Appointment}
+         * @param uniquePatients type {@link Set} for uniquePatients to store unique patient IDs to ensure no duplicate
+         * @param filteredAppointments type {@ArrayList } for filteredAppointments to filter based on matching doctor ID to get unique patients
+         * 
+         * Print out the list of patients for doctor to select to view medical records 
+         * Exits the viewing process when 0 is entered
+         */
+    	
         ArrayList<Appointment> appointments = AppointmentDataManager.getInstance().getList();
-
-        // A Set to store unique patient IDs to ensure no duplicate patients
         Set<String> uniquePatients = new HashSet<>();
-
-        // filter based on the matching doctor id then get unique patients
         ArrayList<Appointment> filteredAppointments = (ArrayList<Appointment>) appointments.stream()
                 .filter(appointment -> appointment.getDoctorId().getId()
                         .equals(doctor.getUserInformation().getID().getId()) // match doctorId
                         && uniquePatients.add(appointment.getPatientId().getId())) // unique patients
                 .collect(Collectors.toList());
 
-        if (filteredAppointments.size() == 0) {
+        if (filteredAppointments.size() == 0) { // exit if no patients assigned to doctor currently
             System.out.println("No patients under your care exiting");
             return;
         }
@@ -45,7 +65,7 @@ public class MedicalRecordManagementServiceDoctor {
             int option = -1; // Initialize option with a default value
             System.out.println("===== Which Patient Medical Record Do You Want to View =====");
             System.out.println("0. Enter 0 to return");
-            for (int i = 0; i < filteredAppointments.size(); i++) {
+            for (int i = 0; i < filteredAppointments.size(); i++) { // print list of patients assigned to doctor
                 Patient patient = PatientDataManager.getInstance()
                         .retrieve(filteredAppointments.get(i).getPatientId().getId());
                 System.out.println((i + 1) + ": " + patient.getUserInformation().getPrivateInformation().getName());
@@ -76,9 +96,15 @@ public class MedicalRecordManagementServiceDoctor {
         }
     }
 
-
-    public void printMedicalInfo(Patient patient)
-    {
+    /**
+     * Prints detailed medical information for a given patient, including personal,
+     * contact, and medical record details.
+     *
+     * @param patient The patient whose medical information is to be displayed.
+     * @param completedAppointments type {@link List} for completedAppointments to retrieve all {@link Appointment} which has 
+     * AppointmentStatus.COMPLETED which indicates appointments that have been recorded an outcome by the doctor
+     */
+    private void printMedicalInfo(Patient patient) {
         System.out.println("===== Patient Information =====");
         System.out.println("Patient Name: " + patient.getUserInformation().getPrivateInformation().getName());
         System.out.println("Patient ID: " + patient.getUserInformation().getID().getId());
@@ -94,50 +120,40 @@ public class MedicalRecordManagementServiceDoctor {
         System.out.println();
         System.out.println("===== Medical Records =====");
 
-        if (patient.getMedicalInformation().getPastTreatments().isEmpty())
-        {
+        if (patient.getMedicalInformation().getPastTreatments().isEmpty()) {
             System.out.println("No Medical Records found!");
             System.out.println();
             return;
         }
 
-        List<Appointment> completedAppointments= patient.getMedicalInformation().getPastTreatments();
-        System.out.println(completedAppointments.size()+" medical records found!");
+        List<Appointment> completedAppointments = patient.getMedicalInformation().getPastTreatments();
+        System.out.println(completedAppointments.size() + " medical records found!");
         System.out.println();
 
-        int i=1;
+        int i = 1;
 
-
-        for (Appointment medicalRecord : completedAppointments)
-        //for (Appointment medicalRecord : filterConfirmedAppointmentsForPatient(patient.getUserInformation().getID().getId()))
-        {
+        for (Appointment medicalRecord : completedAppointments) {
             System.out.println();
-            System.out.println("Record " +(i++));
+            System.out.println("Record " + (i++));
             System.out.println("Treatment: " + medicalRecord.getTreatmentTitle());
-            System.out.println("Date: "+ medicalRecord.getDateOfTreatment().toString());
+            System.out.println("Date: " + medicalRecord.getDateOfTreatment().toString());
             System.out.println("Doctor in charge: Dr " + medicalRecord.getDoctorName().toString());
             System.out.println();
 
             System.out.println("Consulation Notes:");
 
-
-            System.out.println("Complaints: "+medicalRecord.getAppointmentOutcomeRecord().getConsultationNotes().getComplaints());
-            System.out.println("Critical Details: "+medicalRecord.getAppointmentOutcomeRecord().getConsultationNotes().getCriticalDetails());
-            System.out.println("Futher Information: "+medicalRecord.getAppointmentOutcomeRecord().getConsultationNotes().getFurtherInfo());
+            System.out.println("Complaints: " + medicalRecord.getAppointmentOutcomeRecord().getConsultationNotes().getComplaints());
+            System.out.println("Critical Details: " + medicalRecord.getAppointmentOutcomeRecord().getConsultationNotes().getCriticalDetails());
+            System.out.println("Futher Information: " + medicalRecord.getAppointmentOutcomeRecord().getConsultationNotes().getFurtherInfo());
             System.out.println();
 
-
             System.out.println("Medication prescribed:");
-            int k=1;
-            for(Medication medicine : medicalRecord.getAppointmentOutcomeRecord().getMedications())
-            {
-                System.out.println("Prescription "+ (k++) + ": " + medicine.getName());
+            int k = 1;
+            for (Medication medicine : medicalRecord.getAppointmentOutcomeRecord().getMedications()) {
+                System.out.println("Prescription " + (k++) + ": " + medicine.getName());
             }
         }
 
         System.out.println();
-
     }
-
-
 }
