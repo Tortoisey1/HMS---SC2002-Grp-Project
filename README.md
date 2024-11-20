@@ -4,7 +4,7 @@
 ##  Team Members
 | Name                    | GitHub Account      |
 |-------------------------|---------------------|
-| Issac Goh | [Tortoisey1](https://github.com/Tortoisey1)) |
+| Issac Goh | [Tortoisey1](https://github.com/Tortoisey1) |
 | Kovan Chew     |  |
 | Noel Tan   |  |
 | Chananam Kulpatch          |  |
