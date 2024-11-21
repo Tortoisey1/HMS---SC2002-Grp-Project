@@ -15,7 +15,6 @@ public class MedicalInformation {
     /**
      * Constructs an MedicalInformation
      * @param bloodType type {@link BloodType} of Patient
-     * @code pastTreatments type {@link Appointment} for appointments that have been COMPLETED
      */
     public MedicalInformation(BloodType bloodType) {
         this.bloodType = bloodType;
