@@ -79,6 +79,13 @@ public class AppointmentOutcomeRecordPharmacistService {
             }
         }
     }
+
+    /**
+     * updatePrescriptionStatus() updates status of the prescription for an appointment
+     * {@link Medication} is retrieved with the appointmentID that is associated to it.
+     * If the medication status is at {@link MedicationStatus#PENDING}, the status gets updated to {@link MedicationStatus#DISPENSED}.
+     * Along with this a medical bill {@link MedicalBill} is generated and the inventory stock gets decremented.
+     */
     public void updatePrescriptionStatus(){
         Scanner sc = Global.getScanner();
         System.out.println("Enter the appointment Id to update the status of prescription: ");
@@ -110,6 +117,11 @@ public class AppointmentOutcomeRecordPharmacistService {
         }
     }
 
+    /**
+     * viewMedicationInventory() prints out the current medication present in the inventory.
+     * The medication list is retrieved from {@link InventoryDataManager}, displaying the
+     * medication Id, Medication Name and the stock.
+     */
     public void viewMedicationInventory(){
         System.out.println("Current Medication Inventory:");
         List<Medication> invlist = inventoryDataManager.getList();
@@ -117,6 +129,13 @@ public class AppointmentOutcomeRecordPharmacistService {
             System.out.println("ID: " + medication.getMedicationId() + ", Name: " + medication.getName() + ", Stock: " + medication.getStock());
         }
     }
+
+    /**
+     * submitReplenishmentRequest() creates and submits replenishment requests for medication
+     * with very low stock and also for the administrator to approve.
+     * If the stock is below 10 a replenishment request is submitted to administrator
+     * for approval and it gets recorded in the {@link ReplenishmentDataManager}
+     */
     public void submitReplenishmentRequest(){
         System.out.println("Checking inventory for low stock items..");
         List<Medication> invlist = inventoryDataManager.getList();

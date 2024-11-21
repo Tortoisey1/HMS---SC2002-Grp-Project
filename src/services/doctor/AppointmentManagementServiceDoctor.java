@@ -96,7 +96,7 @@ public class AppointmentManagementServiceDoctor extends AppointmentManagementSer
      * It checks for conflicting schedules before accepting appointments, 
      * and updates the appointment status to either accepted or cancelled.
      * 
-     * @param filteredAppointments List of pending appointments requested for the current doctor.
+     * filteredAppointments List of pending appointments requested for the current doctor.
      */
     public void acceptDecline() {
         List<Appointment> filteredAppointments = getPendingAppointmentsForDoctor(this.currentDoctor.getUserInformation().getID().getId());
@@ -167,16 +167,16 @@ public class AppointmentManagementServiceDoctor extends AppointmentManagementSer
     /**
      * Records the outcome of an appointment, including consultation notes, prescribed medication, and treatment plans.
      * 
-     * @param treatmentChoice The treatment choice made by the doctor from predefined options.
-     * @param medicineInput The input for the prescribed medication.
-     * @param correctMedicineName The correct name of the medication validated against the inventory.
-     * @param MedicationID The ID of the prescribed medication.
-     * @param PatientID The ID of the patient associated with the appointment.
-     * @param AppointmentID The ID of the appointment.
-     * @param currentAppointment The specific appointment being recorded.
-     * @param criticalDetails The critical details recorded by the doctor.
-     * @param complaints The complaints noted by the doctor.
-     * @param furtherInfo Additional information recorded by the doctor during the appointment.
+     * treatmentChoice The treatment choice made by the doctor from predefined options.
+     * medicineInput The input for the prescribed medication.
+     * correctMedicineName The correct name of the medication validated against the inventory.
+     * MedicationID The ID of the prescribed medication.
+     * PatientID The ID of the patient associated with the appointment.
+     * AppointmentID The ID of the appointment.
+     * currentAppointment The specific appointment being recorded.
+     * criticalDetails The critical details recorded by the doctor.
+     * complaints The complaints noted by the doctor.
+     * furtherInfo Additional information recorded by the doctor during the appointment.
      */
     public void recordOutcome() {
         int treatmentChoice = -1;

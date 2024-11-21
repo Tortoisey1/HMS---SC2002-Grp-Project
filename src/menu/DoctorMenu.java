@@ -31,7 +31,7 @@ public class DoctorMenu extends Menu {
      * recording appointment outcomes, or logging out.
      * 
      * @param currentUser The current user who is logged in, expected to be a `Doctor` object.
-     * @param choice records input for doctor's choice of service
+     * choice records input for doctor's choice of service
      */
     @Override
     public void printMenu(User currentUser) {
