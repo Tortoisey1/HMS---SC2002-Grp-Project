@@ -9,7 +9,7 @@
 | Kovan Chew     | [Kovancwh99](https://github.com/Kovancwh99) |
 | Noel Tan   |  |
 | Chananam Kulpatch          |  |
-| Shreyes           | |
+| Shreyes           | |[Shreyessk](https://github.com/Shreyessk) |
 
 ##  Key Features
 
