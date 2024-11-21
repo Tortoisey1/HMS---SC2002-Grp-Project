@@ -26,8 +26,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
- * Service class AppointmentManagementServiceDoctor, to manage appointment-related functionalities for doctors. This class extends the
- * AppointmentManagementService and includes operations such as viewing the doctor's personal schedule,
+ * Service class to manage appointment-related functionalities for doctors. This class extends the
+ * {@link AppointmentManagementService} class and includes operations such as viewing the doctor's personal schedule,
  * accepting or declining appointments, recording outcomes, and prescribing medications.
  */
 public class AppointmentManagementServiceDoctor extends AppointmentManagementService {
@@ -39,17 +39,13 @@ public class AppointmentManagementServiceDoctor extends AppointmentManagementSer
     private Doctor currentDoctor;
 
     /**
-     * Constructor to initialize AppointmentManagementServiceDoctor with the given AppointmentDataManager and Doctor.
+     * Constructor to initialize the {@link AppointmentManagementServiceDoctor} with the given
+     * {@link AppointmentDataManager} and the current doctor.
      * 
-     * @param appointmentDataManager The data manager for appointments.
-     * @param currentDoctor The unique doctor who signed in and is currently using the service.
-     * @param requestDataManager type {@link DataManager} for requestDataManager to retrieve all {@link Medication} to make prescription requests
-     * which are handled by pharmacist 
-     * @param inventoryDataManager type {@link InventoryDataManager} for inventoryDataManager to retrieve all {@link Medication} to check that
-     * the doctor enteres the correct medication that only exist within the medication inventory
+     * @param appointmentDataManager The data manager for managing appointments.
+     * @param currentDoctor The doctor who is using the service.
      */
-    public AppointmentManagementServiceDoctor(
-            DataManager<Appointment, String> appointmentDataManager, Doctor currentDoctor) {
+    public AppointmentManagementServiceDoctor(DataManager<Appointment, String> appointmentDataManager, Doctor currentDoctor) {
         super(appointmentDataManager);
         this.currentDoctor = currentDoctor;
         this.requestDataManager = MedicationRequestDataManager.getInstance();
@@ -57,25 +53,22 @@ public class AppointmentManagementServiceDoctor extends AppointmentManagementSer
     }
 
     /**
-     * Singleton method to get the instance of AppointmentManagementServiceDoctor.
+     * Singleton method to retrieve the instance of {@link AppointmentManagementServiceDoctor}. 
+     * If the instance doesn't exist, it creates a new one.
      * 
      * @param doctor The doctor for whom the instance is to be created.
-     * @return The instance of AppointmentManagementServiceDoctor is created if it is null
+     * @return The singleton instance of {@link AppointmentManagementServiceDoctor}.
      */
     public static AppointmentManagementServiceDoctor getInstance(Doctor doctor) {
         if (appointmentManagementServiceDoctor == null) {
-            appointmentManagementServiceDoctor = new AppointmentManagementServiceDoctor(
-                    AppointmentDataManager.getInstance(), doctor);
+            appointmentManagementServiceDoctor = new AppointmentManagementServiceDoctor(AppointmentDataManager.getInstance(), doctor);
         }
         return appointmentManagementServiceDoctor;
     }
 
     /**
-     * viewPersonalSchedule()
-     * Displays the doctor's schedule for confirmed appointments.
-     * If no confirmed appointments are found, it informs the user.
-     * @param filteredAppointments type {@link ArrayList} for filteredAppointments to obtain confirmed appointments that are accepted by any doctor
-     * getConfirmedAppointmentList() is obtained from the superclass AppointmentManagementService
+     * Displays the doctor's personal schedule by showing the list of confirmed appointments. 
+     * If no confirmed appointments are found, a message is shown to the user.
      */
     public void viewPersonalSchedule() {
         ArrayList<Appointment> filteredAppointments = getConfirmedAppointmentList();
@@ -99,16 +92,14 @@ public class AppointmentManagementServiceDoctor extends AppointmentManagementSer
     }
 
     /**
-     * acceptDecline()
-     * Allows the doctor to accept or decline only pending appointments that were only requested for him. It checks for conflicting schedules
-     * and updates the appointment status accordingly.
+     * Allows the doctor to accept or decline pending appointments.
+     * It checks for conflicting schedules before accepting appointments, 
+     * and updates the appointment status to either accepted or cancelled.
      * 
-     * If the appointment is rejected by the doctor, patient needs to resubmit the request for other doctors to accept
-     * @param filteredAppointments type {@link List} for filteredAppointments to obtain only pending appointments linked to that current doctor
+     * @param filteredAppointments List of pending appointments requested for the current doctor.
      */
     public void acceptDecline() {
-        List<Appointment> filteredAppointments = getPendingAppointmentsForDoctor(
-                this.currentDoctor.getUserInformation().getID().getId());
+        List<Appointment> filteredAppointments = getPendingAppointmentsForDoctor(this.currentDoctor.getUserInformation().getID().getId());
 
         if (filteredAppointments.size() == 0) {
             System.out.println("No pending appointments");
@@ -137,7 +128,7 @@ public class AppointmentManagementServiceDoctor extends AppointmentManagementSer
                         validateAvailability(appointment, getConfirmedAppointmentList());
                         break;
                     case 2:
-                        System.out.println("Declining appointment ..."); 
+                        System.out.println("Declining appointment ...");
                         appointment.setAppointmentStatus(AppointmentStatus.CANCELLED);
                         break;
                     default:
@@ -151,21 +142,17 @@ public class AppointmentManagementServiceDoctor extends AppointmentManagementSer
     }
 
     /**
-     * validateAvailability()
-     * Validates the availability of the doctor to ensure there are no schedule clashes with confirmed appointments.
+     * Validates the availability of the doctor by checking for any schedule conflicts with existing confirmed appointments.
      * 
-     * @param appointment The appointment to validate for schedule clash
-     * @param confirmedAppointments The list of confirmed appointments that are in the doctor's personal schedule
-     * @param targetDate obtains the current pending appointment's date in dd/mm/yyyy format
-     * @param targetTime obtains the current pending appointment's time HH:MM format 
+     * @param appointment The appointment to validate.
+     * @param confirmedAppointments The list of confirmed appointments in the doctor's schedule.
      */
     private void validateAvailability(Appointment appointment, ArrayList<Appointment> confirmedAppointments) {
         String targetDate = appointment.getDateOfTreatment();
         String targetTime = appointment.getTimeOfTreatment();
 
         for (Appointment confirmed : confirmedAppointments) {
-            if (confirmed.getDateOfTreatment().equals(targetDate)
-                    && confirmed.getTimeOfTreatment().equals(targetTime)) {
+            if (confirmed.getDateOfTreatment().equals(targetDate) && confirmed.getTimeOfTreatment().equals(targetTime)) {
                 System.out.println("Schedule clash with a confirmed appointment");
                 System.out.println("Appointment acceptance failed!");
                 return;
@@ -174,28 +161,22 @@ public class AppointmentManagementServiceDoctor extends AppointmentManagementSer
 
         System.out.println("Appointment successfully accepted!");
         appointment.setAppointmentStatus(AppointmentStatus.CONFIRMED);
-        System.out.println("Appointment status: "+ appointment.getAppointmentStatus().toString());
+        System.out.println("Appointment status: " + appointment.getAppointmentStatus().toString());
     }
 
     /**
-     * recordOutcome()
-     * Records the outcome of an appointment, including consultation notes, treatment plan and prescribed medication(s).
+     * Records the outcome of an appointment, including consultation notes, prescribed medication, and treatment plans.
      * 
-     * The doctor is prompted for patient ID, appointment ID, consultation notes, and prescriptions and can only record outcome 
-     * an appointment where the patient is assigned under and already by the doctor. Otherwise the program will return to doctorMenu
-     *
-     * @param treatmentChoice to select among the treatment plans provided by doctor
-     * @param medicineInput to retrieve prescription input from doctor, will be used for validating with inventory to ensure medication exist
-     * @param correctMedicineName returns correct medicine name as per in the inventory list
-     * @param MedicationID returns correct medicine ID number as per in the inventory list
-     * @param PatientID string input for doctor to enter Patient ID
-     * @param AppointmentID string input for doctor to enter the specific appointment to record outcome 
-     * @param currentAppointment obtain specifc and unique appointment which is derived from getSpecificConfirmedAppointment() in the superclass AppointmentManagementService
-     * 
-     * Consultation Notes strings:
-     * @param criticalDetails string input for doctor to enter critical information
-     * @param complaints string input for doctor to enter complaints from patient
-     * @param furtherInfo string input for doctor to enter extra information relating to appointment
+     * @param treatmentChoice The treatment choice made by the doctor from predefined options.
+     * @param medicineInput The input for the prescribed medication.
+     * @param correctMedicineName The correct name of the medication validated against the inventory.
+     * @param MedicationID The ID of the prescribed medication.
+     * @param PatientID The ID of the patient associated with the appointment.
+     * @param AppointmentID The ID of the appointment.
+     * @param currentAppointment The specific appointment being recorded.
+     * @param criticalDetails The critical details recorded by the doctor.
+     * @param complaints The complaints noted by the doctor.
+     * @param furtherInfo Additional information recorded by the doctor during the appointment.
      */
     public void recordOutcome() {
         int treatmentChoice = -1;
@@ -238,10 +219,10 @@ public class AppointmentManagementServiceDoctor extends AppointmentManagementSer
                 try {
                     int selection = Integer.valueOf(Global.getScanner().nextLine());
 
-                    if (selection == 0) { // exiting prescription process
+                    if (selection == 0) {
                         System.out.println("Stop adding medicines, moving on ...");
                         break;
-                    } else if (selection == 1) { // enter new prescription
+                    } else if (selection == 1) {
                         System.out.println("Enter the name of prescription");
                         medicineInput = String.valueOf(Global.getScanner().nextLine());
 
@@ -252,14 +233,12 @@ public class AppointmentManagementServiceDoctor extends AppointmentManagementSer
                         } else {
                             currentAppointment.getAppointmentOutcomeRecord()
                                     .addMedications(new Medication(correctMedicineName, MedicationStatus.PENDING));
-                            
 
                             MedicationID = findMedID(correctMedicineName);
 
                             requestDataManager.add(new Medication(AppointmentID, MedicationID, MedicationStatus.PENDING, correctMedicineName));
                             System.out.println("Medication successfully prescribed");
                             System.out.println();
-                            // Update appointment outcome of prescription and send medication request to pharmacist
                         }
                     } else {
                         System.out.println("Invalid choice");
@@ -285,7 +264,6 @@ public class AppointmentManagementServiceDoctor extends AppointmentManagementSer
 
             currentAppointment.setAppointmentStatus(AppointmentStatus.COMPLETED);
             currentAppointment.setMedicalService(MedicalService.values()[treatmentChoice - 1]);
-            
 
             Patient patient = PatientDataManager.getInstance().retrieve(PatientID);
             patient.getMedicalInformation().getPastTreatments().add(currentAppointment);
@@ -295,13 +273,10 @@ public class AppointmentManagementServiceDoctor extends AppointmentManagementSer
     }
 
     /**
-     * medicineValidator()
-     * Validates the entered medicine name and checks it against the inventory through string comparison
+     * Validates the medication name entered by the doctor and checks it against the inventory.
      * 
-     * @param medicineInput The name of the medicine entered by the user.
-     * @param normalizedInput parse the string input into lowercase for all and delete blank spaces
-     * @param medicationList type {@link List} to obtain medications from inventory list
-     * @return The correct name of the medicine if it exists in the inventory, otherwise null.
+     * @param medicineInput The name of the medication entered by the doctor.
+     * @return The valid medication name if it exists in the inventory, null otherwise.
      */
     private String medicineValidator(String medicineInput) {
         String normalizedInput = medicineInput.replace(" ", "").toLowerCase();
@@ -320,13 +295,10 @@ public class AppointmentManagementServiceDoctor extends AppointmentManagementSer
     }
 
     /**
-     * findMedID()
-     * Finds the medication ID for a given medicine name which is parsed correctly already.
-     * It will never return null 
+     * Finds the medication ID for a given medication name.
      * 
-     * @param correctName The name of the correct medication as per in the medicine inventory list.
-     * @param correctMedicineName type {@link List} to obtain medication name from inventory list
-     * @return The medication ID corresponding to the given medication name.
+     * @param correctName The name of the medication to find.
+     * @return The medication ID if the medication exists, null otherwise.
      */
     private String findMedID(String correctName) {
         List<Medication> medicationList = inventoryDataManager.getList();
