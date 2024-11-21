@@ -3,7 +3,6 @@ package entities;
 import information.Appointment;
 import information.MedicalInformation;
 import information.UserInformation;
-import information.medical.MedicalRecord;
 import java.util.ArrayList;
 import java.util.List;
 import enums.BloodType;
@@ -18,7 +17,6 @@ public class Patient extends User {
     private List<Appointment> appointments;
     private MedicalInformation medicalInformation;
     private static int patientCount = 0; // Static variable for Patient IDs
-    private List<MedicalRecord> medicalRecords = new ArrayList<>();
 
 
     /**
@@ -81,22 +79,6 @@ public class Patient extends User {
     }
 
     /**
-     * Retrieves all the MedicalRecord under this patient
-     * @return List of type {@link MedicalRecord}
-     */
-    public List<MedicalRecord> getMedicalRecords() {
-        return medicalRecords;
-    }
-
-    /**
-     * Sets the list of MedicalRecord with the new list {@param medicalRecords}
-     */
-    public void setMedicalRecords(List<MedicalRecord> medicalRecords) {
-        this.medicalRecords = medicalRecords;
-    }
-
-
-    /**
      * @return A string representation of the {@code appointments}
      * {@code medicalInformation}, {@code medicalRecords}
      */
@@ -105,7 +87,6 @@ public class Patient extends User {
         return "Patient{" +
                 "appointments=" + appointments.stream().toList() +
                 ", medicalInformation=" + medicalInformation.toString() +
-                ", medicalRecords=" + medicalRecords.stream().toString() +
                 '}';
     }
 }
