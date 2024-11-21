@@ -55,7 +55,7 @@ To set up and run this application locally, follow these steps:
 1. **Clone this repository:**
 
    ```bash
-   git clone https://github.com/Tortoisey1/HMS.git
+   git clone https://github.com/Tortoisey1/HMS---SC2002-Grp-Project.git
    
 2. **Navigate to project directory:**
 
