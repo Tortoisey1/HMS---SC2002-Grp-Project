@@ -22,10 +22,24 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * AdministratorService
+ * Provides functionalities for administrators to manage hospital operations,
+ * including staff management,
+ * appointment handling, and inventory control. This class interacts with
+ * various data managers to perform
+ * CRUD operations and retrieve relevant information.
+ */
+
 public class AdministratorService {
     private InventoryDataManager inventoryDataManager;
     private StaffDataManager staffDataManager;
     private AppointmentDataManager appointmentDataManager;
+
+    /**
+     * Constructor to initialize the AdministratorService.
+     * Retrieves instances of data managers for staff, inventory, and appointments.
+     */
 
     public AdministratorService() {
         this.inventoryDataManager = InventoryDataManager.getInstance();
@@ -33,8 +47,11 @@ public class AdministratorService {
         this.appointmentDataManager = (AppointmentDataManager) AppointmentDataManager.getInstance();
     }
 
-    // Method for managing staff, providing options for adding, removing, or
-    // updating staff
+    /**
+     * Manages hospital staff with options to add, remove, update, or filter staff.
+     * Presents a menu for administrators to choose an operation.
+     */
+
     public void manageStaff() {
         System.out.println("Manage Staff:");
         System.out.println("1. Add Staff");
@@ -63,6 +80,11 @@ public class AdministratorService {
         }
     }
 
+    /**
+     * Filters and displays a list of staff based on role, gender, or age.
+     * Prompts the user for filter criteria and displays matching staff records.
+     */
+
     private void filterAndDisplayStaff() {
         Scanner scanner = Global.getScanner();
         System.out.print("Enter role to filter by (e.g., DOCTOR, ADMINISTRATOR) or leave blank: ");
@@ -81,6 +103,12 @@ public class AdministratorService {
 
         displayFilteredStaff(role, gender, age);
     }
+
+    /**
+     * Adds a new staff member to the hospital system.
+     * Collects staff information from the user and saves it in the staff data
+     * manager.
+     */
 
     private void addStaff() {
         Scanner scanner = Global.getScanner();
@@ -117,6 +145,11 @@ public class AdministratorService {
         }
     }
 
+    /**
+     * Removes an existing staff member by their ID.
+     * Prompts the user to enter the ID and removes the staff record if found.
+     */
+
     private void removeStaff() {
         System.out.print("Enter Staff ID to remove: ");
         String staffId = Global.getScanner().nextLine();
@@ -129,6 +162,11 @@ public class AdministratorService {
             System.out.println("Staff not found.");
         }
     }
+
+    /**
+     * Updates an existing staff member's information.
+     * Allows modification of user type or password based on user input.
+     */
 
     private void updateStaff() {
         System.out.print("Enter Staff ID to update: ");
@@ -170,6 +208,15 @@ public class AdministratorService {
         }
     }
 
+    /**
+     * Displays a filtered list of staff members based on specified criteria.
+     * Filters staff by role, gender, and/or age.
+     * 
+     * @param role   Role to filter by, or null for no role filtering.
+     * @param gender Gender to filter by, or null for no gender filtering.
+     * @param age    Age to filter by, or null for no age filtering.
+     */
+
     private void displayFilteredStaff(String role, String gender, Integer age) {
         List<Staff> staffList = staffDataManager.getList();
         for (Staff staff : staffList) {
@@ -190,7 +237,12 @@ public class AdministratorService {
         }
     }
 
-    // View all appointments
+    /**
+     * Views details of all hospital appointments.
+     * Retrieves and displays data for each appointment, including completed
+     * outcomes and medications prescribed.
+     */
+
     public void viewAppointmentDetails() {
         int j = 1;
         List<Appointment> appointments = appointmentDataManager.getList();
@@ -249,7 +301,11 @@ public class AdministratorService {
         }
     }
 
-    // Manage inventory by viewing, adding, updating stock levels
+    /**
+     * Manages hospital inventory, including viewing and updating medication stock.
+     * Prompts the user to select an action for inventory management.
+     */
+
     public void manageInventory() {
         System.out.println("Manage Inventory:");
         System.out.println("1. View Inventory");
@@ -267,12 +323,17 @@ public class AdministratorService {
                 addOrUpdateMedicationStock();
                 break;
             // case 3:
-            //     updateLowStockAlertLevel();
-            //     break;
+            // updateLowStockAlertLevel();
+            // break;
             default:
                 System.out.println("Invalid choice.");
         }
     }
+
+    /**
+     * Displays the current medication inventory.
+     * Lists details of each medication, including stock levels.
+     */
 
     private void displayInventory() {
         List<Medication> inventoryList = inventoryDataManager.getList();
@@ -286,6 +347,11 @@ public class AdministratorService {
             System.out.println("-----------------------------");
         }
     }
+
+    /**
+     * Adds or updates the stock quantity of a medication.
+     * Prompts the user to enter the medication ID and stock quantity.
+     */
 
     private void addOrUpdateMedicationStock() {
         System.out.print("Enter Medication ID: ");
@@ -302,55 +368,11 @@ public class AdministratorService {
         }
     }
 
-    // private void updateLowStockAlertLevel() {
-    //     System.out.print("Enter Medication ID: ");
-    //     String medicationId = Global.getScanner().nextLine();
-    //     System.out.print("Enter new Low Stock Alert Level: ");
-    //     int alertLevel = Integer.parseInt(Global.getScanner().nextLine());
+    /**
+     * Initializes system data by loading staff and inventory data from files.
+     * Handles errors if data retrieval fails.
+     */
 
-    //     Medication medication = inventoryDataManager.retrieve(medicationId);
-    //     if (medication != null) {
-    //         // medication.setLowStockLevel(alertLevel);
-    //         System.out.println("Low stock alert level updated for medication: " + medication.getName());
-    //     } else {
-    //         System.out.println("Medication not found.");
-    //     }
-    // }
-
-    public void addOrUpdateMedicationStock(String medicationId, int stock) {
-        Medication medication = inventoryDataManager.retrieve(medicationId);
-        if (medication != null) {
-            medication.setStock(stock);
-            System.out.println("Stock updated for medication: " + medication.getName());
-            try {
-                inventoryDataManager.writeAll();
-            } catch (IOException e) {
-                System.out.println("Error updating inventory: " + e.getMessage());
-            }
-        } else {
-            System.out.println("Medication not found in inventory.");
-        }
-    }
-
-    // // Update low stock level alert line
-    // public void updateLowStockAlertLevel(String medicationId, int newAlertLevel)
-    // {
-    // Medication medication = inventoryDataManager.retrieve(medicationId);
-    // if (medication != null) {
-    // // medication.setLowStockLevel(newAlertLevel);
-    // System.out.println("Low stock alert level updated for medication: " +
-    // medication.getName());
-    // try {
-    // inventoryDataManager.writeAll();
-    // } catch (IOException e) {
-    // System.out.println("Error updating inventory: " + e.getMessage());
-    // }
-    // } else {
-    // System.out.println("Medication not found in inventory.");
-    // }
-    // }
-
-    // Initialize system data from files
     public void initializeSystemData() {
         try {
             staffDataManager.retrieveAll();
