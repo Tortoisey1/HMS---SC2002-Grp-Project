@@ -6,7 +6,7 @@
 | Name                    | GitHub Account      |
 |-------------------------|---------------------|
 | Issac Goh | [Tortoisey1](https://github.com/Tortoisey1) |
-| Kovan Chew     | https://github.com/Kovancwh99 |
+| Kovan Chew     | [Kovancwh99] (https://github.com/Kovancwh99) |
 | Noel Tan   |  |
 | Chananam Kulpatch          |  |
 | Shreyes           | |
