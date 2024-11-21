@@ -5,34 +5,37 @@ package exceptions;
  * 
  * <p>
  * This exception is thrown when a password does not meet the required criteria
- * or fails validation.
- * The message provided during instantiation specifies the reason for the error.
+ * or fails validation. The message provided during instantiation specifies the reason for the error.
+ * </p>
  * 
  * <p>
  * Common scenarios for this exception:
+ * </p>
  * <ul>
- * <li>Password is too short or too long</li>
- * <li>Missing required character types (e.g., uppercase letters, digits,
- * special characters)</li>
- * <li>Password contains forbidden patterns or words</li>
+ *   <li>Password is too short or too long</li>
+ *   <li>Missing required character types (e.g., uppercase letters, digits,
+ *       special characters)</li>
+ *   <li>Password contains forbidden patterns or words</li>
  * </ul>
  * 
  * <p>
  * Example usage:
+ * </p>
  * 
  * <pre>
  * {@code
  * String passwordRegex =
  * "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[@#$%^&+=]).{8,}$";
  * if (!password.matches(passwordRegex)) {
- * throw new InvalidPasswordException("Password must be at least 8 characters
- * long, "
- * + "include an uppercase letter, a lowercase letter, a digit, and a special
- * character.");
+ *     throw new InvalidPasswordException("Password must be at least 8 characters
+ *         long, include an uppercase letter, a lowercase letter, a digit, and a special
+ *         character.");
  * }
  * }
- * 
+ * </pre>
  */
+
+
 
 public class InvalidPasswordException extends Exception {
     /**

@@ -5,11 +5,13 @@ package exceptions;
  * 
  * <p>
  * This exception is thrown when an invalid amount is encountered in a financial
- * or transactional operation.
- * The message provided during instantiation details the specific error.
+ * or transactional operation. The message provided during instantiation details
+ * the specific error.
+ * </p>
  * 
  * <p>
  * Example usage:
+ * </p>
  * 
  * <pre>
  * {@code
@@ -17,7 +19,9 @@ package exceptions;
  *     throw new InvalidAmountException("Amount cannot be negative.");
  * }
  * }
+ * </pre>
  */
+
 
 public class InvalidAmountException extends Exception {
     /**
