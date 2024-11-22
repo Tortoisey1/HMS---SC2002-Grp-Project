@@ -5,8 +5,6 @@ import enums.UserType;
 import enums.AppointmentStatus;
 import enums.Gender;
 import entities.Staff;
-import exceptions.StaffExistException;
-import exceptions.StaffDoesNotExistException;
 import information.ContactInfo;
 import information.PrivateInformation;
 import information.UserInformation;
@@ -128,9 +126,38 @@ public class AdministratorService {
         ContactInfo contactInfo = new ContactInfo(phoneNumber, email);
         PrivateInformation privateInfo = new PrivateInformation(name, dateOfBirth, gender, contactInfo);
 
-        System.out.print("Enter Staff Role (e.g., ADMINISTRATOR): ");
-        UserType userType = UserType.valueOf(scanner.nextLine().toUpperCase());
-        UserID userId = new AdministratorID();
+        // System.out.print("Enter Staff Role (e.g., ADMINISTRATOR): ");
+        UserID userId = null;
+        UserType userType = null;
+        try {
+            // Get user input for staff role
+            System.out.print("Enter Staff Role (e.g., ADMINISTRATOR): ");
+            String role = scanner.nextLine().toUpperCase();
+
+            // Convert role to UserType enum
+            userType = UserType.valueOf(role);
+
+            // Generate the class name for the corresponding ID
+            String idClassName = userType.name().substring(0, 1).toUpperCase()
+                    + userType.name().substring(1).toLowerCase() + "ID";
+
+            // Use reflection to load the class and create an instance
+            Class<?> idClass = Class.forName("information.id." + idClassName); // Assuming IDs are in the "ids" package
+            userId = (UserID) idClass.getDeclaredConstructor().newInstance();
+
+            // Print the user ID details
+            System.out.println("Created ID: " + userId.toString());
+
+        } catch (IllegalArgumentException e) {
+            System.out.println("Invalid role entered. Please ensure the role matches the defined UserType enum.");
+        } catch (ClassNotFoundException e) {
+            System.out.println("No matching ID class found for the entered role.");
+        } catch (Exception e) {
+            System.out.println("An error occurred: " + e.getMessage());
+        }
+
+        // UserType userType = UserType.valueOf(scanner.nextLine().toUpperCase());
+        // UserID userId = new AdministratorID();
         System.out.print("Enter Staff Password: ");
         String password = scanner.nextLine();
 
